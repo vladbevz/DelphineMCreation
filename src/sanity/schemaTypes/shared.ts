@@ -1,13 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PriceInput } from '../components/PriceInput';
 
-export const categories = [
-  { title: "Boucles d'oreilles", value: 'boucles-d-oreilles' },
-  { title: 'Collier', value: 'collier' },
-  { title: 'Bracelet', value: 'bracelet' },
-  { title: 'Bague', value: 'bague' },
-  { title: 'Autre', value: 'autre' },
-];
+export { categories } from '../../lib/catalog';
 
 export const productStatuses = [
   { title: 'Disponible', value: 'available' },

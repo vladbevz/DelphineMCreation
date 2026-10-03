@@ -33,7 +33,7 @@ export const customRequest = defineType({
       title: 'Type de bijou',
       type: 'string',
       readOnly: true,
-      options: { list: categories },
+      options: { list: [...categories] },
     }),
     defineField({ name: 'colors', title: 'Couleurs souhaitées', type: 'string', readOnly: true }),
     defineField({ name: 'budget', title: 'Budget', type: 'string', readOnly: true }),

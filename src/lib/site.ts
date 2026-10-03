@@ -1,9 +1,9 @@
-// Static site config until these values move to the Sanity `settings` singleton (stage 1).
+// Static brand identity. Editable contacts and links live in the Sanity `settings` singleton.
 export const site = {
   name: 'Delphine M. Créations',
-  description: '[TEXTE À FOURNIR]',
-  instagramUrl: null as string | null,
-  email: null as string | null,
+  description: 'Bijoux en cuir faits main dans la Vaunage (Gard). Pièces uniques.',
+  locality: 'Vaunage',
+  region: 'Gard',
 };
 
 export const mainNav = [

@@ -65,7 +65,7 @@ export const product = defineType({
       title: 'Catégorie',
       type: 'string',
       group: 'content',
-      options: { list: categories, layout: 'radio' },
+      options: { list: [...categories], layout: 'radio' },
       validation: (rule) => rule.required(),
     }),
     defineField({
