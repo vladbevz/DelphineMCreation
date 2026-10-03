@@ -116,6 +116,8 @@ export const product = defineType({
       initialValue: 'available',
       readOnly: true,
     }),
+    // Set by /api/checkout, shared with the Stripe session metadata.
+    defineField({ name: 'reservationToken', type: 'string', readOnly: true, hidden: true }),
     defineField({
       name: 'reservedUntil',
       title: 'Réservé jusqu’à',

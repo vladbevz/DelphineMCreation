@@ -159,6 +159,7 @@ export type Order = {
     shipping?: number;
     total?: number;
   };
+  shippedEmailSentAt?: string;
   stripeSessionId?: string;
   stripePaymentIntentId?: string;
 };
@@ -198,6 +199,7 @@ export type Product = {
   weight?: number;
   stock: number;
   status?: 'available' | 'reserved' | 'sold';
+  reservationToken?: string;
   reservedUntil?: string;
   publishedAt?: string;
   seo?: Seo;
@@ -588,6 +590,28 @@ export type SETTINGS_QUERY_RESULT = {
   facebook: string | null;
 } | null;
 
+// Source: src/lib/sanity/queries.ts
+// Variable: CART_PRODUCTS_QUERY
+// Query: *[_type == "product" && _id in $ids]{    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,    "image": images[0]  }
+export type CART_PRODUCTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  price: number;
+  status: 'available' | 'reserved' | 'sold' | null;
+  reservedUntil: string | null;
+  reservationToken: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: 'image';
+    _key: string;
+  } | null;
+}>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -600,6 +624,7 @@ declare global {
     '\n  *[_type == "page" && slug.current == $slug][0]{ _id, title, body, seo }\n': PAGE_QUERY_RESULT;
     '{\n  "products": *[_type == "product" && defined(slug.current) && count(images) > 0]{ "slug": slug.current, _updatedAt },\n  "collections": *[_type == "collection" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT;
     '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    email, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "product" && _id in $ids]{\n    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,\n    "image": images[0]\n  }\n': CART_PRODUCTS_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

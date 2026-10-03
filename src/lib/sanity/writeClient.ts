@@ -5,7 +5,7 @@ import { apiVersion, dataset, projectId } from '@/sanity/env';
 
 // Server-only client with write access. Never import from client components.
 export const writeClient = createClient({
-  projectId,
+  projectId: projectId || 'not-configured',
   dataset,
   apiVersion,
   useCdn: false,

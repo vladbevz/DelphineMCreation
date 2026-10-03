@@ -965,6 +965,13 @@
         },
         "optional": true
       },
+      "shippedEmailSentAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "stripeSessionId": {
         "type": "objectAttribute",
         "value": {
@@ -1242,6 +1249,13 @@
               "value": "sold"
             }
           ]
+        },
+        "optional": true
+      },
+      "reservationToken": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       },

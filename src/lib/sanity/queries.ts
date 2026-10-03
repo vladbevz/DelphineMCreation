@@ -77,3 +77,11 @@ export const SETTINGS_QUERY = defineQuery(`
     email, phone, instagram, facebook
   }
 `);
+
+/** Cart drawer: fresh status of the pieces in the cart. */
+export const CART_PRODUCTS_QUERY = defineQuery(`
+  *[_type == "product" && _id in $ids]{
+    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,
+    "image": images[0]
+  }
+`);

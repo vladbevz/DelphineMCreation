@@ -2,7 +2,7 @@ import 'server-only';
 import { cache } from 'react';
 import { isSanityConfigured } from '@/sanity/env';
 import type { PRODUCTS_QUERY_RESULT } from '@/sanity/types';
-import { sanityFetch } from './client';
+import { client, sanityFetch } from './client';
 import {
   fixtureCollections,
   fixtureProducts,
@@ -10,6 +10,7 @@ import {
   placeholderBlocks,
 } from './fixtures';
 import {
+  CART_PRODUCTS_QUERY,
   COLLECTION_QUERY,
   COLLECTIONS_QUERY,
   LATEST_PRODUCTS_QUERY,
@@ -124,3 +125,25 @@ export const getSitemapEntries = cache(async () => {
   }
   return sanityFetch(SITEMAP_QUERY, { tags: ['product', 'collection', 'page'] });
 });
+
+/** Uncached read for the cart: availability must be current, not ISR-stale. */
+export async function getCartProducts(ids: string[]) {
+  if (ids.length === 0) return [];
+  if (offline) {
+    return fixtureProducts
+      .filter((p) => ids.includes(p._id))
+      .map(({ _id, title, slug, price, status, image }) => ({
+        _id,
+        title,
+        slug,
+        price,
+        status,
+        reservedUntil: null,
+        reservationToken: null,
+        image,
+      }));
+  }
+  return client
+    .withConfig({ useCdn: false })
+    .fetch(CART_PRODUCTS_QUERY, { ids }, { cache: 'no-store' });
+}

@@ -120,6 +120,8 @@ export const order = defineType({
         moneyField({ name: 'total', title: 'Total payé' }),
       ],
     }),
+    // Idempotency for the "Votre colis est parti" e-mail (Sanity webhook).
+    defineField({ name: 'shippedEmailSentAt', type: 'datetime', readOnly: true, hidden: true }),
     defineField({
       name: 'stripeSessionId',
       title: 'Session Checkout',
