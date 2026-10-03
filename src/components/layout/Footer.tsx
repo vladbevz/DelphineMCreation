@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { EarringMotif } from '@/components/brand/EarringMotif';
+import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { Container } from '@/components/ui/Container';
 import { getSettings } from '@/lib/sanity/data';
 import { legalNav, mainNav, site } from '@/lib/site';
@@ -44,6 +45,9 @@ export async function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <CookieSettingsButton className="text-left hover:text-sand hover:underline" />
+            </li>
             <li>
               {instagram ? (
                 <a
