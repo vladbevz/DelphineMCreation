@@ -1,5 +1,6 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
+import * as Sentry from '@sentry/nextjs';
 import type Stripe from 'stripe';
 import {
   isAvailable,
@@ -33,7 +34,12 @@ type CheckoutSettings = {
  * only from Sanity: the client sends nothing but product ids.
  */
 export async function createCheckout(input: CheckoutInput): Promise<CheckoutResult> {
-  if (input.previousSessionId) await abandonCheckoutSession(input.previousSessionId);
+  if (input.previousSessionId) {
+    // Best effort: a failure here must not block the new purchase.
+    await abandonCheckoutSession(input.previousSessionId).catch((error) =>
+      Sentry.captureException(error, { level: 'warning' }),
+    );
+  }
 
   const [settings, { products, draftIds }] = await Promise.all([
     writeClient.fetch<CheckoutSettings | null>(`*[_id == "settings"][0]`),
