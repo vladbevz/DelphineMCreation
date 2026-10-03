@@ -270,6 +270,8 @@ NEXT_PUBLIC_META_PIXEL_ID=
 - Перед кодом прочитай відповідний розділ цього файлу. Якщо щось суперечить — спитай, не вигадуй.
 - Не вигадуй тексти, ціни, дані про Delphine. Плейсхолдери: `[NOM DU BIJOU]`, `[PRIX]`, `[TEXTE À FOURNIR]`.
 - Server Components за замовчуванням; `'use client'` — тільки де потрібна інтерактивність.
+- Після зміни схем Sanity або GROQ-запитів — `pnpm typegen` (типи в `src/sanity/types.ts`, запити тільки через `defineQuery`).
+- Іконки Sanity — тільки поштучно: `import { TagIcon } from '@sanity/icons/Tag'` (v5 не має іменованих експортів з кореня).
 - Гроші — завжди цілі числа в центах; форматування через `Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })`.
 - Ніякої бізнес-логіки на клієнті, що впливає на ціну чи наявність.
 - Після кожного етапу: `pnpm lint`, `pnpm typecheck`, `pnpm build` без помилок; коротко звітуй, що зроблено і що лишилось.
