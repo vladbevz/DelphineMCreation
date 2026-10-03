@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { EarringMotif } from '@/components/brand/EarringMotif';
 import { Container } from '@/components/ui/Container';
+import { getSettings } from '@/lib/sanity/data';
 import { legalNav, mainNav, site } from '@/lib/site';
 
-export function Footer() {
+export async function Footer() {
+  const settings = await getSettings();
+  const instagram = settings?.instagram;
+
   return (
     <footer className="mt-24 bg-espresso text-linen">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
@@ -41,9 +45,9 @@ export function Footer() {
               </li>
             ))}
             <li>
-              {site.instagramUrl ? (
+              {instagram ? (
                 <a
-                  href={site.instagramUrl}
+                  href={instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-sand hover:underline"

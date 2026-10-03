@@ -52,7 +52,7 @@ export function MobileMenu() {
         id={panelId}
         aria-label="Menu principal"
         hidden={!open}
-        className="fixed inset-x-0 top-[4.5rem] bottom-0 z-40 overflow-y-auto bg-linen px-5 pt-6 pb-12"
+        className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-sand-border bg-linen px-5 pt-6 pb-12"
       >
         <ul>
           {mainNav.map((item) => (
