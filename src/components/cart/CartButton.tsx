@@ -1,8 +1,15 @@
-// Placeholder until CartProvider / CartDrawer arrive in stage 3.
-export function CartButton({ count = 0 }: { count?: number }) {
+'use client';
+
+import { useCart } from './CartProvider';
+
+export function CartButton() {
+  const { ids, open } = useCart();
+  const count = ids.length;
   return (
     <button
       type="button"
+      onClick={open}
+      aria-haspopup="dialog"
       className="relative inline-flex size-11 items-center justify-center rounded-full transition-colors hover:bg-cream"
     >
       <svg

@@ -1,14 +1,5 @@
-import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
-import { Footer } from '@/components/layout/Footer';
-import { Header } from '@/components/layout/Header';
+import { SiteShell } from '@/components/layout/SiteShell';
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <AnnouncementBar />
-      <Header />
-      <main id="contenu">{children}</main>
-      <Footer />
-    </>
-  );
+  return <SiteShell>{children}</SiteShell>;
 }

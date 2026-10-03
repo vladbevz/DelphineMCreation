@@ -1,14 +1,17 @@
 import Link from 'next/link';
+import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { Button } from '@/components/ui/Button';
 
 type Props = {
   productId: string;
+  title: string;
+  price: number;
   status: 'available' | 'reserved' | 'sold' | null;
   vacationMessage: string | null;
 };
 
-/** Purchase area. The real add-to-cart behaviour arrives with the cart in stage 3. */
-export function ProductActions({ productId, status, vacationMessage }: Props) {
+/** Purchase area: add to cart, or why the piece cannot be bought right now. */
+export function ProductActions({ productId, title, price, status, vacationMessage }: Props) {
   if (status === 'sold') {
     return (
       <div>
@@ -51,10 +54,5 @@ export function ProductActions({ productId, status, vacationMessage }: Props) {
     );
   }
 
-  // TODO(stage 3): replace with <AddToCartButton> wired to CartProvider.
-  return (
-    <Button className="w-full" data-product-id={productId}>
-      Ajouter au panier
-    </Button>
-  );
+  return <AddToCartButton productId={productId} title={title} price={price} />;
 }

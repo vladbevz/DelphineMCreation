@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
 import { Gallery, type GalleryImage } from '@/components/product/Gallery';
 import { ProductActions } from '@/components/product/ProductActions';
+import { TrackViewContent } from '@/components/product/TrackViewContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { AccordionItem } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
@@ -84,6 +85,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      <TrackViewContent id={product._id} title={product.title} price={product.price} />
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -162,6 +164,8 @@ export default async function ProductPage({ params }: Props) {
             <div className="mt-8">
               <ProductActions
                 productId={product._id}
+                title={product.title}
+                price={product.price}
                 status={product.status}
                 vacationMessage={vacationMessage}
               />

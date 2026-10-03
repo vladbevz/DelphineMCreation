@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { CheckoutCancelled } from '@/components/cart/CheckoutCancelled';
 import { FilterChip } from '@/components/catalog/FilterChip';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
 import { ButtonLink } from '@/components/ui/Button';
@@ -24,7 +25,9 @@ export const metadata: Metadata = {
 };
 
 export default async function BoutiquePage({ searchParams }: Props) {
-  const filters = parseFilters(await searchParams);
+  const params = await searchParams;
+  const filters = parseFilters(params);
+  const cancelled = params.annule === '1';
   const all = await getProducts();
   const products = applyFilters(all, filters);
   const colors = availableColors(all);
@@ -43,6 +46,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
       />
 
       <Container>
+        {cancelled && <CheckoutCancelled />}
         <div className="space-y-4 border-y border-sand-border py-5">
           <nav aria-label="Filtrer par catégorie">
             <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
