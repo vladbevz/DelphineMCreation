@@ -5,7 +5,7 @@ const optional = z.preprocess((v) => (v === '' ? undefined : v), z.string().min(
 const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.url().optional());
 const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.email().optional());
 
-// Service keys stay optional until the stage that needs them makes them required.
+// Optional here; REQUIRED_IN_PRODUCTION below enforces them on the live site.
 const serverSchema = z.object({
   SANITY_API_READ_TOKEN: optional,
   SANITY_API_WRITE_TOKEN: optional,
@@ -48,6 +48,37 @@ if (!publicResult.success) {
 }
 
 export const publicEnv = publicResult.data;
+
+// Locally and on preview deployments missing services fall back (fixtures, skipped e-mails).
+// The live site must have them all: fail the production deploy instead of shipping a shop
+// that cannot take payments. Checked at build time via next.config.ts.
+const REQUIRED_IN_PRODUCTION = [
+  'NEXT_PUBLIC_SITE_URL',
+  'NEXT_PUBLIC_SANITY_PROJECT_ID',
+  'NEXT_PUBLIC_TURNSTILE_SITE_KEY',
+  'NEXT_PUBLIC_SENTRY_DSN',
+  'SANITY_API_READ_TOKEN',
+  'SANITY_API_WRITE_TOKEN',
+  'SANITY_WEBHOOK_SECRET',
+  'STRIPE_SECRET_KEY',
+  'STRIPE_WEBHOOK_SECRET',
+  'RESEND_API_KEY',
+  'EMAIL_FROM',
+  'EMAIL_DELPHINE',
+  'TURNSTILE_SECRET_KEY',
+  'CRON_SECRET',
+  'SENTRY_DSN',
+] as const;
+
+if (process.env.VERCEL_ENV === 'production') {
+  const missing = REQUIRED_IN_PRODUCTION.filter((key) => !process.env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing environment variables for production:\n  ${missing.join('\n  ')}`);
+  }
+  if (process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_')) {
+    console.warn('Warning: production is using a Stripe TEST key.');
+  }
+}
 
 export function getServerEnv() {
   if (typeof window !== 'undefined') {
