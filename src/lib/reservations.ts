@@ -131,7 +131,8 @@ export async function releaseExpiredReservations(now = new Date()) {
   return ids.filter((id) => !id.startsWith('drafts.')).length;
 }
 
-function isConflict(error: unknown) {
+/** Sanity answers 409 when ifRevisionId or create() conflicts. */
+export function isConflict(error: unknown) {
   return (
     typeof error === 'object' &&
     error !== null &&
