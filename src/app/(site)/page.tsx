@@ -4,9 +4,10 @@ import { ProductCardPlaceholder } from '@/components/product/ProductCardPlacehol
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { sanityFetch } from '@/lib/sanity/client';
-import { LATEST_PRODUCTS_QUERY } from '@/lib/sanity/queries';
-import { isSanityConfigured } from '@/sanity/env';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { getLatestProducts, getSettings } from '@/lib/sanity/data';
+import { site } from '@/lib/site';
+import { absoluteUrl } from '@/lib/url';
 
 export const revalidate = 60;
 
@@ -17,13 +18,28 @@ const promises = [
 ];
 
 export default async function HomePage() {
-  // Until a Sanity project is connected, the grid shows placeholders.
-  const products = isSanityConfigured
-    ? await sanityFetch(LATEST_PRODUCTS_QUERY, { tags: ['product'] })
-    : null;
+  const [products, settings] = await Promise.all([getLatestProducts(), getSettings()]);
+  const sameAs = [settings?.instagram, settings?.facebook].filter((u): u is string => Boolean(u));
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': ['Organization', 'LocalBusiness'],
+          name: site.name,
+          url: absoluteUrl('/'),
+          description: site.description,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: site.locality,
+            addressRegion: site.region,
+            addressCountry: 'FR',
+          },
+          email: settings?.email ?? undefined,
+          sameAs: sameAs.length ? sameAs : undefined,
+        }}
+      />
       {/* Hero */}
       <section className="pt-8 pb-20 sm:pt-12 lg:pb-28">
         <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -70,10 +86,10 @@ export default async function HomePage() {
             </ButtonLink>
           </div>
           <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
-            {products && products.length > 0
+            {products.length > 0
               ? products.map((product) => (
                   <li key={product._id}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} sizes="(min-width: 1024px) 25vw, 50vw" />
                   </li>
                 ))
               : Array.from({ length: 4 }, (_, i) => (
@@ -122,6 +138,45 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
           </div>
+        </Container>
+      </section>
+
+      {/* Instagram */}
+      <section className="pt-20 lg:pt-28">
+        <Container>
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <SectionHeading
+              label="Instagram"
+              title={
+                <>
+                  Les coulisses de <em>l’atelier</em>
+                </>
+              }
+            />
+            {settings?.instagram ? (
+              <ButtonLink
+                href={settings.instagram}
+                variant="ghost"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Suivre sur Instagram
+              </ButtonLink>
+            ) : (
+              <p className="text-sm text-muted">[LIEN À FOURNIR]</p>
+            )}
+          </div>
+          {/* Static photos picked by the client (no Instagram API). */}
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+            {Array.from({ length: 4 }, (_, i) => (
+              <li
+                key={i}
+                className="flex aspect-square items-center justify-center rounded-2xl bg-cream"
+              >
+                <EarringMotif className="h-1/3 w-auto text-sand-border" />
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
     </>
