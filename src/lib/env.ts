@@ -7,6 +7,7 @@ const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.email().
 
 // Service keys stay optional until the stage that needs them makes them required.
 const serverSchema = z.object({
+  SANITY_API_READ_TOKEN: optional,
   SANITY_API_WRITE_TOKEN: optional,
   SANITY_WEBHOOK_SECRET: optional,
   STRIPE_SECRET_KEY: optional,

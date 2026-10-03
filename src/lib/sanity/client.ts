@@ -1,13 +1,17 @@
+import 'server-only';
 import { createClient } from 'next-sanity';
+import { serverEnv } from '@/lib/env.server';
 import { apiVersion, dataset, isSanityConfigured, projectId } from '@/sanity/env';
 
-// Read-only client for published content, served from Sanity's CDN.
+// The dataset is private (orders and requests hold personal data), so even published
+// content is read server-side with a Viewer token. Image URLs on the CDN stay public.
 export const client = createClient({
   projectId: projectId || 'not-configured',
   dataset,
   apiVersion,
   useCdn: true,
   perspective: 'published',
+  token: serverEnv.SANITY_API_READ_TOKEN,
 });
 
 type FetchOptions = {
@@ -17,7 +21,7 @@ type FetchOptions = {
   revalidate?: number | false;
 };
 
-/** Fetches from Sanity with Next.js caching. */
+/** Fetches from Sanity with Next.js caching. Server-only. */
 export function sanityFetch<const Q extends string>(
   query: Q,
   { params = {}, tags = [], revalidate = 60 }: FetchOptions = {},

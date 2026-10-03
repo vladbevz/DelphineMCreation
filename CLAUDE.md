@@ -28,7 +28,7 @@
 | --- | --- |
 | Фреймворк | Next.js (остання стабільна, App Router), React, TypeScript (strict) |
 | Стилі | Tailwind CSS, Framer Motion (стримано) |
-| CMS / дані | Sanity (окремий dataset `production`), Sanity Studio вбудована в `/studio` |
+| CMS / дані | Sanity (dataset `production`, **private** — у ньому персональні дані замовлень), Sanity Studio вбудована в `/studio`; читання тільки на сервері з read-токеном |
 | Зображення | Sanity Image CDN (`@sanity/image-url`) + `next/image` |
 | Оплата | Stripe Checkout (hosted), Stripe webhooks |
 | Листи | Resend + React Email |
@@ -245,7 +245,8 @@ Header: лого-напис «Delphine M.» + «CRÉATIONS», меню, ікон
 NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SANITY_PROJECT_ID=
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_WRITE_TOKEN=          # server-only
+SANITY_API_READ_TOKEN=           # server-only, Viewer (dataset is private)
+SANITY_API_WRITE_TOKEN=          # server-only, Editor
 SANITY_WEBHOOK_SECRET=
 STRIPE_SECRET_KEY=               # server-only
 STRIPE_WEBHOOK_SECRET=
