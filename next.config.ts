@@ -5,6 +5,10 @@ import './src/lib/env';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    loader: 'custom',
+    loaderFile: './src/lib/sanity/imageLoader.ts',
+  },
 };
 
 export default withSentryConfig(nextConfig, {
