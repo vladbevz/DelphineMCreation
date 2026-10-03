@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
+}
+
+@theme {
+  --color-linen: #fbf7f1;
+  --color-cream: #f4ede3;
+  --color-sand: #e3d3be;
+  --color-sand-border: #d9c8b2;
+  --color-cognac: #9c5a33;
+  --color-cognac-hover: #7a4424;
+  --color-olive: #5f6a4b;
+  --color-espresso: #2b1d14;
+  --color-muted: #6b5646;
+
+  --tracking-label: 0.3em;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-linen font-sans text-espresso antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-medium text-balance;
+    line-height: 1.1;
+  }
+
+  ::selection {
+    @apply bg-sand text-espresso;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cognac);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility label-caps {
+  @apply font-sans text-xs font-medium uppercase;
+  letter-spacing: var(--tracking-label);
+}
