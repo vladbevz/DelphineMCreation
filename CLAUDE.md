@@ -334,3 +334,17 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 ## 15. Відкриті питання (чекаємо від клієнта)
 
 Домен і точна назва бренду · статус Delphine (micro-entreprise, SIRET, франшиза TVA → «TVA non applicable, art. 293 B du CGI») · тексти CGV / mentions légales · тариф Colissimo і поріг безкоштовної доставки · самовивіз так/ні · хто платить за зворотну доставку · фото товарів (спільна зйомка з SMM) · кількість товарів на старті.
+
+---
+
+## 16. Рішення, ухвалені під час розробки (доповнюють розділи вище)
+
+- **Офлайн-режим**: без `NEXT_PUBLIC_SANITY_PROJECT_ID` усі читання йдуть з `src/lib/sanity/fixtures.ts` через `src/lib/sanity/data.ts`. Сторінки читають дані **тільки** через `data.ts`. На Vercel production усі ключі обов'язкові (`REQUIRED_IN_PRODUCTION` у `src/lib/env.ts`).
+- **Резерв**: окрім `reservedUntil`, товар отримує `reservationToken` (той самий — у `metadata` сесії Stripe). Сесія Stripe — 31 хв (мінімум Stripe 30), резерв — 32 хв. «Annuler» у Stripe або новий checkout з того ж браузера одразу закривають попередню сесію й знімають резерв. Статус пишеться і в опублікований документ, і в чернетку `drafts.<id>`.
+- **Замовлення**: створюється через `create` (не `createIfNotExists`) в одній транзакції з лічильником і `sold` — дублікат події падає цілком і не шле листів. Плюс idempotency key у Resend. Оплати з відкладеним підтвердженням: резерв продовжується на 7 днів, замовлення — на `async_payment_succeeded`.
+- **Статус товару в Studio**: редагується лише зі стану `sold` (щоб повернути в продаж повернений товар).
+- **Клієнтський бандл**: клієнтські компоненти не імпортують `src/lib/env.ts` і `validation.ts` (Zod) — для публічних змінних є `src/lib/env.client.ts`, для лімітів форм — `src/lib/formLimits.ts`.
+- **Фото sur-mesure** стискаються в браузері (≤1600 px) — ліміт тіла запиту на Vercel 4,5 МБ.
+- **Rate limit** — у пам'яті інстансу (достатньо разом із Turnstile).
+- **Cron** кожні 15 хв потребує Vercel Pro; на Hobby — щоденний (основний механізм — вебхук `expired`).
+- Документація: `README.md` (архітектура, сервіси, тест-сценарії), `docs/LAUNCH-CHECKLIST.md`, `docs/GUIDE-DELPHINE.md` (французькою).
