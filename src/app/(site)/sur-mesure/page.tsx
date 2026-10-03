@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { CustomRequestForm } from '@/components/forms/CustomRequestForm';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -54,10 +55,9 @@ export default function SurMesurePage() {
             </>
           }
         />
-        {/* Stage 5: request form (Server Action + Zod + Turnstile, up to 3 photos). */}
-        <p className="mt-8 max-w-xl rounded-3xl border border-dashed border-sand-border p-8 text-muted">
-          Le formulaire de demande arrive très bientôt.
-        </p>
+        <div className="mt-10 max-w-2xl">
+          <CustomRequestForm />
+        </div>
       </Container>
     </>
   );

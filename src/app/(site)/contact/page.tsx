@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ContactForm } from '@/components/forms/ContactForm';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { getSettings } from '@/lib/sanity/data';
@@ -55,10 +56,7 @@ export default async function ContactPage() {
             </dd>
           </div>
         </dl>
-        {/* Stage 5: contact form (Server Action + Zod + Turnstile). */}
-        <p className="rounded-3xl border border-dashed border-sand-border p-8 text-muted">
-          Le formulaire de contact arrive très bientôt.
-        </p>
+        <ContactForm />
       </Container>
     </>
   );

@@ -5,6 +5,10 @@ import './src/lib/env';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    // Sur-mesure photos are resized in the browser first; Vercel caps bodies at 4.5 MB.
+    serverActions: { bodySizeLimit: '4mb' },
+  },
   images: {
     loader: 'custom',
     loaderFile: './src/lib/sanity/imageLoader.ts',
