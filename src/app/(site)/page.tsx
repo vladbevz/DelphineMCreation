@@ -1,8 +1,14 @@
 import { EarringMotif } from '@/components/brand/EarringMotif';
+import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardPlaceholder } from '@/components/product/ProductCardPlaceholder';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { sanityFetch } from '@/lib/sanity/client';
+import { LATEST_PRODUCTS_QUERY } from '@/lib/sanity/queries';
+import { isSanityConfigured } from '@/sanity/env';
+
+export const revalidate = 60;
 
 const promises = [
   { title: 'Pièce unique', text: '[TEXTE À FOURNIR]' },
@@ -10,7 +16,12 @@ const promises = [
   { title: 'Fait main', text: '[TEXTE À FOURNIR]' },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Until a Sanity project is connected, the grid shows placeholders.
+  const products = isSanityConfigured
+    ? await sanityFetch(LATEST_PRODUCTS_QUERY, { tags: ['product'] })
+    : null;
+
   return (
     <>
       {/* Hero */}
@@ -59,11 +70,17 @@ export default function HomePage() {
             </ButtonLink>
           </div>
           <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
-            {Array.from({ length: 4 }, (_, i) => (
-              <li key={i}>
-                <ProductCardPlaceholder />
-              </li>
-            ))}
+            {products && products.length > 0
+              ? products.map((product) => (
+                  <li key={product._id}>
+                    <ProductCard product={product} />
+                  </li>
+                ))
+              : Array.from({ length: 4 }, (_, i) => (
+                  <li key={i}>
+                    <ProductCardPlaceholder />
+                  </li>
+                ))}
           </ul>
         </Container>
       </section>
