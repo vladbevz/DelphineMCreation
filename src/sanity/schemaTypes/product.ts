@@ -109,12 +109,14 @@ export const product = defineType({
     defineField({
       name: 'status',
       title: 'État',
-      description: 'Mis à jour automatiquement par la boutique lors des paiements.',
+      description:
+        'Mis à jour automatiquement lors des paiements. Pour remettre en vente un bijou retourné : choisir « Disponible » et remettre la quantité à 1.',
       type: 'string',
       group: 'details',
       options: { list: productStatuses },
       initialValue: 'available',
-      readOnly: true,
+      // Reservations and sales belong to the checkout; only a sold piece can be put back on sale.
+      readOnly: ({ document }) => document?.status !== 'sold',
     }),
     // Set by /api/checkout, shared with the Stripe session metadata.
     defineField({ name: 'reservationToken', type: 'string', readOnly: true, hidden: true }),
