@@ -1,18 +1,20 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { CheckoutCancelled } from '@/components/cart/CheckoutCancelled';
-import { FilterChip } from '@/components/catalog/FilterChip';
+import { FilterOption } from '@/components/catalog/FilterOption';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
+import { SortSelect } from '@/components/catalog/SortSelect';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
-import { PageHeader } from '@/components/ui/PageHeader';
 import {
   applyFilters,
   availableColors,
   boutiqueHref,
   parseFilters,
   sortOptions,
+  type BoutiqueFilters,
 } from '@/lib/boutique';
-import { categories, categoryFilterLabels } from '@/lib/catalog';
+import { categories, categoryFilterLabels, colorKey } from '@/lib/catalog';
 import { getProducts } from '@/lib/sanity/data';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -24,111 +26,164 @@ export const metadata: Metadata = {
   alternates: { canonical: '/boutique' },
 };
 
+type Product = Awaited<ReturnType<typeof getProducts>>[number];
+
+function Filters({
+  all,
+  filters,
+  className,
+}: {
+  all: Product[];
+  filters: BoutiqueFilters;
+  className: string;
+}) {
+  const presentCategories = categories.filter((c) => all.some((p) => p.category === c.value));
+  const colors = availableColors(all);
+  const count = (fn: (p: Product) => boolean) => all.filter(fn).length;
+
+  return (
+    <div className={className}>
+      <nav aria-label="Filtrer par catégorie">
+        <h2 className="mb-3 label-caps text-espresso">Catégories</h2>
+        <ul>
+          <li>
+            <FilterOption
+              href={boutiqueHref({ ...filters, category: null })}
+              active={!filters.category}
+              count={all.length}
+            >
+              Toutes
+            </FilterOption>
+          </li>
+          {presentCategories.map((c) => (
+            <li key={c.value}>
+              <FilterOption
+                href={boutiqueHref({ ...filters, category: c.value })}
+                active={filters.category === c.value}
+                count={count((p) => p.category === c.value)}
+              >
+                {categoryFilterLabels[c.value]}
+              </FilterOption>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {colors.length > 1 && (
+        <nav aria-label="Filtrer par couleur de cuir">
+          <h2 className="mb-3 label-caps text-espresso">Couleur du cuir</h2>
+          <ul>
+            {colors.map((c) => (
+              <li key={c.key}>
+                <FilterOption
+                  href={boutiqueHref({
+                    ...filters,
+                    color: filters.color === c.key ? null : c.key,
+                  })}
+                  active={filters.color === c.key}
+                  count={count((p) =>
+                    Boolean(p.leatherColor && colorKey(p.leatherColor) === c.key),
+                  )}
+                >
+                  {c.label}
+                </FilterOption>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  );
+}
+
 export default async function BoutiquePage({ searchParams }: Props) {
   const params = await searchParams;
   const filters = parseFilters(params);
   const cancelled = params.annule === '1';
   const all = await getProducts();
   const products = applyFilters(all, filters);
-  const colors = availableColors(all);
-  const presentCategories = categories.filter((c) => all.some((p) => p.category === c.value));
-  const isFiltered = Boolean(filters.category || filters.color);
+  const activeCount = Number(Boolean(filters.category)) + Number(Boolean(filters.color));
+
+  const sort = sortOptions.map((s) => ({
+    ...s,
+    href: boutiqueHref({ ...filters, sort: s.value }),
+  }));
 
   return (
-    <>
-      <PageHeader
-        label="La boutique"
-        title={
-          <>
-            Toutes les <em>créations</em>
-          </>
-        }
-      />
+    <Container className="pt-8 pb-4 sm:pt-10">
+      {cancelled && <CheckoutCancelled />}
 
-      <Container>
-        {cancelled && <CheckoutCancelled />}
-        <div className="space-y-3 border-y border-sand-border py-4">
-          <nav aria-label="Filtrer par catégorie">
-            <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
-              <li>
-                <FilterChip
-                  href={boutiqueHref({ ...filters, category: null })}
-                  active={!filters.category}
-                >
-                  Tout
-                </FilterChip>
-              </li>
-              {presentCategories.map((c) => (
-                <li key={c.value}>
-                  <FilterChip
-                    href={boutiqueHref({ ...filters, category: c.value })}
-                    active={filters.category === c.value}
-                  >
-                    {categoryFilterLabels[c.value]}
-                  </FilterChip>
-                </li>
-              ))}
-            </ul>
-          </nav>
+      <div className="mb-6 lg:mb-8">
+        <p className="mb-2 label-caps text-muted">La boutique</p>
+        <h1 className="text-3xl sm:text-4xl">
+          Toutes les <em className="text-cognac italic">créations</em>
+        </h1>
+      </div>
 
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            {colors.length > 1 && (
-              <nav aria-label="Filtrer par couleur de cuir" className="flex items-center gap-3">
-                <span className="shrink-0 label-caps text-muted">Cuir</span>
-                <ul className="-mr-5 flex gap-2 overflow-x-auto pr-5 pb-1 sm:mr-0 sm:flex-wrap sm:pr-0">
-                  {colors.map((c) => (
-                    <li key={c.key}>
-                      <FilterChip
-                        href={boutiqueHref({
-                          ...filters,
-                          color: filters.color === c.key ? null : c.key,
-                        })}
-                        active={filters.color === c.key}
-                      >
-                        {c.label}
-                      </FilterChip>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            )}
-
-            <nav aria-label="Trier" className="flex items-center gap-3">
-              <span className="shrink-0 label-caps text-muted">Trier</span>
-              <ul className="-mr-5 flex gap-2 overflow-x-auto pr-5 pb-1 sm:mr-0 sm:pr-0">
-                {sortOptions.map((s) => (
-                  <li key={s.value}>
-                    <FilterChip
-                      href={boutiqueHref({ ...filters, sort: s.value })}
-                      active={filters.sort === s.value}
-                    >
-                      {s.label}
-                    </FilterChip>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+      <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-10">
+        {/* Desktop: sidebar. Mobile: collapsible panel. Both work without JavaScript. */}
+        <aside className="hidden border-r border-sand-border pr-8 lg:block">
+          <div className="sticky top-24">
+            <Filters all={all} filters={filters} className="space-y-8" />
           </div>
-        </div>
+        </aside>
 
-        <p className="mt-4 mb-6 text-sm text-muted" aria-live="polite">
-          {products.length} création{products.length > 1 ? 's' : ''}
-        </p>
+        <div>
+          <details className="group mb-4 rounded-2xl border border-sand-border bg-white/50 lg:hidden">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
+              <span>
+                Filtrer
+                {activeCount > 0 && <span className="ml-2 text-cognac">({activeCount})</span>}
+              </span>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                className="size-5 transition-transform group-open:rotate-45"
+                aria-hidden
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </summary>
+            <div className="px-4 pt-2 pb-4">
+              <Filters all={all} filters={filters} className="grid grid-cols-2 gap-x-6 gap-y-4" />
+            </div>
+          </details>
 
-        {products.length > 0 ? (
-          <ProductGrid products={products} />
-        ) : (
-          <div className="rounded-3xl bg-cream px-6 py-16 text-center">
-            <p className="font-display text-3xl">Aucune création ne correspond</p>
-            <p className="mt-3 text-muted">Essayez une autre catégorie ou couleur.</p>
-            {isFiltered && (
-              <ButtonLink href="/boutique" variant="secondary" className="mt-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-sand-border pb-4">
+            <p className="text-sm text-muted" aria-live="polite">
+              {products.length} création{products.length > 1 ? 's' : ''}
+              {activeCount > 0 && (
+                <>
+                  {' · '}
+                  <Link
+                    href="/boutique"
+                    scroll={false}
+                    className="text-cognac underline underline-offset-4"
+                  >
+                    Effacer les filtres
+                  </Link>
+                </>
+              )}
+            </p>
+            <SortSelect options={sort} current={filters.sort} />
+          </div>
+
+          {products.length > 0 ? (
+            <ProductGrid products={products} variant="sidebar" />
+          ) : (
+            <div className="rounded-3xl bg-cream px-6 py-14 text-center">
+              <p className="font-display text-2xl">Aucune création ne correspond</p>
+              <p className="mt-2 text-sm text-muted">Essayez une autre catégorie ou couleur.</p>
+              <ButtonLink href="/boutique" variant="secondary" className="mt-6">
                 Voir toute la boutique
               </ButtonLink>
-            )}
-          </div>
-        )}
-      </Container>
-    </>
+            </div>
+          )}
+        </div>
+      </div>
+    </Container>
   );
 }

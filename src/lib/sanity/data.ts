@@ -37,6 +37,7 @@ const toCard = ({
   leatherColor,
   publishedAt,
   image,
+  hoverImage,
 }: (typeof fixtureProducts)[number]): PRODUCTS_QUERY_RESULT[number] => ({
   _id,
   title,
@@ -48,6 +49,7 @@ const toCard = ({
   leatherColor,
   publishedAt,
   image,
+  hoverImage,
 });
 
 export const getSettings = cache(async () => {

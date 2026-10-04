@@ -364,7 +364,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/lib/sanity/queries.ts
 // Variable: LATEST_PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]    | order(featured desc, publishedAt desc)[0...8]{   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]    | order(featured desc, publishedAt desc)[0...8]{   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type LATEST_PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -385,11 +385,20 @@ export type LATEST_PRODUCTS_QUERY_RESULT = Array<{
     _key: string;
     lqip: string | null;
   } | null;
+  hoverImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: 'image';
+    _key: string;
+  } | null;
 }>;
 
 // Source: src/lib/sanity/queries.ts
 // Variable: PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -410,11 +419,20 @@ export type PRODUCTS_QUERY_RESULT = Array<{
     _key: string;
     lqip: string | null;
   } | null;
+  hoverImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: 'image';
+    _key: string;
+  } | null;
 }>;
 
 // Source: src/lib/sanity/queries.ts
 // Variable: PRODUCT_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },    description,    care,    dimensions,    weight,    seo,    collection->{ _id, title, "slug": slug.current }  }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... },    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },    description,    care,    dimensions,    weight,    seo,    collection->{ _id, title, "slug": slug.current }  }
 export type PRODUCT_QUERY_RESULT = {
   _id: string;
   title: string;
@@ -434,6 +452,15 @@ export type PRODUCT_QUERY_RESULT = {
     _type: 'image';
     _key: string;
     lqip: string | null;
+  } | null;
+  hoverImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: 'image';
+    _key: string;
   } | null;
   images: Array<{
     asset?: SanityImageAssetReference;
@@ -460,7 +487,7 @@ export type PRODUCT_QUERY_RESULT = {
 
 // Source: src/lib/sanity/queries.ts
 // Variable: RELATED_PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"    && (collection._ref == $collectionId || category == $category)]    | order(publishedAt desc)[0...4]{   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"    && (collection._ref == $collectionId || category == $category)]    | order(publishedAt desc)[0...4]{   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type RELATED_PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -480,6 +507,15 @@ export type RELATED_PRODUCTS_QUERY_RESULT = Array<{
     _type: 'image';
     _key: string;
     lqip: string | null;
+  } | null;
+  hoverImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: 'image';
+    _key: string;
   } | null;
 }>;
 
@@ -504,7 +540,7 @@ export type COLLECTIONS_QUERY_RESULT = Array<{
 
 // Source: src/lib/sanity/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "collection" && slug.current == $slug][0]{    _id, title, "slug": slug.current, cover, description,    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]      | order(status == "sold" asc, publishedAt desc){   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip } }  }
+// Query: *[_type == "collection" && slug.current == $slug][0]{    _id, title, "slug": slug.current, cover, description,    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]      | order(status == "sold" asc, publishedAt desc){   _id,  title,  "slug": slug.current,  price,  status,  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }  }
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   title: string;
@@ -537,6 +573,15 @@ export type COLLECTION_QUERY_RESULT = {
       _type: 'image';
       _key: string;
       lqip: string | null;
+    } | null;
+    hoverImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: 'image';
+      _key: string;
     } | null;
   }>;
 } | null;
@@ -615,12 +660,12 @@ export type CART_PRODUCTS_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]\n    | order(featured desc, publishedAt desc)[0...8]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip }\n }\n': LATEST_PRODUCTS_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip }\n }\n': PRODUCTS_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip }\n,\n    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },\n    description,\n    care,\n    dimensions,\n    weight,\n    seo,\n    collection->{ _id, title, "slug": slug.current }\n  }\n': PRODUCT_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"\n    && (collection._ref == $collectionId || category == $category)]\n    | order(publishedAt desc)[0...4]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip }\n }\n': RELATED_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]\n    | order(featured desc, publishedAt desc)[0...8]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': LATEST_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n,\n    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },\n    description,\n    care,\n    dimensions,\n    weight,\n    seo,\n    collection->{ _id, title, "slug": slug.current }\n  }\n': PRODUCT_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"\n    && (collection._ref == $collectionId || category == $category)]\n    | order(publishedAt desc)[0...4]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': RELATED_PRODUCTS_QUERY_RESULT;
     '\n  *[_type == "collection" && defined(slug.current)] | order(order asc, title asc){\n    _id, title, "slug": slug.current, cover, description, _updatedAt\n  }\n': COLLECTIONS_QUERY_RESULT;
-    '\n  *[_type == "collection" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, cover, description,\n    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]\n      | order(status == "sold" asc, publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip }\n }\n  }\n': COLLECTION_QUERY_RESULT;
+    '\n  *[_type == "collection" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, cover, description,\n    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]\n      | order(status == "sold" asc, publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n  }\n': COLLECTION_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{ _id, title, body, seo }\n': PAGE_QUERY_RESULT;
     '{\n  "products": *[_type == "product" && defined(slug.current) && count(images) > 0]{ "slug": slug.current, _updatedAt },\n  "collections": *[_type == "collection" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT;
     '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    email, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;

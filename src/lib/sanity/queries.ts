@@ -13,7 +13,9 @@ const PRODUCT_CARD_FIELDS = /* groq */ `
   category,
   leatherColor,
   publishedAt,
-  "image": images[0]{ ..., "lqip": asset->metadata.lqip }
+  "image": images[0]{ ..., "lqip": asset->metadata.lqip },
+  // Second photo, shown on hover in the catalog.
+  "hoverImage": images[1]{ ... }
 `;
 
 /** Home page "Nouvelle collection": featured first, then newest; sold pieces excluded. */

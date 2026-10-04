@@ -55,6 +55,7 @@ export const fixtureProducts: Product[] = Array.from({ length: 8 }, (_, i) => {
     leatherColor: color,
     publishedAt: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
     image,
+    hoverImage: { ...image, _key: 'img2' },
     images: [
       { ...image, dimensions: null },
       { ...image, _key: 'img2', dimensions: null },
