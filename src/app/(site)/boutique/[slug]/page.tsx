@@ -108,7 +108,7 @@ export default async function ProductPage({ params }: Props) {
         }}
       />
 
-      <Container className="pt-4 sm:pt-6">
+      <Container size="medium" className="pt-4 sm:pt-6">
         <nav aria-label="Fil d’Ariane" className="mb-4 hidden text-sm text-muted sm:block">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
@@ -136,13 +136,13 @@ export default async function ProductPage({ params }: Props) {
           </ol>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-12">
+        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-10">
           {/* Sized from the viewport height so photo + thumbnails fit on a laptop screen. */}
           <div className="lg:w-[clamp(20rem,calc((100svh-15rem)*0.8),32rem)]">
             <Gallery images={images} title={product.title} />
           </div>
 
-          <div className="lg:sticky lg:top-24 lg:max-w-xl lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="flex flex-wrap gap-2">
               {sold ? (
                 <Badge tone="espresso">Vendu</Badge>
@@ -196,8 +196,8 @@ export default async function ProductPage({ params }: Props) {
       </Container>
 
       {related.length > 0 && (
-        <section className="mt-16 bg-cream py-14">
-          <Container>
+        <section className="mt-14 bg-cream py-12">
+          <Container size="medium">
             <SectionHeading
               label="À découvrir"
               title={

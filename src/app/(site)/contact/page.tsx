@@ -16,6 +16,7 @@ export default async function ContactPage() {
   return (
     <>
       <PageHeader
+        size="medium"
         label="Contact"
         title={
           <>
@@ -24,7 +25,7 @@ export default async function ContactPage() {
         }
         intro={<p>[TEXTE À FOURNIR]</p>}
       />
-      <Container className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+      <Container size="medium" className="grid gap-10 lg:grid-cols-[1fr_2fr]">
         <dl className="space-y-6">
           <div>
             <dt className="label-caps text-muted">E-mail</dt>

@@ -19,6 +19,8 @@ const promises = [
 
 export default async function HomePage() {
   const [products, settings] = await Promise.all([getLatestProducts(), getSettings()]);
+  // Full rows only: 4 pieces, or 8 on desktop when there are enough (4 on mobile).
+  const shown = products.slice(0, products.length >= 8 ? 8 : 4);
   const sameAs = [settings?.instagram, settings?.facebook].filter((u): u is string => Boolean(u));
 
   return (
@@ -86,9 +88,9 @@ export default async function HomePage() {
             </ButtonLink>
           </div>
           <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
-            {products.length > 0
-              ? products.map((product) => (
-                  <li key={product._id}>
+            {shown.length > 0
+              ? shown.map((product, i) => (
+                  <li key={product._id} className={i >= 4 ? 'hidden lg:block' : undefined}>
                     <ProductCard product={product} sizes="(min-width: 1024px) 25vw, 50vw" />
                   </li>
                 ))
@@ -104,12 +106,14 @@ export default async function HomePage() {
       {/* Promises */}
       <section className="py-14 lg:py-20">
         <Container>
-          <ul className="grid gap-12 sm:grid-cols-3 sm:gap-8">
+          <ul className="grid grid-cols-3 gap-3 sm:gap-8">
             {promises.map((p) => (
               <li key={p.title} className="text-center">
-                <EarringMotif className="mx-auto h-12 w-auto text-olive" />
-                <h3 className="mt-6 text-3xl">{p.title}</h3>
-                <p className="mx-auto mt-3 max-w-xs text-muted">{p.text}</p>
+                <EarringMotif className="mx-auto h-8 w-auto text-olive sm:h-10" />
+                <h3 className="mt-3 text-lg leading-tight sm:mt-4 sm:text-2xl">{p.title}</h3>
+                <p className="mx-auto mt-1 max-w-xs text-xs text-muted sm:mt-2 sm:text-sm">
+                  {p.text}
+                </p>
               </li>
             ))}
           </ul>
@@ -117,22 +121,22 @@ export default async function HomePage() {
       </section>
 
       {/* Atelier */}
-      <section className="pb-4">
-        <Container>
-          <div className="grid overflow-hidden rounded-3xl bg-espresso text-linen lg:grid-cols-2">
-            <div className="flex aspect-[4/3] items-center justify-center bg-sand/15 lg:aspect-auto">
-              <EarringMotif className="h-1/3 w-auto text-sand" />
+      <section>
+        <Container size="medium">
+          <div className="grid overflow-hidden rounded-3xl bg-espresso text-linen sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+            <div className="flex aspect-[16/9] items-center justify-center bg-sand/15 sm:aspect-auto sm:min-h-64">
+              <EarringMotif className="h-24 w-auto text-sand" />
             </div>
-            <div className="px-6 py-10 sm:px-10 lg:py-14">
-              <p className="mb-4 label-caps text-sand">À l&apos;atelier</p>
-              <h2 className="text-3xl sm:text-4xl">
+            <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+              <p className="mb-3 label-caps text-sand">À l&apos;atelier</p>
+              <h2 className="text-3xl">
                 Fait main dans la <em className="text-sand italic">Vaunage</em>
               </h2>
-              <p className="mt-5 leading-relaxed text-sand">[TEXTE À FOURNIR]</p>
+              <p className="mt-3 leading-relaxed text-sand">[TEXTE À FOURNIR]</p>
               <ButtonLink
                 href="/atelier"
                 variant="secondary"
-                className="mt-10 border-linen text-linen hover:bg-linen hover:text-espresso"
+                className="mt-6 self-start border-linen text-linen hover:bg-linen hover:text-espresso"
               >
                 Découvrir l&apos;atelier
               </ButtonLink>
@@ -142,7 +146,7 @@ export default async function HomePage() {
       </section>
 
       {/* Instagram */}
-      <section className="pt-20 lg:pt-28">
+      <section className="pt-14 lg:pt-20">
         <Container>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <SectionHeading
@@ -167,11 +171,11 @@ export default async function HomePage() {
             )}
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          <ul className="mt-6 grid grid-cols-4 gap-2 sm:mt-8 sm:gap-4">
             {Array.from({ length: 4 }, (_, i) => (
               <li
                 key={i}
-                className="flex aspect-square items-center justify-center rounded-2xl bg-cream"
+                className="flex aspect-square items-center justify-center rounded-xl bg-cream sm:rounded-2xl"
               >
                 <EarringMotif className="h-1/3 w-auto text-sand-border" />
               </li>

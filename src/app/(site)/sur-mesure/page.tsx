@@ -22,6 +22,7 @@ export default function SurMesurePage() {
   return (
     <>
       <PageHeader
+        size="medium"
         label="Sur-mesure"
         title={
           <>
@@ -31,23 +32,24 @@ export default function SurMesurePage() {
         intro={<p>[TEXTE À FOURNIR]</p>}
       />
 
-      <section className="bg-cream py-14">
-        <Container>
+      <section className="bg-cream py-12">
+        <Container size="medium">
           <SectionHeading label="Comment ça marche" title="En quatre étapes" className="mb-8" />
-          <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
               <li key={step.title}>
-                <p className="font-display text-4xl text-cognac italic">{i + 1}</p>
-                <h3 className="mt-3 text-2xl">{step.title}</h3>
-                <p className="mt-2 text-muted">{step.text}</p>
+                <p className="font-display text-3xl text-cognac italic">{i + 1}</p>
+                <h3 className="mt-1 text-xl">{step.title}</h3>
+                <p className="mt-1 text-sm text-muted">{step.text}</p>
               </li>
             ))}
           </ol>
         </Container>
       </section>
 
-      <Container className="py-14">
+      <Container size="narrow" className="py-14">
         <SectionHeading
+          align="center"
           label="Votre projet"
           title={
             <>
@@ -55,7 +57,7 @@ export default function SurMesurePage() {
             </>
           }
         />
-        <div className="mt-10 max-w-2xl">
+        <div className="mt-8">
           <CustomRequestForm />
         </div>
       </Container>

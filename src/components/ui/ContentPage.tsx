@@ -15,15 +15,13 @@ export function ContentPage({
 }) {
   return (
     <>
-      <PageHeader label={label} title={title} />
-      <Container>
-        <div className="max-w-2xl">
-          {body?.length ? (
-            <RichText value={body} className="text-lg [&_p]:text-espresso/90" />
-          ) : (
-            <p className="text-muted">[TEXTE À FOURNIR]</p>
-          )}
-        </div>
+      <PageHeader size="narrow" label={label} title={title} />
+      <Container size="narrow">
+        {body?.length ? (
+          <RichText value={body} className="[&_p]:text-espresso/90" />
+        ) : (
+          <p className="text-muted">[TEXTE À FOURNIR]</p>
+        )}
       </Container>
     </>
   );

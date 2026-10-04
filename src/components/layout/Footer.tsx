@@ -10,11 +10,11 @@ export async function Footer() {
   const instagram = settings?.instagram;
 
   return (
-    <footer className="mt-16 bg-espresso text-linen">
-      <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="sm:col-span-2">
-          <EarringMotif className="mb-6 h-14 w-auto text-sand" />
-          <p className="font-display text-3xl">
+    <footer className="mt-14 bg-espresso text-linen">
+      <Container className="grid grid-cols-2 gap-8 py-10 lg:grid-cols-4 lg:py-12">
+        <div className="col-span-2">
+          <EarringMotif className="mb-4 h-10 w-auto text-sand" />
+          <p className="font-display text-2xl">
             Bijoux en <em className="text-sand">cuir</em>, faits main
           </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-sand">
@@ -23,8 +23,8 @@ export async function Footer() {
         </div>
 
         <nav aria-label="Pied de page">
-          <p className="mb-5 label-caps text-sand">Explorer</p>
-          <ul className="space-y-3 text-sm">
+          <p className="mb-3 label-caps text-sand">Explorer</p>
+          <ul className="space-y-2 text-sm">
             {mainNav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="hover:text-sand hover:underline">
@@ -36,8 +36,8 @@ export async function Footer() {
         </nav>
 
         <div>
-          <p className="mb-5 label-caps text-sand">Informations</p>
-          <ul className="space-y-3 text-sm">
+          <p className="mb-3 label-caps text-sand">Informations</p>
+          <ul className="space-y-2 text-sm">
             {legalNav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="hover:text-sand hover:underline">
@@ -66,7 +66,7 @@ export async function Footer() {
         </div>
       </Container>
 
-      <Container className="flex flex-col gap-2 border-t border-white/15 py-6 text-xs text-sand sm:flex-row sm:justify-between">
+      <Container className="flex flex-col gap-2 border-t border-white/15 py-5 text-xs text-sand sm:flex-row sm:justify-between">
         <p>
           © {new Date().getFullYear()} {site.name}
         </p>

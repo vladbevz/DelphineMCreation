@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { cn } from './cn';
 
 const control =
-  'w-full rounded-xl border border-sand-border bg-white px-4 py-3 text-base text-espresso transition-colors placeholder:text-muted/70 focus:border-espresso focus:outline-none aria-[invalid=true]:border-cognac';
+  'w-full rounded-xl border border-sand-border bg-white px-4 py-2.5 text-base text-espresso transition-colors placeholder:text-muted/70 focus:border-espresso focus:outline-none aria-[invalid=true]:border-cognac';
 
 type FieldShellProps = {
   name: string;
@@ -87,7 +87,7 @@ export function TextArea({
         <textarea
           name={name}
           required={!optional}
-          rows={6}
+          rows={5}
           className={cn(control, 'resize-y', className)}
           {...a11y}
           {...props}
