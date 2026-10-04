@@ -12,7 +12,7 @@ export function AccordionItem({
 }) {
   return (
     <details className="group border-b border-sand-border" open={defaultOpen}>
-      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-medium [&::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-sm font-medium [&::-webkit-details-marker]:hidden">
         {title}
         <svg
           viewBox="0 0 24 24"
@@ -26,7 +26,7 @@ export function AccordionItem({
           <path d="M12 5v14M5 12h14" />
         </svg>
       </summary>
-      <div className="pb-6 text-muted">{children}</div>
+      <div className="pb-5 text-sm text-muted">{children}</div>
     </details>
   );
 }

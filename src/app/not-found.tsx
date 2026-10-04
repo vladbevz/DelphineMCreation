@@ -7,8 +7,8 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 export default function NotFound() {
   return (
     <SiteShell>
-      <Container className="flex flex-col items-center py-24 text-center sm:py-32">
-        <EarringMotif className="mb-10 h-28 w-auto text-cognac" />
+      <Container className="flex flex-col items-center py-16 text-center sm:py-24">
+        <EarringMotif className="mb-8 h-20 w-auto text-cognac" />
         <SectionHeading
           as="h1"
           align="center"

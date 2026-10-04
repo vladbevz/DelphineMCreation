@@ -41,8 +41,8 @@ export default async function HomePage() {
         }}
       />
       {/* Hero */}
-      <section className="pt-8 pb-20 sm:pt-12 lg:pb-28">
-        <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <section className="pt-6 pb-14 sm:pt-10 lg:pb-20">
+        <Container className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div className="order-2 lg:order-1">
             <SectionHeading
               as="h1"
@@ -54,7 +54,7 @@ export default async function HomePage() {
               }
               intro={<p>[TEXTE À FOURNIR]</p>}
             />
-            <div className="mt-10 flex flex-wrap items-center gap-6">
+            <div className="mt-8 flex flex-wrap items-center gap-6">
               <ButtonLink href="/boutique">Découvrir la boutique</ButtonLink>
               <ButtonLink href="/atelier" variant="ghost">
                 L&apos;atelier
@@ -63,14 +63,14 @@ export default async function HomePage() {
           </div>
 
           {/* Photo placeholder */}
-          <div className="order-1 flex aspect-[4/5] items-center justify-center rounded-3xl bg-sand sm:aspect-[5/4] lg:order-2 lg:aspect-[4/5]">
+          <div className="order-1 flex aspect-[4/3] items-center justify-center rounded-3xl bg-sand lg:order-2 lg:aspect-auto lg:h-[min(calc(100svh-11rem),30rem)]">
             <EarringMotif className="h-1/2 w-auto text-cognac/70" title="Photo à venir" />
           </div>
         </Container>
       </section>
 
       {/* New collection */}
-      <section className="bg-cream py-20 lg:py-28">
+      <section className="bg-cream py-14 lg:py-20">
         <Container>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <SectionHeading
@@ -85,7 +85,7 @@ export default async function HomePage() {
               Voir toute la boutique
             </ButtonLink>
           </div>
-          <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
+          <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
             {products.length > 0
               ? products.map((product) => (
                   <li key={product._id}>
@@ -102,7 +102,7 @@ export default async function HomePage() {
       </section>
 
       {/* Promises */}
-      <section className="py-20 lg:py-28">
+      <section className="py-14 lg:py-20">
         <Container>
           <ul className="grid gap-12 sm:grid-cols-3 sm:gap-8">
             {promises.map((p) => (
@@ -123,9 +123,9 @@ export default async function HomePage() {
             <div className="flex aspect-[4/3] items-center justify-center bg-sand/15 lg:aspect-auto">
               <EarringMotif className="h-1/3 w-auto text-sand" />
             </div>
-            <div className="px-6 py-14 sm:px-12 lg:py-20">
+            <div className="px-6 py-10 sm:px-10 lg:py-14">
               <p className="mb-4 label-caps text-sand">À l&apos;atelier</p>
-              <h2 className="text-4xl sm:text-5xl">
+              <h2 className="text-3xl sm:text-4xl">
                 Fait main dans la <em className="text-sand italic">Vaunage</em>
               </h2>
               <p className="mt-5 leading-relaxed text-sand">[TEXTE À FOURNIR]</p>
@@ -167,7 +167,7 @@ export default async function HomePage() {
             )}
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
-          <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
             {Array.from({ length: 4 }, (_, i) => (
               <li
                 key={i}

@@ -6,7 +6,7 @@ import { cn } from './cn';
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p>{children}</p>,
-    h2: ({ children }) => <h2 className="mt-12 text-3xl sm:text-4xl">{children}</h2>,
+    h2: ({ children }) => <h2 className="mt-10 text-2xl sm:text-3xl">{children}</h2>,
     h3: ({ children }) => <h3 className="mt-8 text-2xl">{children}</h3>,
   },
   list: {

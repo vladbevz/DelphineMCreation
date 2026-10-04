@@ -10,7 +10,7 @@ export async function Footer() {
   const instagram = settings?.instagram;
 
   return (
-    <footer className="mt-24 bg-espresso text-linen">
+    <footer className="mt-16 bg-espresso text-linen">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2">
           <EarringMotif className="mb-6 h-14 w-auto text-sand" />

@@ -15,7 +15,7 @@ export function ProductActions({ productId, title, price, status, vacationMessag
   if (status === 'sold') {
     return (
       <div>
-        <Button disabled className="w-full">
+        <Button disabled className="w-full sm:w-auto sm:min-w-64">
           Vendu
         </Button>
         <p className="mt-3 text-sm text-muted">
@@ -32,7 +32,7 @@ export function ProductActions({ productId, title, price, status, vacationMessag
   if (vacationMessage) {
     return (
       <div>
-        <Button disabled className="w-full">
+        <Button disabled className="w-full sm:w-auto sm:min-w-64">
           Boutique en pause
         </Button>
         <p className="mt-3 text-sm text-muted">{vacationMessage}</p>
@@ -43,7 +43,7 @@ export function ProductActions({ productId, title, price, status, vacationMessag
   if (status === 'reserved') {
     return (
       <div>
-        <Button disabled className="w-full">
+        <Button disabled className="w-full sm:w-auto sm:min-w-64">
           Réservé
         </Button>
         <p className="mt-3 text-sm text-muted">

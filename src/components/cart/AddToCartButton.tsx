@@ -18,7 +18,7 @@ export function AddToCartButton({
 
   return (
     <Button
-      className="w-full"
+      className="w-full sm:w-auto sm:min-w-64"
       variant={inCart ? 'secondary' : 'primary'}
       onClick={() => {
         if (!inCart) {

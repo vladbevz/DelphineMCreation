@@ -10,7 +10,9 @@ export function ProductCardPlaceholder() {
         <EarringMotif className="h-1/2 w-auto text-cognac/60 transition-transform duration-700 group-hover:scale-105" />
         <Badge className="absolute top-3 left-3">Pièce unique</Badge>
       </div>
-      <p className="mt-4 font-display text-xl group-hover:text-cognac">[NOM DU BIJOU]</p>
+      <p className="mt-3 font-display text-lg leading-tight group-hover:text-cognac">
+        [NOM DU BIJOU]
+      </p>
       <p className="mt-1 text-sm text-cognac">[PRIX]</p>
     </Link>
   );

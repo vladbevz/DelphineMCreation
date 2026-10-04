@@ -15,7 +15,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <Container className="pt-12 pb-10 sm:pt-16 sm:pb-14">
+    <Container className="pt-8 pb-8 sm:pt-12 sm:pb-10">
       <SectionHeading as="h1" label={label} title={title} intro={intro} />
       {children}
     </Container>

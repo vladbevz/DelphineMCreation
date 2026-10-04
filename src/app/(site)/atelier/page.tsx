@@ -40,7 +40,7 @@ export default function AtelierPage() {
         />
       </Container>
 
-      <section className="py-20 lg:py-28">
+      <section className="py-14 lg:py-20">
         <Container className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <SectionHeading
             label="Son histoire"
@@ -57,7 +57,7 @@ export default function AtelierPage() {
         </Container>
       </section>
 
-      <section className="bg-cream py-20 lg:py-28">
+      <section className="bg-cream py-14 lg:py-20">
         <Container>
           <SectionHeading
             label="Le savoir-faire"
@@ -84,7 +84,7 @@ export default function AtelierPage() {
         </Container>
       </section>
 
-      <section className="py-20 lg:py-28">
+      <section className="py-14 lg:py-20">
         <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <PhotoPlaceholder label="Photo des cuirs" className="aspect-[4/3]" />
           <div>

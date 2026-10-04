@@ -31,13 +31,13 @@ export default function SurMesurePage() {
         intro={<p>[TEXTE À FOURNIR]</p>}
       />
 
-      <section className="bg-cream py-20">
+      <section className="bg-cream py-14">
         <Container>
-          <SectionHeading label="Comment ça marche" title="En quatre étapes" className="mb-12" />
+          <SectionHeading label="Comment ça marche" title="En quatre étapes" className="mb-8" />
           <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
               <li key={step.title}>
-                <p className="font-display text-5xl text-cognac italic">{i + 1}</p>
+                <p className="font-display text-4xl text-cognac italic">{i + 1}</p>
                 <h3 className="mt-3 text-2xl">{step.title}</h3>
                 <p className="mt-2 text-muted">{step.text}</p>
               </li>
@@ -46,7 +46,7 @@ export default function SurMesurePage() {
         </Container>
       </section>
 
-      <Container className="py-20">
+      <Container className="py-14">
         <SectionHeading
           label="Votre projet"
           title={

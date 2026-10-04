@@ -5,7 +5,7 @@ import { cn } from './cn';
 type Variant = 'primary' | 'secondary' | 'ghost';
 
 const base =
-  'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-medium tracking-wide transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
   primary: 'bg-cognac text-white hover:bg-cognac-hover',

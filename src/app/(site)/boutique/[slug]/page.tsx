@@ -108,8 +108,8 @@ export default async function ProductPage({ params }: Props) {
         }}
       />
 
-      <Container className="pt-4 sm:pt-8">
-        <nav aria-label="Fil d’Ariane" className="mb-6 hidden text-sm text-muted sm:block">
+      <Container className="pt-4 sm:pt-6">
+        <nav aria-label="Fil d’Ariane" className="mb-4 hidden text-sm text-muted sm:block">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/boutique" className="hover:text-cognac">
@@ -136,10 +136,13 @@ export default async function ProductPage({ params }: Props) {
           </ol>
         </nav>
 
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-          <Gallery images={images} title={product.title} />
+        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-12">
+          {/* Sized from the viewport height so photo + thumbnails fit on a laptop screen. */}
+          <div className="lg:w-[clamp(20rem,calc((100svh-15rem)*0.8),32rem)]">
+            <Gallery images={images} title={product.title} />
+          </div>
 
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:max-w-xl lg:self-start">
             <div className="flex flex-wrap gap-2">
               {sold ? (
                 <Badge tone="espresso">Vendu</Badge>
@@ -147,11 +150,11 @@ export default async function ProductPage({ params }: Props) {
                 product.stock <= 1 && <Badge>Pièce unique</Badge>
               )}
             </div>
-            <h1 className="mt-4 text-4xl sm:text-5xl">{product.title}</h1>
-            <p className="mt-3 text-2xl text-cognac">{formatPrice(product.price)}</p>
+            <h1 className="mt-3 text-3xl sm:text-4xl">{product.title}</h1>
+            <p className="mt-2 text-xl text-cognac">{formatPrice(product.price)}</p>
 
             {details.length > 0 && (
-              <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
+              <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
                 {details.map((d) => (
                   <div key={d.label} className="contents">
                     <dt className="self-center label-caps text-muted">{d.label}</dt>
@@ -161,7 +164,7 @@ export default async function ProductPage({ params }: Props) {
               </dl>
             )}
 
-            <div className="mt-8">
+            <div className="mt-6">
               <ProductActions
                 productId={product._id}
                 title={product.title}
@@ -171,9 +174,9 @@ export default async function ProductPage({ params }: Props) {
               />
             </div>
 
-            <RichText value={product.description} className="mt-10" />
+            <RichText value={product.description} className="mt-8" />
 
-            <div className="mt-10 border-t border-sand-border">
+            <div className="mt-8 border-t border-sand-border">
               {product.care && product.care.length > 0 && (
                 <AccordionItem title="Entretien">
                   <RichText value={product.care} />
@@ -193,7 +196,7 @@ export default async function ProductPage({ params }: Props) {
       </Container>
 
       {related.length > 0 && (
-        <section className="mt-24 bg-cream py-20">
+        <section className="mt-16 bg-cream py-14">
           <Container>
             <SectionHeading
               label="À découvrir"
@@ -202,7 +205,7 @@ export default async function ProductPage({ params }: Props) {
                   Vous aimerez <em>aussi</em>
                 </>
               }
-              className="mb-12"
+              className="mb-8"
             />
             <ProductGrid products={related} />
           </Container>

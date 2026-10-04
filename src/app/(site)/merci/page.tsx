@@ -52,7 +52,7 @@ export default async function MerciPage({ searchParams }: Props) {
   const productIds = session.metadata?.productIds?.split(',') ?? [];
 
   return (
-    <Container className="py-16 sm:py-24">
+    <Container className="py-12 sm:py-16">
       <ClearCart />
       {paid && (
         <TrackPurchase
@@ -81,7 +81,7 @@ export default async function MerciPage({ searchParams }: Props) {
         }
       />
 
-      <div className="mt-12 max-w-xl rounded-3xl bg-cream p-6 sm:p-8">
+      <div className="mt-8 max-w-xl rounded-3xl bg-cream p-6 sm:p-8">
         <ul className="divide-y divide-sand-border">
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">
@@ -100,7 +100,7 @@ export default async function MerciPage({ searchParams }: Props) {
         </ul>
       </div>
 
-      <div className="mt-12 max-w-xl space-y-3 text-muted">
+      <div className="mt-8 max-w-xl space-y-3 text-muted">
         <h2 className="text-2xl text-espresso">Et maintenant ?</h2>
         <p>
           {pickup
@@ -110,7 +110,7 @@ export default async function MerciPage({ searchParams }: Props) {
         <p>[TEXTE À FOURNIR : délais de préparation]</p>
       </div>
 
-      <ButtonLink href="/boutique" variant="secondary" className="mt-12">
+      <ButtonLink href="/boutique" variant="secondary" className="mt-8">
         Retour à la boutique
       </ButtonLink>
     </Container>

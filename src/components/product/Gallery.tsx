@@ -76,14 +76,14 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto sm:mx-0 sm:rounded-3xl [&::-webkit-scrollbar]:hidden"
+        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto sm:mx-0 sm:rounded-2xl [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carrousel"
         aria-label={`Photos de ${title}`}
       >
         {images.map((image, i) => (
           <div
             key={image.key}
-            className="relative aspect-[4/5] w-full shrink-0 snap-center bg-sand"
+            className="relative aspect-square w-full shrink-0 snap-center bg-sand sm:aspect-[4/5]"
             role="group"
             aria-roledescription="photo"
             aria-label={`${i + 1} sur ${images.length}`}
@@ -116,7 +116,7 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
       </div>
 
       {multiple && (
-        <div className="mt-3 flex justify-center gap-1 sm:mt-4 sm:justify-start sm:gap-3">
+        <div className="mt-2 flex justify-center gap-1 sm:mt-3 sm:justify-start sm:gap-2">
           {images.map((image, i) => (
             <button
               key={image.key}
@@ -135,14 +135,14 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
               />
               <span
                 className={cn(
-                  'relative hidden aspect-[4/5] w-16 overflow-hidden rounded-xl bg-sand transition-opacity sm:block',
+                  'relative hidden aspect-[4/5] w-12 overflow-hidden rounded-xl bg-sand transition-opacity sm:block',
                   active === i
                     ? 'ring-2 ring-espresso ring-offset-2 ring-offset-linen'
                     : 'opacity-60 group-hover:opacity-100',
                 )}
               >
                 {image.src && (
-                  <Image src={image.src} alt="" fill sizes="64px" className="object-cover" />
+                  <Image src={image.src} alt="" fill sizes="48px" className="object-cover" />
                 )}
               </span>
             </button>

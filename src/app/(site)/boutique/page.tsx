@@ -47,7 +47,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
 
       <Container>
         {cancelled && <CheckoutCancelled />}
-        <div className="space-y-4 border-y border-sand-border py-5">
+        <div className="space-y-3 border-y border-sand-border py-4">
           <nav aria-label="Filtrer par catégorie">
             <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
               <li>
@@ -111,7 +111,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
           </div>
         </div>
 
-        <p className="mt-6 mb-8 text-sm text-muted" aria-live="polite">
+        <p className="mt-4 mb-6 text-sm text-muted" aria-live="polite">
           {products.length} création{products.length > 1 ? 's' : ''}
         </p>
 

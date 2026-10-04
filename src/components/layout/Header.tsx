@@ -14,7 +14,7 @@ export function Header() {
       >
         Aller au contenu
       </a>
-      <Container className="flex h-[4.5rem] items-center justify-between gap-6">
+      <Container className="flex h-16 items-center justify-between gap-6">
         <div className="flex items-center gap-1">
           <MobileMenu />
           <Logo />

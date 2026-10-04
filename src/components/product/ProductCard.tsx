@@ -47,7 +47,9 @@ export function ProductCard({
           )}
         </div>
       </div>
-      <p className="mt-4 font-display text-xl group-hover:text-cognac">{product.title}</p>
+      <p className="mt-3 font-display text-lg leading-tight group-hover:text-cognac">
+        {product.title}
+      </p>
       <p className="mt-1 text-sm text-cognac">{formatPrice(product.price)}</p>
     </Link>
   );

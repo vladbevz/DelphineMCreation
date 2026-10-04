@@ -21,16 +21,16 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn('max-w-2xl', align === 'center' && 'mx-auto text-center', className)}>
-      {label && <p className="mb-4 label-caps text-muted">{label}</p>}
+      {label && <p className="mb-3 label-caps text-muted">{label}</p>}
       <Tag
         className={cn(
           '[&_em]:text-cognac [&_em]:italic',
-          Tag === 'h1' ? 'text-5xl sm:text-6xl lg:text-7xl' : 'text-4xl sm:text-5xl',
+          Tag === 'h1' ? 'text-4xl sm:text-5xl' : 'text-3xl sm:text-4xl',
         )}
       >
         {title}
       </Tag>
-      {intro && <div className="mt-5 text-base leading-relaxed text-muted sm:text-lg">{intro}</div>}
+      {intro && <div className="mt-4 text-base leading-relaxed text-muted">{intro}</div>}
     </div>
   );
 }
