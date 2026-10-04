@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 import { publicEnv } from '@/lib/env';
+import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
 import './globals.css';
 
@@ -30,6 +31,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'fr_FR',
     siteName: site.name,
+    // Default share image; product pages override it with their own photo.
+    images: [
+      { url: photos.bouclesLiege.src, width: 1600, height: 1067, alt: photos.bouclesLiege.alt },
+    ],
   },
 };
 

@@ -9,7 +9,7 @@
 - [ ] Тексти: CGV, mentions légales, livraison et retours, confidentialité, entretien, L'atelier, hero, переваги
 - [ ] Тариф Colissimo і поріг безкоштовної доставки; самовивіз так/ні; хто платить зворотну доставку
 - [ ] Терміни відправки (для сторінки товару, листів і `delivery_estimate` у Stripe — `src/lib/checkout.ts`)
-- [ ] Фото товарів і для сторінки L'atelier, блоку Instagram
+- [ ] Фото товарів і для сторінки L'atelier, блоку Instagram. Зараз там стокові фото Unsplash (`src/lib/photos.ts`) — замінити: покласти в `assets/photos/` з тими ж іменами → `pnpm images`
 - [ ] Посилання на Instagram/Facebook, e-mail і телефон для сайту
 - [ ] Погодити тексти, які я написав сам (позначені у звітах етапів): hero, «Réservé», «Vendu», банер cookies, листи
 

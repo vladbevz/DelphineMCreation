@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { photos } from '@/lib/photos';
 
 export const metadata: Metadata = {
   title: 'L’atelier',
@@ -36,7 +38,16 @@ export default function AtelierPage() {
           }
           intro={<p>[TEXTE À FOURNIR]</p>}
         />
-        <PhotoPlaceholder label="Photo de Delphine à l’atelier" className="aspect-[4/3]" />
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-sand">
+          <Image
+            src={photos.finitions.src}
+            alt={photos.finitions.alt}
+            fill
+            priority
+            sizes="(min-width: 768px) 480px, 100vw"
+            className="object-cover"
+          />
+        </div>
       </Container>
 
       <section className="bg-cream py-14 lg:py-20">

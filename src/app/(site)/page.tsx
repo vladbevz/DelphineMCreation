@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { EarringMotif } from '@/components/brand/EarringMotif';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardPlaceholder } from '@/components/product/ProductCardPlaceholder';
@@ -6,10 +7,18 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { getLatestProducts, getSettings } from '@/lib/sanity/data';
+import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
 import { absoluteUrl } from '@/lib/url';
 
 export const revalidate = 60;
+
+const instagramPhotos = [
+  photos.presentoir,
+  photos.finitions,
+  photos.bouclesLiege,
+  photos.atelierMains,
+];
 
 const promises = [
   { title: 'Pièce unique', text: '[TEXTE À FOURNIR]' },
@@ -64,9 +73,15 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Photo placeholder */}
-          <div className="order-1 flex aspect-[4/3] items-center justify-center rounded-3xl bg-sand lg:order-2 lg:aspect-auto lg:h-[min(calc(100svh-11rem),30rem)]">
-            <EarringMotif className="h-1/2 w-auto text-cognac/70" title="Photo à venir" />
+          <div className="relative order-1 aspect-[4/3] overflow-hidden rounded-3xl bg-sand lg:order-2 lg:aspect-auto lg:h-[min(calc(100svh-11rem),30rem)]">
+            <Image
+              src={photos.bouclesLiege.src}
+              alt={photos.bouclesLiege.alt}
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </Container>
       </section>
@@ -124,8 +139,14 @@ export default async function HomePage() {
       <section>
         <Container size="medium">
           <div className="grid overflow-hidden rounded-3xl bg-espresso text-linen sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-            <div className="flex aspect-[16/9] items-center justify-center bg-sand/15 sm:aspect-auto sm:min-h-64">
-              <EarringMotif className="h-24 w-auto text-sand" />
+            <div className="relative aspect-[16/9] bg-sand/15 sm:aspect-auto sm:min-h-64">
+              <Image
+                src={photos.atelierMains.src}
+                alt={photos.atelierMains.alt}
+                fill
+                sizes="(min-width: 1024px) 400px, (min-width: 640px) 40vw, 100vw"
+                className="object-cover"
+              />
             </div>
             <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
               <p className="mb-3 label-caps text-sand">À l&apos;atelier</p>
@@ -172,12 +193,12 @@ export default async function HomePage() {
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
           <ul className="mt-6 grid grid-cols-4 gap-2 sm:mt-8 sm:gap-4">
-            {Array.from({ length: 4 }, (_, i) => (
+            {instagramPhotos.map((p) => (
               <li
-                key={i}
-                className="flex aspect-square items-center justify-center rounded-xl bg-cream sm:rounded-2xl"
+                key={p.src}
+                className="relative aspect-square overflow-hidden rounded-xl bg-cream sm:rounded-2xl"
               >
-                <EarringMotif className="h-1/3 w-auto text-sand-border" />
+                <Image src={p.src} alt={p.alt} fill sizes="25vw" className="object-cover" />
               </li>
             ))}
           </ul>
