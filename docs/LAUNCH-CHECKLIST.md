@@ -67,6 +67,7 @@
 
 ## 8. Перехід на live
 
+- [ ] **Видалити `DEMO_MODE` з Environment Variables у Vercel** (інакше сайт закритий від індексації, а перевірка ключів вимкнена) → Redeploy
 - [ ] Stripe: активувати акаунт, `sk_live_…` у Vercel Production
 - [ ] Stripe live webhook на `https://<домен>/api/webhooks/stripe` (4 події) → новий `STRIPE_WEBHOOK_SECRET`
 - [ ] Одна реальна покупка дешевого товару → повернення коштів у Dashboard

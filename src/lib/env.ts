@@ -35,7 +35,12 @@ function format(error: z.ZodError) {
 
 // NEXT_PUBLIC_* must be referenced literally so Next.js can inline them in client bundles.
 const publicResult = publicSchema.safeParse({
-  NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  // On Vercel, fall back to the project's production domain when the variable is not set.
+  NEXT_PUBLIC_SITE_URL:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : undefined),
   NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
@@ -70,7 +75,18 @@ const REQUIRED_IN_PRODUCTION = [
   'SENTRY_DSN',
 ] as const;
 
-if (process.env.VERCEL_ENV === 'production') {
+/**
+ * DEMO_MODE=1 lets the site be deployed before the client's accounts exist: fixtures instead
+ * of Sanity, payment disabled, and the whole site hidden from search engines.
+ * Remove it from Vercel before launch.
+ */
+export const isDemoMode = process.env.DEMO_MODE === '1';
+
+if (process.env.VERCEL_ENV === 'production' && isDemoMode) {
+  console.warn('DEMO_MODE is on: environment check skipped, site not indexable.');
+}
+
+if (process.env.VERCEL_ENV === 'production' && !isDemoMode) {
   const missing = REQUIRED_IN_PRODUCTION.filter((key) => !process.env[key]);
   if (missing.length > 0) {
     throw new Error(`Missing environment variables for production:\n  ${missing.join('\n  ')}`);

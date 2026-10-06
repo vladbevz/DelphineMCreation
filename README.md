@@ -20,7 +20,7 @@ pnpm dev                     # http://localhost:3000, Studio на /studio
 
 ### Офлайн-режим
 
-Без `NEXT_PUBLIC_SANITY_PROJECT_ID` сайт бере тестові дані з `src/lib/sanity/fixtures.ts` (8 товарів, 2 колекції): усі сторінки й кошик працюють. Без ключів Stripe `/api/checkout` відповідає 503 і кошик показує «paiement pas encore disponible». Без Resend листи пишуться в лог. На Vercel **production** усі ключі обов'язкові — збірка впаде зі списком відсутніх (`src/lib/env.ts`).
+Без `NEXT_PUBLIC_SANITY_PROJECT_ID` сайт бере тестові дані з `src/lib/sanity/fixtures.ts` (8 товарів, 2 колекції): усі сторінки й кошик працюють. Без ключів Stripe `/api/checkout` відповідає 503 і кошик показує «paiement pas encore disponible». Без Resend листи пишуться в лог. На Vercel **production** усі ключі обов'язкові — збірка впаде зі списком відсутніх (`src/lib/env.ts`). Виняток — демо-деплой до підключення акаунтів: `DEMO_MODE=1` у Vercel вимикає перевірку й закриває сайт від індексації (`robots.txt` + `noindex`). Прибрати перед запуском.
 
 ## Архітектура
 

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
-import { publicEnv } from '@/lib/env';
+import { isDemoMode, publicEnv } from '@/lib/env';
 import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
 import './globals.css';
@@ -22,6 +22,7 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicEnv.NEXT_PUBLIC_SITE_URL),
+  robots: isDemoMode ? { index: false, follow: false } : undefined,
   title: {
     default: `${site.name} — Bijoux en cuir faits main`,
     template: `%s · ${site.name}`,
