@@ -2,16 +2,21 @@ import Link from 'next/link';
 import type { ComponentProps } from 'react';
 import { cn } from './cn';
 
-type Variant = 'primary' | 'secondary' | 'ghost';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'light';
 
+// Thin pill buttons with small spaced capitals. Size and shape live in the variants so the
+// ghost link does not fight them (no tailwind-merge here).
+const pill = 'min-h-11 rounded-full px-7';
 const base =
-  'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-cognac text-white hover:bg-cognac-hover',
-  secondary: 'border border-espresso text-espresso hover:bg-espresso hover:text-linen',
+  primary: `${pill} border border-espresso bg-espresso text-linen hover:bg-transparent hover:text-espresso`,
+  secondary: `${pill} border border-espresso text-espresso hover:bg-espresso hover:text-linen`,
+  /** On dark photos or dark sections. */
+  light: `${pill} border border-linen text-linen hover:bg-linen hover:text-espresso`,
   ghost:
-    'px-0 text-espresso underline decoration-sand-border underline-offset-8 hover:decoration-cognac',
+    'pb-1 text-espresso underline decoration-espresso/40 underline-offset-[6px] hover:decoration-espresso',
 };
 
 type ButtonProps = ComponentProps<'button'> & { variant?: Variant };

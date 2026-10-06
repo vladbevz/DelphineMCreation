@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Jost } from 'next/font/google';
+import { Cormorant_Garamond, Jost, Mrs_Saint_Delafield } from 'next/font/google';
 import { isDemoMode, publicEnv } from '@/lib/env';
 import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
@@ -7,10 +7,18 @@ import './globals.css';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  // Variable font: one file per style covers weights 500 and 600.
+  // Variable font: one file per style covers weights 300 to 600.
   style: ['normal', 'italic'],
   display: 'swap',
   variable: '--font-cormorant',
+});
+
+// Handwritten accent word in headings (the <em> of SectionHeading).
+const script = Mrs_Saint_Delafield({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-mrs-saint',
 });
 
 const jost = Jost({
@@ -45,7 +53,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang="fr" className={`${cormorant.variable} ${jost.variable} ${script.variable}`}>
       <body>{children}</body>
     </html>
   );

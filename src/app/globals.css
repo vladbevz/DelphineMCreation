@@ -3,6 +3,7 @@
 @theme inline {
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
   --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
+  --font-script: var(--font-mrs-saint), 'Mrs Saint Delafield', cursive;
 }
 
 @theme {
@@ -33,7 +34,7 @@
   h2,
   h3,
   h4 {
-    @apply font-display font-medium text-balance;
+    @apply font-display font-normal text-balance;
     line-height: 1.1;
   }
 
@@ -62,4 +63,31 @@
 @utility label-caps {
   @apply font-sans text-xs font-medium uppercase;
   letter-spacing: var(--tracking-label);
+}
+
+/* Thin high-contrast capitals for display titles (hero, section titles). */
+@utility display-caps {
+  @apply font-display font-light uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Handwritten accent, sized up because the script has a small x-height. */
+@utility script-accent {
+  @apply font-script normal-case not-italic;
+  font-size: 1.45em;
+  letter-spacing: 0;
+  line-height: 0.6;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
 }

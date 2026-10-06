@@ -1,16 +1,16 @@
 import type { ReactNode } from 'react';
 import { cn } from './cn';
 
-type Tone = 'olive' | 'sand' | 'espresso';
+type Tone = 'outline' | 'espresso' | 'olive';
 
 const tones: Record<Tone, string> = {
-  olive: 'bg-olive text-white',
-  sand: 'bg-sand text-espresso',
-  espresso: 'bg-espresso text-linen',
+  outline: 'border border-espresso/60 bg-linen/80 text-espresso',
+  espresso: 'border border-espresso bg-espresso text-linen',
+  olive: 'border border-olive bg-olive text-white',
 };
 
 export function Badge({
-  tone = 'olive',
+  tone = 'outline',
   className,
   children,
 }: {
@@ -21,7 +21,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-3 py-1 text-[0.65rem] font-medium tracking-[0.2em] uppercase',
+        'inline-flex items-center rounded-full px-2.5 py-0.5 text-[0.6rem] font-medium tracking-[0.15em] uppercase',
         tones[tone],
         className,
       )}

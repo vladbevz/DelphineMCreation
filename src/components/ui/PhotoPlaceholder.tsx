@@ -5,10 +5,7 @@ import { cn } from './cn';
 export function PhotoPlaceholder({ label, className }: { label: string; className?: string }) {
   return (
     <div
-      className={cn(
-        'flex flex-col items-center justify-center gap-4 rounded-3xl bg-sand',
-        className,
-      )}
+      className={cn('flex flex-col items-center justify-center gap-4 bg-sand', className)}
       role="img"
       aria-label={label}
     >

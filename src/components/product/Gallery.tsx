@@ -76,14 +76,14 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto sm:mx-0 sm:rounded-2xl [&::-webkit-scrollbar]:hidden"
+        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto sm:mx-0 [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carrousel"
         aria-label={`Photos de ${title}`}
       >
         {images.map((image, i) => (
           <div
             key={image.key}
-            className="relative aspect-square w-full shrink-0 snap-center bg-sand sm:aspect-[4/5]"
+            className="relative aspect-square w-full shrink-0 snap-center bg-sand"
             role="group"
             aria-roledescription="photo"
             aria-label={`${i + 1} sur ${images.length}`}
@@ -135,9 +135,9 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
               />
               <span
                 className={cn(
-                  'relative hidden aspect-[4/5] w-12 overflow-hidden rounded-xl bg-sand transition-opacity sm:block',
+                  'relative hidden aspect-square w-14 overflow-hidden bg-sand transition-opacity sm:block',
                   active === i
-                    ? 'ring-2 ring-espresso ring-offset-2 ring-offset-linen'
+                    ? 'outline outline-1 outline-offset-2 outline-espresso'
                     : 'opacity-60 group-hover:opacity-100',
                 )}
               >

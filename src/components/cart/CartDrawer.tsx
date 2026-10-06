@@ -110,8 +110,8 @@ export function CartDrawer() {
     >
       <div className="flex h-full flex-col">
         <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
-          <h2 id="cart-title" className="text-3xl">
-            Votre <em className="text-cognac">panier</em>
+          <h2 id="cart-title" className="display-caps text-2xl">
+            Votre <em className="script-accent">panier</em>
           </h2>
           <button
             type="button"
@@ -135,7 +135,7 @@ export function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto px-5 py-6" aria-busy={isLoading}>
           {notices.length > 0 && (
-            <div role="status" className="mb-6 space-y-2 rounded-2xl bg-cream p-4 text-sm">
+            <div role="status" className="mb-6 space-y-2 bg-cream p-4 text-sm">
               {notices.map((n) => (
                 <p key={n}>{n}</p>
               ))}
@@ -169,7 +169,7 @@ export function CartDrawer() {
                   <Link
                     href={`/boutique/${item.slug}`}
                     onClick={close}
-                    className="relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl bg-sand"
+                    className="relative aspect-[4/5] w-20 shrink-0 overflow-hidden bg-sand"
                   >
                     {item.imageUrl && (
                       <Image
@@ -218,7 +218,7 @@ export function CartDrawer() {
             </div>
             <p className="mt-1 text-xs text-muted">Livraison calculée à l’étape suivante.</p>
             {error && (
-              <p role="alert" className="mt-4 rounded-xl bg-cream p-3 text-sm">
+              <p role="alert" className="mt-4 bg-cream p-3 text-sm">
                 {error}
               </p>
             )}

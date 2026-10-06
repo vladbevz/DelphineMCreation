@@ -46,10 +46,10 @@ export function CookieBanner() {
     <section
       role="dialog"
       aria-labelledby={titleId}
-      className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl rounded-3xl border border-sand-border bg-linen p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
+      className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl border border-sand-border bg-linen p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
     >
-      <h2 id={titleId} className="text-2xl">
-        Un petit mot sur les <em className="text-cognac">cookies</em>
+      <h2 id={titleId} className="display-caps text-xl">
+        Un petit mot sur les <em className="script-accent">cookies</em>
       </h2>
       <p className="mt-2 text-sm text-muted">
         Le panier fonctionne sans cookie. Avec votre accord, j’utilise aussi une mesure d’audience

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
@@ -8,11 +9,13 @@ import { TrackViewContent } from '@/components/product/TrackViewContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { AccordionItem } from '@/components/ui/Accordion';
 import { Badge } from '@/components/ui/Badge';
+import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { RichText } from '@/components/ui/RichText';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { categoryLabel } from '@/lib/catalog';
 import { formatPrice } from '@/lib/format';
+import { photos } from '@/lib/photos';
 import { getProduct, getProducts, getRelatedProducts, getSettings } from '@/lib/sanity/data';
 import { urlFor } from '@/lib/sanity/image';
 import { site } from '@/lib/site';
@@ -66,7 +69,7 @@ export default async function ProductPage({ params }: Props) {
   const images: GalleryImage[] = product.images.map((image) => ({
     key: image._key,
     alt: image.alt,
-    src: image.asset ? urlFor(image).width(1200).height(1500).url() : null,
+    src: image.asset ? urlFor(image).width(1200).height(1200).url() : null,
     zoomSrc: image.asset ? urlFor(image).width(2400).fit('max').url() : null,
     lqip: image.lqip,
   }));
@@ -108,8 +111,11 @@ export default async function ProductPage({ params }: Props) {
         }}
       />
 
-      <Container size="medium" className="pt-4 sm:pt-6">
-        <nav aria-label="Fil d’Ariane" className="mb-4 hidden text-sm text-muted sm:block">
+      <Container size="medium" className="pt-6 sm:pt-12">
+        <nav
+          aria-label="Fil d’Ariane"
+          className="mb-3 text-[0.65rem] tracking-[0.12em] text-muted uppercase"
+        >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/boutique" className="hover:text-cognac">
@@ -136,9 +142,9 @@ export default async function ProductPage({ params }: Props) {
           </ol>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-10">
+        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-14">
           {/* Sized from the viewport height so photo + thumbnails fit on a laptop screen. */}
-          <div className="lg:w-[clamp(20rem,calc((100svh-15rem)*0.8),32rem)]">
+          <div className="lg:w-[clamp(20rem,calc(100svh-16rem),30rem)]">
             <Gallery images={images} title={product.title} />
           </div>
 
@@ -150,11 +156,13 @@ export default async function ProductPage({ params }: Props) {
                 product.stock <= 1 && <Badge>Pièce unique</Badge>
               )}
             </div>
-            <h1 className="mt-3 text-3xl sm:text-4xl">{product.title}</h1>
-            <p className="mt-2 text-xl text-cognac">{formatPrice(product.price)}</p>
+            <h1 className="mt-4 font-display text-3xl leading-tight font-light sm:text-[2.6rem]">
+              {product.title}
+            </h1>
+            <p className="mt-2 text-base">{formatPrice(product.price)}</p>
 
             {details.length > 0 && (
-              <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
+              <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
                 {details.map((d) => (
                   <div key={d.label} className="contents">
                     <dt className="self-center label-caps text-muted">{d.label}</dt>
@@ -174,14 +182,17 @@ export default async function ProductPage({ params }: Props) {
               />
             </div>
 
-            <RichText value={product.description} className="mt-8" />
+            <RichText value={product.description} className="mt-8 text-sm" />
 
-            <div className="mt-8 border-t border-sand-border">
+            <div className="mt-8 border-t border-espresso/30">
               {product.care && product.care.length > 0 && (
                 <AccordionItem title="Entretien">
                   <RichText value={product.care} />
                   <p className="mt-4">
-                    <Link href="/entretien" className="text-cognac underline underline-offset-4">
+                    <Link
+                      href="/entretien"
+                      className="underline underline-offset-4 hover:text-cognac"
+                    >
                       Tous nos conseils d’entretien du cuir
                     </Link>
                   </p>
@@ -195,17 +206,67 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </Container>
 
-      {related.length > 0 && (
-        <section className="mt-14 bg-cream py-12">
-          <Container size="medium">
+      {/* Brand story: photo / text blocks, alternating. */}
+      <section className="mt-16 lg:mt-24">
+        <Container size="medium" className="grid md:grid-cols-2">
+          <div className="relative aspect-square bg-sand">
+            <Image
+              src={photos.atelierMains.src}
+              alt={photos.atelierMains.alt}
+              fill
+              sizes="(min-width: 768px) 460px, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="flex flex-col justify-center py-8 md:px-10 lg:px-14">
             <SectionHeading
-              label="À découvrir"
+              title={
+                <>
+                  <em>Une création</em> faite main
+                </>
+              }
+              intro={<p>[TEXTE À FOURNIR]</p>}
+            />
+            <ButtonLink href="/atelier" variant="ghost" className="mt-6 self-start">
+              Découvrir l’atelier
+            </ButtonLink>
+          </div>
+          <div className="order-last flex flex-col justify-center py-8 md:order-none md:px-10 lg:px-14">
+            <SectionHeading
+              title={
+                <>
+                  <em>Votre bijou</em> sur-mesure
+                </>
+              }
+              intro={<p>[TEXTE À FOURNIR]</p>}
+            />
+            <ButtonLink href="/sur-mesure" variant="ghost" className="mt-6 self-start">
+              Faire une demande
+            </ButtonLink>
+          </div>
+          <div className="relative aspect-square bg-sand">
+            <Image
+              src={photos.presentoir.src}
+              alt={photos.presentoir.alt}
+              fill
+              sizes="(min-width: 768px) 460px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </Container>
+      </section>
+
+      {related.length > 0 && (
+        <section className="mt-16 lg:mt-24">
+          <Container>
+            <SectionHeading
+              align="center"
               title={
                 <>
                   Vous aimerez <em>aussi</em>
                 </>
               }
-              className="mb-8"
+              className="mb-10"
             />
             <ProductGrid products={related} />
           </Container>
@@ -228,7 +289,7 @@ function DeliveryInfo({ settings }: { settings: Awaited<ReturnType<typeof getSet
       {settings?.pickupEnabled && <p>Retrait possible dans la Vaunage (gratuit).</p>}
       <p>[TEXTE À FOURNIR : délais d’expédition et conditions de retour]</p>
       <p>
-        <Link href="/livraison-retours" className="text-cognac underline underline-offset-4">
+        <Link href="/livraison-retours" className="underline underline-offset-4 hover:text-cognac">
           Livraison et retours en détail
         </Link>
       </p>

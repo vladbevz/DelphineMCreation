@@ -38,7 +38,7 @@ export default function SurMesurePage() {
           <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
               <li key={step.title}>
-                <p className="font-display text-3xl text-cognac italic">{i + 1}</p>
+                <p className="font-script text-4xl leading-none text-cognac">{i + 1}</p>
                 <h3 className="mt-1 text-xl">{step.title}</h3>
                 <p className="mt-1 text-sm text-muted">{step.text}</p>
               </li>

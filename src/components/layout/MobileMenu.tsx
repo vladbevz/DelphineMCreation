@@ -26,7 +26,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-expanded={open}
@@ -52,7 +52,7 @@ export function MobileMenu() {
         id={panelId}
         aria-label="Menu principal"
         hidden={!open}
-        className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4rem)] overflow-y-auto border-t border-sand-border bg-linen px-5 pt-6 pb-12"
+        className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-sand-border bg-linen px-5 pt-6 pb-12"
       >
         <ul>
           {mainNav.map((item) => (
@@ -60,7 +60,7 @@ export function MobileMenu() {
               <Link
                 href={item.href}
                 aria-current={pathname === item.href ? 'page' : undefined}
-                className="block border-b border-sand-border py-4 font-display text-3xl aria-[current=page]:text-cognac"
+                className="block border-b border-sand-border py-4 display-caps text-2xl aria-[current=page]:text-cognac"
               >
                 {item.label}
               </Link>

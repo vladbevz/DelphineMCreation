@@ -38,7 +38,7 @@ export default function AtelierPage() {
           }
           intro={<p>[TEXTE À FOURNIR]</p>}
         />
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-sand">
+        <div className="relative aspect-[4/3] overflow-hidden bg-sand">
           <Image
             src={photos.finitions.src}
             alt={photos.finitions.alt}

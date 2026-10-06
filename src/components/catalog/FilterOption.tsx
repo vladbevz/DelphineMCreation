@@ -23,9 +23,9 @@ export function FilterOption({
       <span
         aria-hidden
         className={cn(
-          'flex size-4 shrink-0 items-center justify-center rounded-[4px] border transition-colors',
+          'flex size-4 shrink-0 items-center justify-center border transition-colors',
           active
-            ? 'border-cognac bg-cognac text-white'
+            ? 'border-espresso bg-espresso text-linen'
             : 'border-sand-border bg-white group-hover:border-espresso',
         )}
       >

@@ -3,7 +3,10 @@ import { cn } from './cn';
 
 type SectionHeadingProps = {
   label?: string;
-  /** Use <em> inside the title for italic accent words. */
+  /**
+   * Rendered in thin capitals. An <em> inside becomes the handwritten accent word,
+   * e.g. <>Les dernières <em>créations</em></>.
+   */
   title: ReactNode;
   intro?: ReactNode;
   as?: 'h1' | 'h2' | 'h3';
@@ -24,13 +27,13 @@ export function SectionHeading({
       {label && <p className="mb-3 label-caps text-muted">{label}</p>}
       <Tag
         className={cn(
-          '[&_em]:text-cognac [&_em]:italic',
-          Tag === 'h1' ? 'text-4xl sm:text-5xl' : 'text-3xl sm:text-4xl',
+          'display-caps leading-[1.15] [&_em]:px-1 [&_em]:script-accent',
+          Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2rem]',
         )}
       >
         {title}
       </Tag>
-      {intro && <div className="mt-4 text-base leading-relaxed text-muted">{intro}</div>}
+      {intro && <div className="mt-4 text-sm leading-relaxed text-muted sm:text-base">{intro}</div>}
     </div>
   );
 }

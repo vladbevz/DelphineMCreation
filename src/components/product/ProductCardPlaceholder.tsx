@@ -6,14 +6,12 @@ import { Badge } from '@/components/ui/Badge';
 export function ProductCardPlaceholder() {
   return (
     <Link href="/boutique" className="group block">
-      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl bg-sand">
-        <EarringMotif className="h-1/2 w-auto text-cognac/60 transition-transform duration-700 group-hover:scale-105" />
+      <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-sand">
+        <EarringMotif className="h-2/5 w-auto text-cognac/50" />
         <Badge className="absolute top-3 left-3">Pièce unique</Badge>
       </div>
-      <p className="mt-3 font-display text-lg leading-tight group-hover:text-cognac">
-        [NOM DU BIJOU]
-      </p>
-      <p className="mt-1 text-sm text-cognac">[PRIX]</p>
+      <p className="mt-3 font-display text-lg leading-snug sm:text-xl">[NOM DU BIJOU]</p>
+      <p className="mt-0.5 text-[0.8rem] text-espresso/80">[PRIX]</p>
     </Link>
   );
 }

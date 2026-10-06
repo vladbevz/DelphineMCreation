@@ -159,11 +159,7 @@ function Form({ onReset }: { onReset: () => void }) {
               <ul className="mb-3 flex gap-3">
                 {photos.map((p, i) => (
                   <li key={p.url} className="relative">
-                    <img
-                      src={p.url}
-                      alt={`Photo ${i + 1}`}
-                      className="size-20 rounded-xl object-cover"
-                    />
+                    <img src={p.url} alt={`Photo ${i + 1}`} className="size-20 object-cover" />
                     <button
                       type="button"
                       onClick={() => removePhoto(i)}

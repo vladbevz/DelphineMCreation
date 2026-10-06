@@ -10,27 +10,26 @@ export function CartButton() {
       type="button"
       onClick={open}
       aria-haspopup="dialog"
-      className="relative inline-flex size-11 items-center justify-center rounded-full transition-colors hover:bg-cream"
+      className="inline-flex min-h-11 items-center gap-2 px-1 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors hover:text-cognac"
     >
       <svg
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.4"
+        strokeWidth="1.3"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="size-6"
+        className="size-5 sm:hidden"
         aria-hidden
       >
         <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />
         <path d="M9 10V6.5a3 3 0 0 1 6 0V10" />
       </svg>
-      {/* Accessible name reads "Panier, N article(s)" and contains the visible count. */}
-      <span className="sr-only">Panier, </span>
-      <span className="absolute top-1 right-0.5 flex min-w-5 items-center justify-center rounded-full bg-cognac px-1 text-[0.65rem] leading-5 font-medium text-white">
-        {count}
+      {/* Visible "Panier (N)"; the accessible name reads "Panier (N) articles". */}
+      <span>
+        <span className="hidden sm:inline">Panier </span>({count})
+        <span className="sr-only"> article{count > 1 ? 's' : ''}</span>
       </span>
-      <span className="sr-only"> article{count > 1 ? 's' : ''}</span>
     </button>
   );
 }

@@ -20,7 +20,7 @@ export function SortSelect({
           const option = options.find((o) => o.value === e.currentTarget.value);
           if (option) router.push(option.href, { scroll: false });
         }}
-        className="rounded-lg border border-sand-border bg-white py-2 pr-8 pl-3 text-sm text-espresso focus:border-espresso focus:outline-none"
+        className="border border-sand-border bg-white py-2 pr-8 pl-3 text-sm text-espresso focus:border-espresso focus:outline-none"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

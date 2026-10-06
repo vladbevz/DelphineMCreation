@@ -6,6 +6,7 @@ import { ProductGrid } from '@/components/catalog/ProductGrid';
 import { SortSelect } from '@/components/catalog/SortSelect';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import {
   applyFilters,
   availableColors,
@@ -113,12 +114,16 @@ export default async function BoutiquePage({ searchParams }: Props) {
     <Container className="pt-8 pb-4 sm:pt-10">
       {cancelled && <CheckoutCancelled />}
 
-      <div className="mb-6 lg:mb-8">
-        <p className="mb-2 label-caps text-muted">La boutique</p>
-        <h1 className="text-3xl sm:text-4xl">
-          Toutes les <em className="text-cognac italic">créations</em>
-        </h1>
-      </div>
+      <SectionHeading
+        as="h1"
+        align="center"
+        title={
+          <>
+            Toutes les <em>créations</em>
+          </>
+        }
+        className="mb-8 lg:mb-12"
+      />
 
       <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-10">
         {/* Desktop: sidebar. Mobile: collapsible panel. Both work without JavaScript. */}
@@ -129,7 +134,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
         </aside>
 
         <div>
-          <details className="group mb-4 rounded-2xl border border-sand-border bg-white/50 lg:hidden">
+          <details className="group mb-4 border border-sand-border bg-white/50 lg:hidden">
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
               <span>
                 Filtrer
@@ -174,7 +179,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
           {products.length > 0 ? (
             <ProductGrid products={products} variant="sidebar" />
           ) : (
-            <div className="rounded-3xl bg-cream px-6 py-14 text-center">
+            <div className="bg-cream px-6 py-14 text-center">
               <p className="font-display text-2xl">Aucune création ne correspond</p>
               <p className="mt-2 text-sm text-muted">Essayez une autre catégorie ou couleur.</p>
               <ButtonLink href="/boutique" variant="secondary" className="mt-6">

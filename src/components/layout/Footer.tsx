@@ -1,33 +1,32 @@
 import Link from 'next/link';
-import { EarringMotif } from '@/components/brand/EarringMotif';
 import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { Container } from '@/components/ui/Container';
 import { getSettings } from '@/lib/sanity/data';
 import { legalNav, mainNav, site } from '@/lib/site';
+
+const linkClass =
+  'text-[0.7rem] font-medium tracking-[0.12em] uppercase underline-offset-4 hover:underline';
 
 export async function Footer() {
   const settings = await getSettings();
   const instagram = settings?.instagram;
 
   return (
-    <footer className="mt-14 bg-espresso text-linen">
-      <Container className="grid grid-cols-2 gap-8 py-10 lg:grid-cols-4 lg:py-12">
-        <div className="col-span-2">
-          <EarringMotif className="mb-4 h-10 w-auto text-sand" />
-          <p className="font-display text-2xl">
-            Bijoux en <em className="text-sand">cuir</em>, faits main
-          </p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-sand">
-            Pièces uniques créées dans la Vaunage, Gard.
+    <footer className="mt-16 bg-olive text-white">
+      <Container className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-16">
+        <div className="col-span-2 lg:col-span-1">
+          <p className="font-script text-[2.6rem] leading-none">Delphine M. Créations</p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/85">
+            Bijoux en cuir faits main, pièces uniques créées dans la Vaunage, Gard.
           </p>
         </div>
 
         <nav aria-label="Pied de page">
-          <p className="mb-3 label-caps text-sand">Explorer</p>
-          <ul className="space-y-2 text-sm">
+          <p className="mb-4 display-caps text-lg">Découvrez</p>
+          <ul className="space-y-2.5">
             {mainNav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hover:text-sand hover:underline">
+                <Link href={item.href} className={linkClass}>
                   {item.label}
                 </Link>
               </li>
@@ -36,44 +35,59 @@ export async function Footer() {
         </nav>
 
         <div>
-          <p className="mb-3 label-caps text-sand">Informations</p>
-          <ul className="space-y-2 text-sm">
+          <p className="mb-4 display-caps text-lg">Informations</p>
+          <ul className="space-y-2.5">
             {legalNav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hover:text-sand hover:underline">
+                <Link href={item.href} className={linkClass}>
                   {item.label}
                 </Link>
               </li>
             ))}
             <li>
-              <CookieSettingsButton className="text-left hover:text-sand hover:underline" />
+              <CookieSettingsButton className={`${linkClass} text-left`} />
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p className="mb-4 display-caps text-lg">Contact</p>
+          <ul className="space-y-2.5">
+            <li>
+              {settings?.email ? (
+                <a href={`mailto:${settings.email}`} className={linkClass}>
+                  {settings.email}
+                </a>
+              ) : (
+                <span className={linkClass}>[E-MAIL À FOURNIR]</span>
+              )}
             </li>
             <li>
               {instagram ? (
-                <a
-                  href={instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-sand hover:underline"
-                >
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className={linkClass}>
                   Instagram
                 </a>
               ) : (
-                <span>Instagram [LIEN À FOURNIR]</span>
+                <span className={linkClass}>Instagram [LIEN À FOURNIR]</span>
               )}
+            </li>
+            <li>
+              <Link href="/contact" className={linkClass}>
+                Écrire un message
+              </Link>
             </li>
           </ul>
         </div>
       </Container>
 
-      <Container className="flex flex-col gap-2 border-t border-white/15 py-5 text-xs text-sand sm:flex-row sm:justify-between">
-        <p>
-          © {new Date().getFullYear()} {site.name}
-        </p>
-        <p>
-          Site réalisé par <span className="text-linen">AtelierCode</span>
-        </p>
-      </Container>
+      <div className="border-t border-white/20">
+        <Container className="flex flex-col gap-1 py-5 text-center text-[0.7rem] text-white/85 sm:flex-row sm:justify-between sm:text-left">
+          <p>
+            © {new Date().getFullYear()} {site.name}, tous droits réservés
+          </p>
+          <p>Site réalisé par AtelierCode</p>
+        </Container>
+      </div>
     </footer>
   );
 }

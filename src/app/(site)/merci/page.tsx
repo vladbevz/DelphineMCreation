@@ -81,7 +81,7 @@ export default async function MerciPage({ searchParams }: Props) {
         }
       />
 
-      <div className="mt-8 rounded-3xl bg-cream p-6 sm:p-8">
+      <div className="mt-8 bg-cream p-6 sm:p-8">
         <ul className="divide-y divide-sand-border">
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">
