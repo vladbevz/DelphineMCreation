@@ -111,7 +111,7 @@ export function CartDrawer() {
       <div className="flex h-full flex-col">
         <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
           <h2 id="cart-title" className="display-caps text-2xl">
-            Votre <em className="script-accent">panier</em>
+            Votre <em className="italic-accent">panier</em>
           </h2>
           <button
             type="button"
@@ -169,7 +169,7 @@ export function CartDrawer() {
                   <Link
                     href={`/boutique/${item.slug}`}
                     onClick={close}
-                    className="relative aspect-[4/5] w-20 shrink-0 overflow-hidden bg-sand"
+                    className="relative aspect-square w-20 shrink-0 overflow-hidden bg-sand"
                   >
                     {item.imageUrl && (
                       <Image

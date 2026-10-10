@@ -42,7 +42,7 @@ export async function getCartItems(ids: unknown, pendingSessionId?: unknown): Pr
       slug: p.slug,
       price: p.price,
       availability: p.status === 'sold' ? 'sold' : reserved ? 'reserved' : 'available',
-      imageUrl: p.image?.asset ? urlFor(p.image).width(160).height(200).url() : null,
+      imageUrl: p.image?.asset ? urlFor(p.image).width(160).height(160).url() : null,
       imageAlt: p.image?.alt ?? p.title,
     };
   });

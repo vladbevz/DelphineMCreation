@@ -12,7 +12,7 @@ export async function AnnouncementBar() {
   if (!text) return null;
 
   return (
-    <div className="bg-olive px-5 py-2.5 text-center text-xs tracking-wide text-white sm:text-sm">
+    <div className="bg-espresso px-5 py-2.5 text-center text-[0.7rem] font-medium tracking-[0.15em] text-linen uppercase">
       {text}
     </div>
   );

@@ -3,7 +3,6 @@
 @theme inline {
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
   --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
-  --font-script: var(--font-mrs-saint), 'Mrs Saint Delafield', cursive;
 }
 
 @theme {
@@ -71,12 +70,11 @@
   letter-spacing: 0.06em;
 }
 
-/* Handwritten accent, sized up because the script has a small x-height. */
-@utility script-accent {
-  @apply font-script normal-case not-italic;
-  font-size: 1.45em;
-  letter-spacing: 0;
-  line-height: 0.6;
+/* Accent word inside display capitals: light Cormorant italic, normal case. */
+@utility italic-accent {
+  @apply font-display font-light normal-case italic;
+  letter-spacing: 0.01em;
+  font-size: 1.08em;
 }
 
 @keyframes marquee {

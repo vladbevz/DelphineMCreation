@@ -132,7 +132,7 @@ export function SelectField({
 /** Off-screen field that only bots fill in. */
 export function Honeypot() {
   return (
-    <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+    <div aria-hidden className="absolute h-0 w-0 overflow-hidden opacity-0">
       <label>
         Ne pas remplir
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />

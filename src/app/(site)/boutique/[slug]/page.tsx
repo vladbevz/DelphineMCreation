@@ -209,7 +209,7 @@ export default async function ProductPage({ params }: Props) {
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
         <Container size="medium" className="grid md:grid-cols-2">
-          <div className="relative aspect-square bg-sand">
+          <div className="relative aspect-[4/3] bg-sand md:aspect-square">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -244,7 +244,7 @@ export default async function ProductPage({ params }: Props) {
               Faire une demande
             </ButtonLink>
           </div>
-          <div className="relative aspect-square bg-sand">
+          <div className="relative aspect-[4/3] bg-sand md:aspect-square">
             <Image
               src={photos.presentoir.src}
               alt={photos.presentoir.alt}

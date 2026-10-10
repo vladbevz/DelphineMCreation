@@ -67,7 +67,7 @@ export default async function HomePage() {
       />
 
       {/* Hero: full-bleed photo, centred thin capitals. */}
-      <section className="relative flex h-[calc(100svh-4.5rem)] max-h-[52rem] min-h-[30rem] items-center justify-center overflow-hidden bg-espresso">
+      <section className="relative flex h-[min(80svh,40rem)] min-h-[28rem] items-center justify-center overflow-hidden bg-espresso sm:h-[calc(100svh-4.5rem)] sm:max-h-[52rem]">
         <Image
           src={photos.bouclesLiege.src}
           alt={photos.bouclesLiege.alt}
@@ -78,7 +78,9 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-espresso/35" aria-hidden />
         <div className="relative px-5 text-center text-linen">
-          <p className="label-caps text-linen/90">Bijoux faits main · Vaunage, Gard</p>
+          <p className="text-[0.6rem] font-medium tracking-[0.2em] text-linen/90 uppercase sm:label-caps">
+            Bijoux faits main · Vaunage, Gard
+          </p>
           <h1 className="mx-auto mt-5 max-w-4xl display-caps text-4xl leading-[1.1] sm:text-6xl">
             Des bijoux en cuir, façonnés de mes mains
           </h1>
@@ -215,7 +217,7 @@ export default async function HomePage() {
           <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
             Chaque bijou
             <br />
-            est <span className="font-script text-[1.35em] leading-none">unique</span>
+            est <em className="italic">unique</em>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure
@@ -226,8 +228,8 @@ export default async function HomePage() {
       {/* Instagram: large outlined word, photos overlapping its lower half. */}
       <section className="overflow-hidden pt-14 lg:pt-20">
         <Container>
-          <div className="flex items-end justify-between gap-4">
-            <h2 className="font-display text-[3.6rem] leading-none font-light text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[7rem] lg:text-[9rem]">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <h2 className="font-display text-[3.2rem] leading-none font-light text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[7rem] lg:text-[9rem]">
               Instagram
             </h2>
             {settings?.instagram ? (
@@ -236,16 +238,18 @@ export default async function HomePage() {
                 variant="ghost"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mb-3 shrink-0"
+                className="order-first self-start sm:order-none sm:mb-3 sm:self-auto"
               >
                 Suivre l’atelier
               </ButtonLink>
             ) : (
-              <p className="mb-3 shrink-0 text-xs text-muted">[LIEN À FOURNIR]</p>
+              <p className="order-first text-xs text-muted sm:order-none sm:mb-3">
+                [LIEN À FOURNIR]
+              </p>
             )}
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
-          <ul className="relative -mt-5 grid grid-cols-4 gap-2 sm:-mt-12 sm:gap-4 lg:-mt-16">
+          <ul className="relative -mt-3 grid grid-cols-4 gap-2 sm:-mt-12 sm:gap-4 lg:-mt-16">
             {instagramPhotos.map((p) => (
               <li key={p.src} className="relative aspect-square overflow-hidden bg-cream">
                 <Image src={p.src} alt={p.alt} fill sizes="25vw" className="object-cover" />

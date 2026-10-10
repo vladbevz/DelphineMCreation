@@ -35,10 +35,12 @@ export default function SurMesurePage() {
       <section className="bg-cream py-12">
         <Container size="medium">
           <SectionHeading label="Comment ça marche" title="En quatre étapes" className="mb-8" />
-          <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4">
             {steps.map((step, i) => (
               <li key={step.title}>
-                <p className="font-script text-4xl leading-none text-cognac">{i + 1}</p>
+                <p className="font-display text-4xl leading-none font-light text-cognac italic">
+                  {i + 1}
+                </p>
                 <h3 className="mt-1 text-xl">{step.title}</h3>
                 <p className="mt-1 text-sm text-muted">{step.text}</p>
               </li>

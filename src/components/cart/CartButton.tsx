@@ -10,7 +10,7 @@ export function CartButton() {
       type="button"
       onClick={open}
       aria-haspopup="dialog"
-      className="inline-flex min-h-11 items-center gap-2 px-1 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors hover:text-cognac"
+      className="inline-flex min-h-11 items-center gap-2 px-1 text-[0.7rem] font-medium tracking-[0.15em] whitespace-nowrap uppercase transition-colors hover:text-cognac"
     >
       <svg
         viewBox="0 0 24 24"
@@ -19,7 +19,7 @@ export function CartButton() {
         strokeWidth="1.3"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="size-5 sm:hidden"
+        className="size-5"
         aria-hidden
       >
         <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" />

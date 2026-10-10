@@ -12,11 +12,13 @@ export async function Footer() {
   const instagram = settings?.instagram;
 
   return (
-    <footer className="mt-16 bg-olive text-white">
+    <footer className="mt-16 bg-espresso text-linen">
       <Container className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-16">
         <div className="col-span-2 lg:col-span-1">
-          <p className="font-script text-[2.6rem] leading-none">Delphine M. Créations</p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/85">
+          <p className="font-display text-3xl leading-none font-light">
+            <em>Delphine M.</em> Créations
+          </p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/75">
             Bijoux en cuir faits main, pièces uniques créées dans la Vaunage, Gard.
           </p>
         </div>
@@ -80,8 +82,8 @@ export async function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-white/20">
-        <Container className="flex flex-col gap-1 py-5 text-center text-[0.7rem] text-white/85 sm:flex-row sm:justify-between sm:text-left">
+      <div className="border-t border-linen/15">
+        <Container className="flex flex-col gap-1 py-5 text-center text-[0.7rem] text-linen/75 sm:flex-row sm:justify-between sm:text-left">
           <p>
             © {new Date().getFullYear()} {site.name}, tous droits réservés
           </p>
