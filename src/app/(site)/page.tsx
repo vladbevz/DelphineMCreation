@@ -225,11 +225,11 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Instagram: large outlined word, photos overlapping its lower half. */}
+      {/* Instagram: large outlined word above a row of photos. */}
       <section className="overflow-hidden pt-14 lg:pt-20">
         <Container>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-            <h2 className="font-display text-[3.2rem] leading-none font-light text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[7rem] lg:text-[9rem]">
+            <h2 className="font-display text-[3.2rem] leading-[0.9] font-light text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[5rem] lg:text-[6.5rem]">
               Instagram
             </h2>
             {settings?.instagram ? (
@@ -238,7 +238,7 @@ export default async function HomePage() {
                 variant="ghost"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="order-first self-start sm:order-none sm:mb-3 sm:self-auto"
+                className="order-first self-start sm:order-none sm:mb-2 sm:self-auto"
               >
                 Suivre l’atelier
               </ButtonLink>
@@ -249,7 +249,7 @@ export default async function HomePage() {
             )}
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
-          <ul className="relative -mt-3 grid grid-cols-4 gap-2 sm:-mt-12 sm:gap-4 lg:-mt-16">
+          <ul className="mt-4 grid grid-cols-4 gap-2 sm:mt-6 sm:gap-4">
             {instagramPhotos.map((p) => (
               <li key={p.src} className="relative aspect-square overflow-hidden bg-cream">
                 <Image src={p.src} alt={p.alt} fill sizes="25vw" className="object-cover" />
