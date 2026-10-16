@@ -19,7 +19,7 @@ export async function Footer() {
             <em>Delphine M.</em> Créations
           </p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/75">
-            Bijoux en cuir faits main, pièces uniques créées dans la Vaunage, Gard.
+            Bijoux en cuir colorés et ultra légers, faits main à Clarensac, dans la Vaunage.
           </p>
         </div>
 

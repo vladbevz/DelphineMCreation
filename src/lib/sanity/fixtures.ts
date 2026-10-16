@@ -21,6 +21,46 @@ export function placeholderBlocks(text = '[TEXTE À FOURNIR]'): BlockContent {
   ];
 }
 
+/** Paragraph with an optional bold lead-in (« L’eau. » …). */
+function paragraph(key: string, text: string, lead?: string): BlockContent[number] {
+  return {
+    _key: key,
+    _type: 'block',
+    style: 'normal',
+    markDefs: [],
+    children: [
+      ...(lead
+        ? [{ _key: `${key}b`, _type: 'span' as const, text: `${lead} `, marks: ['strong'] }]
+        : []),
+      { _key: `${key}t`, _type: 'span' as const, text, marks: [] },
+    ],
+  };
+}
+
+// Draft from the copy doc (to be validated by Delphine). Also written to Sanity by pnpm seed.
+export const entretienBlocks: BlockContent = [
+  paragraph(
+    'e1',
+    'Le cuir est une matière vivante : avec quelques gestes simples, vos bijoux vous accompagneront longtemps.',
+  ),
+  paragraph(
+    'e2',
+    'Évitez de mouiller vos bijoux. Retirez vos bagues et bracelets pour vous laver les mains, et vos boucles avant la douche ou la baignade.',
+    'L’eau.',
+  ),
+  paragraph(
+    'e3',
+    'Mettez vos bijoux en dernier, une fois le parfum et la crème bien séchés.',
+    'Parfum et crèmes.',
+  ),
+  paragraph(
+    'e4',
+    'À plat, à l’abri de la lumière directe, dans leur pochette, pour éviter que les couleurs ne passent.',
+    'Le rangement.',
+  ),
+  paragraph('e5', 'Un élément se décolle ou se perd : écrivez-moi, je répare.', 'Un souci ?'),
+];
+
 export const fixtureCollections: COLLECTIONS_QUERY_RESULT = ['A', 'B'].map((letter) => ({
   _id: `seed-collection-${letter.toLowerCase()}`,
   _updatedAt: '2026-10-01T00:00:00Z',

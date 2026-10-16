@@ -23,7 +23,12 @@ export default async function ContactPage() {
             Écrivez-<em>moi</em>
           </>
         }
-        intro={<p>[TEXTE À FOURNIR]</p>}
+        intro={
+          <p>
+            Une question sur un bijou, une commande ou un sur-mesure ? Écrivez-moi, je vous réponds
+            avec plaisir. Vous pouvez aussi me retrouver sur les marchés du Gard et de l’Hérault.
+          </p>
+        }
       />
       <Container size="medium" className="grid gap-10 lg:grid-cols-[1fr_2fr]">
         <dl className="space-y-6">

@@ -4,6 +4,7 @@ import { isSanityConfigured } from '@/sanity/env';
 import type { PRODUCTS_QUERY_RESULT } from '@/sanity/types';
 import { client, sanityFetch } from './client';
 import {
+  entretienBlocks,
   fixtureCollections,
   fixtureProducts,
   fixtureSettings,
@@ -112,7 +113,10 @@ export const getCollection = cache(async (slug: string) => {
 });
 
 export const getPage = cache(async (slug: string) => {
-  if (offline) return { _id: `page-${slug}`, title: '', body: placeholderBlocks(), seo: null };
+  if (offline) {
+    const body = slug === 'entretien' ? entretienBlocks : placeholderBlocks();
+    return { _id: `page-${slug}`, title: '', body, seo: null };
+  }
   return sanityFetch(PAGE_QUERY, { params: { slug }, tags: ['page'] });
 });
 

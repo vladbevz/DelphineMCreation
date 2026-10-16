@@ -1,8 +1,9 @@
 // Static brand identity. Editable contacts and links live in the Sanity `settings` singleton.
 export const site = {
   name: 'Delphine M. Créations',
-  description: 'Bijoux en cuir faits main dans la Vaunage (Gard). Pièces uniques.',
-  locality: 'Vaunage',
+  description:
+    'Delphine M — bijoux en cuir faits main dans le Gard : boucles d’oreilles, bracelets, colliers. Colorés, ultra légers, en cuir upcyclé.',
+  locality: 'Clarensac',
   region: 'Gard',
 };
 

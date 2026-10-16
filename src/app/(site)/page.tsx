@@ -25,10 +25,16 @@ const instagramPhotos = [
 ];
 
 const promises = [
-  { title: 'Pièce unique', text: '[TEXTE À FOURNIR]' },
-  { title: 'Cuir sélectionné', text: '[TEXTE À FOURNIR]' },
-  { title: 'Fait main', text: '[TEXTE À FOURNIR]' },
+  { title: 'Fait main', text: 'Découpé et assemblé à la main, de la peau au bijou.' },
+  {
+    title: 'Ultra léger',
+    text: 'Jusqu’à dix fois plus léger qu’un bijou classique : on oublie qu’on le porte.',
+  },
+  { title: 'Cuir upcyclé', text: 'Des chutes de cuir qui retrouvent une seconde vie.' },
 ];
+
+// Delphine's own word play: « M » sounds like « aime ».
+const marqueeWords = ['la couleur', 'ce qui brille', 'le cuir'];
 
 export default async function HomePage() {
   const [products, all, settings] = await Promise.all([
@@ -79,7 +85,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-espresso/35" aria-hidden />
         <div className="relative px-5 text-center text-linen">
           <p className="text-[0.6rem] font-medium tracking-[0.2em] text-linen/90 uppercase sm:label-caps">
-            Bijoux faits main · Vaunage, Gard
+            Bijoux en cuir faits main · Clarensac, Gard
           </p>
           <h1 className="mx-auto mt-5 max-w-4xl display-caps text-4xl leading-[1.1] sm:text-6xl">
             Des bijoux en cuir, façonnés de mes mains
@@ -94,6 +100,13 @@ export default async function HomePage() {
       <section className="pt-10 pb-14 lg:pb-20">
         <Marquee className="display-caps text-3xl sm:text-5xl">
           Nouvelle <span className="font-medium">collection</span>
+          {marqueeWords.map((w) => (
+            <span key={w}>
+              <span className="px-4">·</span>
+              <em className="italic-accent">Delphine M</em> {w}
+            </span>
+          ))}
+          <span className="pl-4">·</span>
         </Marquee>
         <Container className="mt-8 lg:mt-10">
           <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
@@ -179,7 +192,13 @@ export default async function HomePage() {
                   <em>Fait main</em> dans la Vaunage
                 </>
               }
-              intro={<p>[TEXTE À FOURNIR]</p>}
+              intro={
+                <p>
+                  Dans mon atelier de Clarensac, je découpe, assemble et finis chaque bijou à la
+                  main, avec un bistouri, des ciseaux et un marteau. Pas de machine, pas
+                  d’électricité : juste du temps, de la patience et l’amour du travail bien fait.
+                </p>
+              }
             />
             <ButtonLink href="/atelier" variant="secondary" className="mt-8">
               Découvrir l’atelier
@@ -215,9 +234,9 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-espresso/40" aria-hidden />
         <Container className="relative pb-12 text-linen sm:pb-16">
           <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
-            Chaque bijou
+            Jamais deux fois
             <br />
-            est <em className="italic">unique</em>
+            <em className="italic">pareil</em>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure

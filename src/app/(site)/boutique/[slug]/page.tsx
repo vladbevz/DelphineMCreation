@@ -160,6 +160,12 @@ export default async function ProductPage({ params }: Props) {
               {product.title}
             </h1>
             <p className="mt-2 text-base">{formatPrice(product.price)}</p>
+            {/* The two strongest selling points for earrings, right next to the button. */}
+            {product.category === 'boucles-d-oreilles' && (
+              <p className="mt-2 text-[0.7rem] font-medium tracking-[0.12em] text-cognac uppercase">
+                Ultra léger · Apprêts en acier inoxydable hypoallergénique
+              </p>
+            )}
 
             {details.length > 0 && (
               <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
@@ -225,7 +231,13 @@ export default async function ProductPage({ params }: Props) {
                   <em>Une création</em> faite main
                 </>
               }
-              intro={<p>[TEXTE À FOURNIR]</p>}
+              intro={
+                <p>
+                  Ce bijou a été découpé et assemblé à la main dans mon atelier de Clarensac, dans
+                  une chute de cuir qui méritait une seconde vie. Je crée rarement deux fois le même
+                  modèle dans les mêmes couleurs.
+                </p>
+              }
             />
             <ButtonLink href="/atelier" variant="ghost" className="mt-6 self-start">
               Découvrir l’atelier
@@ -238,7 +250,12 @@ export default async function ProductPage({ params }: Props) {
                   <em>Votre bijou</em> sur-mesure
                 </>
               }
-              intro={<p>[TEXTE À FOURNIR]</p>}
+              intro={
+                <p>
+                  Vous l’aimez dans une autre couleur, sur clips ou avec le collier assorti ?
+                  Écrivez-moi, je peux l’adapter pour vous.
+                </p>
+              }
             />
             <ButtonLink href="/sur-mesure" variant="ghost" className="mt-6 self-start">
               Faire une demande
@@ -287,7 +304,11 @@ function DeliveryInfo({ settings }: { settings: Awaited<ReturnType<typeof getSet
         {typeof threshold === 'number' && `, offert dès ${formatPrice(threshold)} d’achat`}.
       </p>
       {settings?.pickupEnabled && <p>Retrait possible dans la Vaunage (gratuit).</p>}
-      <p>[TEXTE À FOURNIR : délais d’expédition et conditions de retour]</p>
+      {/* TODO(client): preparation time in working days. */}
+      <p>
+        Je prépare et expédie votre commande sous [X] jours ouvrés, soigneusement emballée. Vous
+        disposez de 14 jours pour changer d’avis, à condition que le bijou n’ait pas été porté.
+      </p>
       <p>
         <Link href="/livraison-retours" className="underline underline-offset-4 hover:text-cognac">
           Livraison et retours en détail

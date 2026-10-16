@@ -4,6 +4,7 @@
  * Remove before launch: delete documents whose _id starts with "seed-".
  */
 import { getCliClient } from 'sanity/cli';
+import { entretienBlocks } from '../src/lib/sanity/fixtures';
 
 const client = getCliClient({ apiVersion: '2026-10-01' });
 
@@ -99,6 +100,15 @@ async function main() {
       publishedAt: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
     });
   }
+
+  // Care guide draft: created once, then edited by Delphine in the Studio (Pages).
+  tx.createIfNotExists({
+    _id: 'page-entretien',
+    _type: 'page',
+    title: 'Entretien du cuir',
+    slug: { _type: 'slug', current: 'entretien' },
+    body: entretienBlocks,
+  });
 
   await tx.commit();
   console.log('Done: settings, 2 collections, 8 products.');

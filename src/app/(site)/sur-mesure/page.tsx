@@ -12,10 +12,23 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { title: 'Votre demande', text: '[TEXTE À FOURNIR]' },
-  { title: 'Échange et devis', text: '[TEXTE À FOURNIR]' },
-  { title: 'Création', text: '[TEXTE À FOURNIR]' },
-  { title: 'Livraison', text: '[TEXTE À FOURNIR]' },
+  {
+    title: 'Votre demande',
+    text: 'Décrivez votre envie avec le formulaire ci-dessous : couleurs, type de bijou, occasion. Une photo d’inspiration aide toujours.',
+  },
+  {
+    title: 'Échange et devis',
+    // TODO(client): response time.
+    text: 'Je vous réponds sous [X] jours pour affiner l’idée ensemble et vous proposer un prix.',
+  },
+  {
+    title: 'Création',
+    text: 'Une fois votre accord donné, je découpe et assemble votre bijou à la main dans mon atelier.',
+  },
+  {
+    title: 'Livraison',
+    text: 'Votre bijou part par la poste ou vous attend à l’atelier, dans la Vaunage.',
+  },
 ];
 
 export default function SurMesurePage() {
@@ -29,7 +42,13 @@ export default function SurMesurePage() {
             Un bijou imaginé <em>pour vous</em>
           </>
         }
-        intro={<p>[TEXTE À FOURNIR]</p>}
+        intro={
+          <p>
+            Une couleur précise, des boucles sur clips parce que vos oreilles ne sont pas percées,
+            un collier assorti à vos boucles préférées, un cadeau qui ne ressemble à aucun autre…
+            Racontez-moi votre idée, je la façonne pour vous.
+          </p>
+        }
       />
 
       <section className="bg-cream py-12">
