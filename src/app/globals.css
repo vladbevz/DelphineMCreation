@@ -70,11 +70,10 @@
   letter-spacing: 0.06em;
 }
 
-/* Accent word inside display capitals: light Cormorant italic, normal case. */
-@utility italic-accent {
-  @apply font-display font-light normal-case italic;
-  letter-spacing: 0.01em;
-  font-size: 1.08em;
+/* Accent word inside display capitals: same Cormorant capitals, heavier weight
+   (« LES DERNIÈRES CRÉATIONS » with CRÉATIONS in medium). No second typeface or italic. */
+@utility heading-accent {
+  @apply font-display font-medium not-italic;
 }
 
 @keyframes marquee {

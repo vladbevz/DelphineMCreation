@@ -217,7 +217,7 @@ export default async function HomePage() {
           <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
             Chaque bijou
             <br />
-            est <em className="italic">unique</em>
+            est <em className="font-normal not-italic">unique</em>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure

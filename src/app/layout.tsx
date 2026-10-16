@@ -7,8 +7,8 @@ import './globals.css';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  // Variable font: one file per style covers weights 300 to 600.
-  style: ['normal', 'italic'],
+  // Variable font: one file covers weights 300 to 600. No italic: accents use weight.
+  style: ['normal'],
   display: 'swap',
   variable: '--font-cormorant',
 });

@@ -15,8 +15,8 @@ export async function Footer() {
     <footer className="mt-16 bg-espresso text-linen">
       <Container className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-16">
         <div className="col-span-2 lg:col-span-1">
-          <p className="font-display text-3xl leading-none font-light">
-            <em>Delphine M.</em> Créations
+          <p className="display-caps text-2xl leading-tight">
+            Delphine <span className="font-medium">M.</span> Créations
           </p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen/75">
             Bijoux en cuir faits main, pièces uniques créées dans la Vaunage, Gard.
