@@ -59,7 +59,7 @@
 
 **Шрифти** (через `next/font/google`):
 - Заголовки: **Cormorant Garamond** (variable 300–600) — тонкі капси з трекінгом (утиліта `display-caps`); назви товарів — light, звичайний регістр.
-- Акцент: тонкий курсив Cormorant. У `SectionHeading` слово в `<em>` автоматично стає курсивом звичайного регістру (утиліта `italic-accent`): `<>Les dernières <em>créations</em></>`. Лого «Delphine M.» — теж Cormorant italic. Рукописні шрифти не використовуємо (занадто виділялися).
+- Акцент: те саме Cormorant капсом, але товщим накресленням (утиліта `heading-accent`, font-medium): у `SectionHeading` слово в `<em>` автоматично стає акцентом — «LES DERNIÈRES **CRÉATIONS**», як у рухомому рядку «NOUVELLE **COLLECTION**». Курсив і рукописні шрифти не використовуємо (не поєднувалися з основним). Лого — «DELPHINE **M.**» капсом.
 - Текст: **Jost** 400/500. Дрібні лейбли, меню, кнопки, accordion — капс з трекінгом (`label-caps` або `text-[0.7rem] tracking-[0.15em] uppercase`).
 
 **Мотив:** контур краплеподібної сережки з пунктирним «швом» усередині (inline SVG, `stroke="currentColor"`). Використовуй як декоративний елемент і плейсхолдер замість фото.
