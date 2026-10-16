@@ -23,7 +23,7 @@ type Props = { searchParams: Promise<Record<string, string | string[] | undefine
 export const metadata: Metadata = {
   title: 'La boutique',
   description:
-    'Tous les bijoux en cuir faits main de Delphine M. Créations : boucles d’oreilles, colliers, bracelets, bagues, broches et barrettes. Colorés, ultra légers, en cuir upcyclé.',
+    'Tous les bijoux en cuir faits main de Delphine M. Créations : boucles d’oreilles, colliers, bracelets, bagues, broches et barrettes. Colorés et ultra légers.',
   alternates: { canonical: '/boutique' },
 };
 

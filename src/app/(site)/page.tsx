@@ -30,11 +30,11 @@ const promises = [
     title: 'Ultra léger',
     text: 'Jusqu’à dix fois plus léger qu’un bijou classique : on oublie qu’on le porte.',
   },
-  { title: 'Cuir upcyclé', text: 'Des chutes de cuir qui retrouvent une seconde vie.' },
+  {
+    title: 'Cuir de Colombie',
+    text: 'Des cuirs colorés rapportés de Colombie, choisis pour leur couleur et leur éclat.',
+  },
 ];
-
-// Delphine's own word play: « M » sounds like « aime ».
-const marqueeWords = ['la couleur', 'ce qui brille', 'le cuir'];
 
 export default async function HomePage() {
   const [products, all, settings] = await Promise.all([
@@ -100,13 +100,6 @@ export default async function HomePage() {
       <section className="pt-10 pb-14 lg:pb-20">
         <Marquee className="display-caps text-3xl sm:text-5xl">
           Nouvelle <span className="font-medium">collection</span>
-          {marqueeWords.map((w) => (
-            <span key={w}>
-              <span className="px-4">·</span>
-              <em className="italic-accent">Delphine M</em> {w}
-            </span>
-          ))}
-          <span className="pl-4">·</span>
         </Marquee>
         <Container className="mt-8 lg:mt-10">
           <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
@@ -236,7 +229,7 @@ export default async function HomePage() {
           <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
             Jamais deux fois
             <br />
-            <em className="italic">pareil</em>
+            <em className="font-normal not-italic">pareil</em>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure

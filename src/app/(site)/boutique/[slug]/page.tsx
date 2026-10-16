@@ -234,8 +234,8 @@ export default async function ProductPage({ params }: Props) {
               intro={
                 <p>
                   Ce bijou a été découpé et assemblé à la main dans mon atelier de Clarensac, dans
-                  une chute de cuir qui méritait une seconde vie. Je crée rarement deux fois le même
-                  modèle dans les mêmes couleurs.
+                  un cuir rapporté de Colombie. Je crée rarement deux fois le même modèle dans les
+                  mêmes couleurs.
                 </p>
               }
             />

@@ -4,7 +4,7 @@ import { cn } from './cn';
 type SectionHeadingProps = {
   label?: string;
   /**
-   * Rendered in thin capitals. An <em> inside becomes the light italic accent word,
+   * Rendered in thin capitals. An <em> inside becomes the accent word (same capitals, heavier weight),
    * e.g. <>Les dernières <em>créations</em></>.
    */
   title: ReactNode;
@@ -27,7 +27,7 @@ export function SectionHeading({
       {label && <p className="mb-3 label-caps text-muted">{label}</p>}
       <Tag
         className={cn(
-          'display-caps leading-[1.15] [&_em]:italic-accent',
+          'display-caps leading-[1.15] [&_em]:heading-accent',
           Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2rem]',
         )}
       >

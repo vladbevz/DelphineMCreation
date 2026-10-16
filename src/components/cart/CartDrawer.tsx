@@ -111,7 +111,7 @@ export function CartDrawer() {
       <div className="flex h-full flex-col">
         <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
           <h2 id="cart-title" className="display-caps text-2xl">
-            Votre <em className="italic-accent">panier</em>
+            Votre <em className="heading-accent">panier</em>
           </h2>
           <button
             type="button"

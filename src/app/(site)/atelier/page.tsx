@@ -19,7 +19,7 @@ const steps = [
   {
     label: 'Étape 1',
     title: 'Le choix du cuir',
-    text: 'Je choisis chaque chute pour sa couleur, son imprimé ou son éclat. Parfois, il n’en reste qu’un tout petit morceau.',
+    text: 'Dans mes rouleaux de cuir rapportés de Colombie, je choisis chaque pièce pour sa couleur, son imprimé ou son éclat.',
   },
   {
     label: 'Étape 2',
@@ -133,15 +133,15 @@ export default function AtelierPage() {
               label="Les matériaux"
               title={
                 <>
-                  Une <em>seconde vie</em> pour le cuir
+                  Un cuir venu de <em>Colombie</em>
                 </>
               }
               intro={
                 <p>
                   Je travaille la fleur de cuir, la partie la plus noble de la peau, à la fois
-                  résistante et souple. Je privilégie les chutes, ces petits morceaux que la
-                  maroquinerie n’utilise plus et qui finiraient jetés. Pour les apprêts, j’utilise
-                  l’acier inoxydable : durable et hypoallergénique.
+                  résistante et souple. Mes rouleaux de cuir viennent de Colombie, là où tout a
+                  commencé. Pour les apprêts, j’utilise l’acier inoxydable : durable et
+                  hypoallergénique.
                 </p>
               }
             />
