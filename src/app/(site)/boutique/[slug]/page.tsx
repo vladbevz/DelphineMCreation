@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
 import { Gallery, type GalleryImage } from '@/components/product/Gallery';
+import { RevealImage } from '@/components/motion/Reveal';
 import { ProductActions } from '@/components/product/ProductActions';
 import { TrackViewContent } from '@/components/product/TrackViewContent';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -145,7 +146,11 @@ export default async function ProductPage({ params }: Props) {
         <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-14">
           {/* Sized from the viewport height so photo + thumbnails fit on a laptop screen. */}
           <div className="lg:w-[clamp(20rem,calc(100svh-16rem),30rem)]">
-            <Gallery images={images} title={product.title} />
+            <Gallery
+              images={images}
+              title={product.title}
+              transitionName={`product-image-${product._id}`}
+            />
           </div>
 
           <div className="lg:sticky lg:top-24 lg:self-start">
@@ -215,7 +220,7 @@ export default async function ProductPage({ params }: Props) {
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
         <Container size="medium" className="grid md:grid-cols-2">
-          <div className="relative aspect-[4/3] bg-sand md:aspect-square">
+          <RevealImage className="relative aspect-[4/3] bg-sand md:aspect-square">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -223,7 +228,7 @@ export default async function ProductPage({ params }: Props) {
               sizes="(min-width: 768px) 460px, 100vw"
               className="object-cover"
             />
-          </div>
+          </RevealImage>
           <div className="flex flex-col justify-center py-8 md:px-10 lg:px-14">
             <SectionHeading
               title={
@@ -261,7 +266,7 @@ export default async function ProductPage({ params }: Props) {
               Faire une demande
             </ButtonLink>
           </div>
-          <div className="relative aspect-[4/3] bg-sand md:aspect-square">
+          <RevealImage className="relative aspect-[4/3] bg-sand md:aspect-square">
             <Image
               src={photos.presentoir.src}
               alt={photos.presentoir.alt}
@@ -269,7 +274,7 @@ export default async function ProductPage({ params }: Props) {
               sizes="(min-width: 768px) 460px, 100vw"
               className="object-cover"
             />
-          </div>
+          </RevealImage>
         </Container>
       </section>
 

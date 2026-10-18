@@ -1,3 +1,4 @@
+import { Stagger, StaggerItem } from '@/components/motion/Reveal';
 import { ProductCard, type ProductCardData } from '@/components/product/ProductCard';
 import { cn } from '@/components/ui/cn';
 
@@ -23,13 +24,13 @@ export function ProductGrid({
 }) {
   const { grid, sizes } = variants[variant];
   return (
-    <ul className={cn('grid gap-x-4 gap-y-8 sm:gap-x-5', grid)}>
+    <Stagger as="ul" className={cn('grid gap-x-4 gap-y-8 sm:gap-x-5', grid)}>
       {products.map((product, i) => (
-        <li key={product._id}>
+        <StaggerItem as="li" key={product._id}>
           {/* The first row is above the fold on mobile: load it eagerly for LCP. */}
           <ProductCard product={product} priority={i < 2} sizes={sizes} />
-        </li>
+        </StaggerItem>
       ))}
-    </ul>
+    </Stagger>
   );
 }

@@ -6,11 +6,14 @@ export function FilterOption({
   href,
   active,
   count,
+  dot,
   children,
 }: {
   href: string;
   active: boolean;
   count?: number;
+  /** Category colour (bg-* class), shown as a small dot. */
+  dot?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -43,6 +46,7 @@ export function FilterOption({
           </svg>
         )}
       </span>
+      {dot && <span aria-hidden className={cn('size-2 shrink-0 rounded-full', dot)} />}
       <span className="flex-1">{children}</span>
       {count !== undefined && <span className="text-xs text-muted">{count}</span>}
     </Link>

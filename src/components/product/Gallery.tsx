@@ -1,7 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  ViewTransition,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 import { EarringMotif } from '@/components/brand/EarringMotif';
 import { cn } from '@/components/ui/cn';
 
@@ -15,7 +23,16 @@ export type GalleryImage = {
   lqip: string | null;
 };
 
-export function Gallery({ images, title }: { images: GalleryImage[]; title: string }) {
+export function Gallery({
+  images,
+  title,
+  transitionName,
+}: {
+  images: GalleryImage[];
+  title: string;
+  /** Matches the product card image so it flies into the gallery (View Transitions). */
+  transitionName?: string;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [active, setActive] = useState(0);
@@ -81,37 +98,38 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
         aria-label={`Photos de ${title}`}
       >
         {images.map((image, i) => (
-          <div
-            key={image.key}
-            className="relative aspect-square w-full shrink-0 snap-center bg-sand"
-            role="group"
-            aria-roledescription="photo"
-            aria-label={`${i + 1} sur ${images.length}`}
-          >
-            {image.src ? (
-              <button
-                type="button"
-                onClick={() => open(i)}
-                className="group absolute inset-0 cursor-zoom-in"
-                aria-label={`Agrandir la photo ${i + 1}`}
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  priority={i === 0}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  placeholder={image.lqip ? 'blur' : 'empty'}
-                  blurDataURL={image.lqip ?? undefined}
-                  className="object-cover"
-                />
-              </button>
-            ) : (
-              <div className="flex h-full items-center justify-center">
-                <EarringMotif className="h-1/2 w-auto text-cognac/60" title={image.alt} />
-              </div>
-            )}
-          </div>
+          <SharedSlide key={image.key} name={i === 0 ? transitionName : undefined}>
+            <div
+              className="relative aspect-square w-full shrink-0 snap-center bg-sand"
+              role="group"
+              aria-roledescription="photo"
+              aria-label={`${i + 1} sur ${images.length}`}
+            >
+              {image.src ? (
+                <button
+                  type="button"
+                  onClick={() => open(i)}
+                  className="group absolute inset-0 cursor-zoom-in"
+                  aria-label={`Agrandir la photo ${i + 1}`}
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    priority={i === 0}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    placeholder={image.lqip ? 'blur' : 'empty'}
+                    blurDataURL={image.lqip ?? undefined}
+                    className="object-cover"
+                  />
+                </button>
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <EarringMotif className="h-1/2 w-auto text-cognac/60" title={image.alt} />
+                </div>
+              )}
+            </div>
+          </SharedSlide>
         ))}
       </div>
 
@@ -251,4 +269,9 @@ export function Gallery({ images, title }: { images: GalleryImage[]; title: stri
       </dialog>
     </div>
   );
+}
+
+/** Wraps the first slide in a named <ViewTransition>; other slides render as-is. */
+function SharedSlide({ name, children }: { name?: string; children: ReactNode }) {
+  return name ? <ViewTransition name={name}>{children}</ViewTransition> : <>{children}</>;
 }

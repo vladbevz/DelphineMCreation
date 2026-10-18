@@ -15,7 +15,7 @@ import {
   sortOptions,
   type BoutiqueFilters,
 } from '@/lib/boutique';
-import { categories, categoryFilterLabels, colorKey } from '@/lib/catalog';
+import { categories, categoryColor, categoryFilterLabels, colorKey } from '@/lib/catalog';
 import { getProducts } from '@/lib/sanity/data';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -62,6 +62,7 @@ function Filters({
                 href={boutiqueHref({ ...filters, category: c.value })}
                 active={filters.category === c.value}
                 count={count((p) => p.category === c.value)}
+                dot={categoryColor(c.value).bg}
               >
                 {categoryFilterLabels[c.value]}
               </FilterOption>
