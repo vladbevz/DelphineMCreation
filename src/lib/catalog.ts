@@ -42,3 +42,21 @@ export const legalPages = {
 } as const;
 
 export type LegalSlug = keyof typeof legalPages;
+
+/**
+ * One colour per category (« Joie colorée »), used by category tiles, filters, badges and the
+ * product card bar. Full class names so Tailwind picks them up.
+ * bg: blocks (text on top is always espresso). fill: decorative SVG via currentColor only —
+ * these colours fail 4.5:1 as text on linen.
+ */
+export const categoryColors: Record<Category, { bg: string; fill: string }> = {
+  'boucles-d-oreilles': { bg: 'bg-fuchsia', fill: 'text-fuchsia' },
+  collier: { bg: 'bg-turquoise', fill: 'text-turquoise' },
+  bracelet: { bg: 'bg-mandarine', fill: 'text-mandarine' },
+  bague: { bg: 'bg-lavande', fill: 'text-lavande' },
+  autre: { bg: 'bg-soleil', fill: 'text-soleil' },
+};
+
+export function categoryColor(value: string | null | undefined) {
+  return categoryColors[(value ?? 'autre') as Category] ?? categoryColors.autre;
+}

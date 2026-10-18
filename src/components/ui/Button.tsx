@@ -11,7 +11,8 @@ const base =
   'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
-  primary: `${pill} border border-espresso bg-espresso text-linen hover:bg-transparent hover:text-espresso`,
+  /** fuchsia-deep: the pink that passes 4.5:1 with linen text. */
+  primary: `${pill} border border-fuchsia-deep bg-fuchsia-deep text-linen hover:bg-transparent hover:text-fuchsia-deep`,
   secondary: `${pill} border border-espresso text-espresso hover:bg-espresso hover:text-linen`,
   /** On dark photos or dark sections. */
   light: `${pill} border border-linen text-linen hover:bg-linen hover:text-espresso`,

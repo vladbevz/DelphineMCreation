@@ -16,6 +16,18 @@
   --color-espresso: #2b1d14;
   --color-muted: #6b5646;
 
+  /* « Joie colorée »: colour blocks on top of the warm base. Text on them is always espresso
+     (linen and muted fail 4.5:1). fuchsia-deep carries text and the primary button. */
+  --color-fuchsia: #e0457b;
+  --color-fuchsia-deep: #b8285f;
+  --color-mandarine: #f28c38;
+  --color-soleil: #f5c542;
+  --color-turquoise: #2bb3b1;
+  --color-lavande: #b79ce8;
+  --color-blush: #fbe3ea;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
   --tracking-label: 0.3em;
 }
 
@@ -87,4 +99,95 @@
 
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
+  /* Slows down under the pointer instead of stopping abruptly. */
+  &:hover {
+    animation-duration: 90s;
+  }
+}
+
+/* Paillettes: a light glint travelling across a word. Gradients are reserved for this effect. */
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@utility shimmer {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 40%,
+    var(--color-soleil) 50%,
+    currentColor 60%,
+    currentColor 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3.6s var(--ease-premium) infinite;
+}
+
+/* Slow zoom on the hero photo (starts once the image is painted, see Hero). */
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+@utility animate-ken-burns {
+  animation: ken-burns 12s var(--ease-premium) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-ken-burns,
+  .shimmer {
+    animation: none !important;
+  }
+  .shimmer {
+    -webkit-text-fill-color: currentColor;
+    background-image: none;
+  }
+}
+
+/* Gentle bob for the floating earring motifs. */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Page and product-image view transitions: same easing as the reveals; off for reduced motion. */
+::view-transition-group(*) {
+  animation-duration: 0.55s;
+  animation-timing-function: var(--ease-premium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Reduced motion: scroll reveals show their final state at once (inline styles from motion are
+   overridden). Opacity is not covered by MotionConfig reducedMotion, hence this rule. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
 }
