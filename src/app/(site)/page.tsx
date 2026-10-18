@@ -1,6 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Blob } from '@/components/brand/Blob';
 import { EarringMotif } from '@/components/brand/EarringMotif';
+import { FloatingMotifs } from '@/components/brand/FloatingMotifs';
+import { LeopardPattern } from '@/components/brand/LeopardPattern';
+import { HeroMedia } from '@/components/home/HeroMedia';
+import { TrustStrip } from '@/components/home/TrustStrip';
+import { RevealImage, RevealWords, Stagger, StaggerItem } from '@/components/motion/Reveal';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardPlaceholder } from '@/components/product/ProductCardPlaceholder';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -8,7 +14,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Marquee } from '@/components/ui/Marquee';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { categories, categoryFilterLabels } from '@/lib/catalog';
+import { categories, categoryColor, categoryFilterLabels } from '@/lib/catalog';
 import { photos } from '@/lib/photos';
 import { getLatestProducts, getProducts, getSettings } from '@/lib/sanity/data';
 import { urlFor } from '@/lib/sanity/image';
@@ -25,12 +31,18 @@ const instagramPhotos = [
 ];
 
 const promises = [
-  { title: 'Fait main', text: 'Découpé et assemblé à la main, de la peau au bijou.' },
   {
+    color: 'text-fuchsia',
+    title: 'Fait main',
+    text: 'Découpé et assemblé à la main, de la peau au bijou.',
+  },
+  {
+    color: 'text-mandarine',
     title: 'Ultra léger',
     text: 'Jusqu’à dix fois plus léger qu’un bijou classique : on oublie qu’on le porte.',
   },
   {
+    color: 'text-turquoise',
     title: 'Cuir de Colombie',
     text: 'Des cuirs colorés rapportés de Colombie, choisis pour leur couleur et leur éclat.',
   },
@@ -72,23 +84,16 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Hero: full-bleed photo, centred thin capitals. */}
+      {/* Hero: full-bleed photo (LCP, rendered as-is), title words sliding up from a mask. */}
       <section className="relative flex h-[min(80svh,40rem)] min-h-[28rem] items-center justify-center overflow-hidden bg-espresso sm:h-[calc(100svh-4.5rem)] sm:max-h-[52rem]">
-        <Image
-          src={photos.bouclesLiege.src}
-          alt={photos.bouclesLiege.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        <HeroMedia src={photos.bouclesLiege.src} alt={photos.bouclesLiege.alt} />
         <div className="absolute inset-0 bg-espresso/35" aria-hidden />
         <div className="relative px-5 text-center text-linen">
           <p className="text-[0.6rem] font-medium tracking-[0.2em] text-linen/90 uppercase sm:label-caps">
             Bijoux en cuir faits main · Clarensac, Gard
           </p>
           <h1 className="mx-auto mt-5 max-w-4xl display-caps text-4xl leading-[1.1] sm:text-6xl">
-            Des bijoux en cuir, façonnés de mes mains
+            <RevealWords text="Des bijoux en cuir, façonnés de mes mains" delay={0.15} />
           </h1>
           <ButtonLink href="/boutique" variant="light" className="mt-8">
             Découvrir la boutique
@@ -96,25 +101,31 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <TrustStrip freeShippingThreshold={settings?.freeShippingThreshold ?? null} />
+
       {/* New pieces */}
       <section className="pt-10 pb-14 lg:pb-20">
         <Marquee className="display-caps text-3xl sm:text-5xl">
-          Nouvelle <span className="font-medium">collection</span>
+          Nouvelle <span className="shimmer font-medium text-fuchsia-deep">collection</span>
         </Marquee>
         <Container className="mt-8 lg:mt-10">
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
+          <Stagger as="ul" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
             {shown.length > 0
               ? shown.map((product, i) => (
-                  <li key={product._id} className={i >= 4 ? 'hidden lg:block' : undefined}>
+                  <StaggerItem
+                    as="li"
+                    key={product._id}
+                    className={i >= 4 ? 'hidden lg:block' : undefined}
+                  >
                     <ProductCard product={product} sizes="(min-width: 1024px) 25vw, 50vw" />
-                  </li>
+                  </StaggerItem>
                 ))
               : Array.from({ length: 4 }, (_, i) => (
-                  <li key={i}>
+                  <StaggerItem as="li" key={i}>
                     <ProductCardPlaceholder />
-                  </li>
+                  </StaggerItem>
                 ))}
-          </ul>
+          </Stagger>
           <div className="mt-10 text-center">
             <ButtonLink href="/boutique" variant="secondary">
               Toutes les créations
@@ -123,9 +134,9 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Categories */}
+      {/* Categories: one colour each, a morphing patch behind the photo. */}
       {categoryTiles.length > 0 && (
-        <section className="bg-cream py-14 lg:py-20">
+        <section className="overflow-hidden bg-blush py-14 lg:py-20">
           <Container size="medium">
             <SectionHeading
               align="center"
@@ -135,40 +146,59 @@ export default async function HomePage() {
                 </>
               }
             />
-            <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
+            <Stagger
+              as="ul"
+              className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 lg:grid-cols-4"
+            >
               {categoryTiles.map(({ value, product }) => (
-                <li key={value}>
+                <StaggerItem as="li" key={value}>
                   <Link href={`/boutique?categorie=${value}`} className="group block text-center">
-                    <div className="relative aspect-square overflow-hidden bg-sand">
-                      {product?.image?.asset ? (
-                        <Image
-                          src={urlFor(product.image).width(600).height(600).url()}
-                          alt=""
-                          fill
-                          sizes="(min-width: 1024px) 240px, 50vw"
-                          className="object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center">
-                          <EarringMotif className="h-2/5 w-auto text-cognac/50" />
-                        </div>
-                      )}
+                    <div className="relative">
+                      <Blob
+                        className={`-right-[30%] -bottom-[30%] h-[140%] w-[140%] ${categoryColor(value).fill}`}
+                      />
+                      <div className="relative aspect-square overflow-hidden bg-sand transition-transform duration-500 ease-premium group-hover:-translate-y-1.5">
+                        {product?.image?.asset ? (
+                          <Image
+                            src={urlFor(product.image).width(600).height(600).url()}
+                            alt=""
+                            fill
+                            sizes="(min-width: 1024px) 240px, 50vw"
+                            className="object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
+                          />
+                        ) : (
+                          <div className="flex h-full items-center justify-center">
+                            <EarringMotif className="h-2/5 w-auto text-cognac/50" />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <p className="mt-3 display-caps text-lg decoration-1 underline-offset-4 group-hover:underline">
+                    <p className="mt-5 display-caps text-lg decoration-1 underline-offset-4 group-hover:underline">
                       {categoryFilterLabels[value]}
                     </p>
                   </Link>
-                </li>
+                </StaggerItem>
               ))}
-            </ul>
+            </Stagger>
           </Container>
         </section>
       )}
 
-      {/* Atelier: photo + text */}
-      <section className="py-14 lg:py-20">
-        <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-14">
-          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-[4/5]">
+      {/* Atelier: photo + text, coloured earrings drifting in the margins (desktop). */}
+      <section className="relative py-14 lg:py-20">
+        <FloatingMotifs
+          className="hidden lg:block"
+          motifs={[
+            { className: 'top-16 left-[4%] h-28', color: 'text-fuchsia', speed: 1 },
+            { className: 'right-[5%] bottom-24 h-20', color: 'text-turquoise', speed: 1.6 },
+            { className: 'top-1/2 right-[12%] h-12', color: 'text-soleil', speed: 0.7 },
+          ]}
+        />
+        <Container
+          size="medium"
+          className="relative grid items-center gap-8 md:grid-cols-2 lg:gap-14"
+        >
+          <RevealImage className="relative aspect-[4/3] bg-sand md:aspect-[4/5]">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -176,7 +206,7 @@ export default async function HomePage() {
               sizes="(min-width: 768px) 460px, 100vw"
               className="object-cover"
             />
-          </div>
+          </RevealImage>
           <div>
             <SectionHeading
               label="À l’atelier"
@@ -200,18 +230,21 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Promises */}
-      <section className="border-y border-sand-border bg-cream py-12 lg:py-16">
-        <Container size="medium">
-          <ul className="grid grid-cols-3 gap-4 sm:gap-10">
+      {/* Promises: the one leopard-print section, very light. */}
+      <section className="relative overflow-hidden border-y border-sand-border bg-cream py-12 lg:py-16">
+        <LeopardPattern className="text-sand-border opacity-60" />
+        <Container size="medium" className="relative">
+          <Stagger as="ul" className="grid grid-cols-3 gap-4 sm:gap-10">
             {promises.map((p) => (
-              <li key={p.title} className="text-center">
-                <EarringMotif className="mx-auto h-9 w-auto text-cognac sm:h-11" />
+              <StaggerItem as="li" key={p.title} className="text-center">
+                <EarringMotif className={`mx-auto h-9 w-auto sm:h-11 ${p.color}`} />
                 <h3 className="mt-4 display-caps text-base leading-tight sm:text-xl">{p.title}</h3>
-                <p className="mx-auto mt-2 max-w-xs text-xs text-muted sm:text-sm">{p.text}</p>
-              </li>
+                <p className="mx-auto mt-2 max-w-xs text-xs text-espresso/80 sm:text-sm">
+                  {p.text}
+                </p>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </Container>
       </section>
 
@@ -229,7 +262,7 @@ export default async function HomePage() {
           <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
             Jamais deux fois
             <br />
-            <em className="font-normal not-italic">pareil</em>
+            <em className="shimmer font-normal not-italic">pareil</em>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure
@@ -261,13 +294,17 @@ export default async function HomePage() {
             )}
           </div>
           {/* Static photos picked by the client (no Instagram API). */}
-          <ul className="mt-4 grid grid-cols-4 gap-2 sm:mt-6 sm:gap-4">
+          <Stagger as="ul" className="mt-4 grid grid-cols-4 gap-2 sm:mt-6 sm:gap-4">
             {instagramPhotos.map((p) => (
-              <li key={p.src} className="relative aspect-square overflow-hidden bg-cream">
+              <StaggerItem
+                as="li"
+                key={p.src}
+                className="relative aspect-square overflow-hidden bg-cream"
+              >
                 <Image src={p.src} alt={p.alt} fill sizes="25vw" className="object-cover" />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </Container>
       </section>
     </>
