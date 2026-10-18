@@ -1,11 +1,13 @@
 'use client';
 
+import * as m from 'motion/react-m';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { getCartItems, type CartItem } from '@/app/actions/cart';
 import { Button } from '@/components/ui/Button';
 import { formatPrice } from '@/lib/format';
+import { fadeUp, staggerChildren } from '@/lib/motion';
 import { trackEvent } from '@/lib/tracking';
 import { cartStore } from './cartStore';
 import { useCart } from './CartProvider';
@@ -15,7 +17,7 @@ type CheckoutError =
   | { error: 'vacation'; message: string }
   | { error: string };
 
-export function CartDrawer() {
+export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: number | null }) {
   const { ids, pendingSessionId, isOpen, close, remove } = useCart();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [items, setItems] = useState<CartItem[] | null>(null);
@@ -106,9 +108,16 @@ export function CartDrawer() {
       onClose={close}
       onClick={(e) => e.target === dialogRef.current && close()}
       aria-labelledby="cart-title"
-      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-linen p-0 text-espresso transition-transform duration-300 backdrop:bg-espresso/40 starting:open:translate-x-full"
+      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-transparent p-0 text-espresso backdrop:bg-espresso/40"
     >
-      <div className="flex h-full flex-col">
+      {/* Panel slides in on a soft spring each time the drawer opens. */}
+      <m.div
+        key={isOpen ? 'open' : 'closed'}
+        className="flex h-full flex-col bg-linen"
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 32, mass: 0.9 }}
+      >
         <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
           <h2 id="cart-title" className="display-caps text-2xl">
             Votre <em className="heading-accent">panier</em>
@@ -163,9 +172,14 @@ export function CartDrawer() {
           ) : items === null ? (
             <p className="py-16 text-center text-muted">Chargement…</p>
           ) : (
-            <ul className="space-y-5">
+            <m.ul
+              className="space-y-5"
+              variants={staggerChildren(0.06)}
+              initial="hidden"
+              animate="visible"
+            >
               {items.map((item) => (
-                <li key={item._id} className="flex gap-4">
+                <m.li key={item._id} className="flex gap-4" variants={fadeUp}>
                   <Link
                     href={`/boutique/${item.slug}`}
                     onClick={close}
@@ -204,9 +218,9 @@ export function CartDrawer() {
                       Retirer
                     </button>
                   </div>
-                </li>
+                </m.li>
               ))}
-            </ul>
+            </m.ul>
           )}
         </div>
 
@@ -217,6 +231,9 @@ export function CartDrawer() {
               <span className="text-xl text-cognac">{formatPrice(subtotal)}</span>
             </div>
             <p className="mt-1 text-xs text-muted">Livraison calculée à l’étape suivante.</p>
+            {freeShippingThreshold !== null && (
+              <FreeShippingBar subtotal={subtotal} threshold={freeShippingThreshold} />
+            )}
             {error && (
               <p role="alert" className="mt-4 bg-cream p-3 text-sm">
                 {error}
@@ -232,7 +249,42 @@ export function CartDrawer() {
             <p className="mt-3 text-center text-xs text-muted">Paiement sécurisé par Stripe</p>
           </div>
         )}
-      </div>
+      </m.div>
     </dialog>
+  );
+}
+
+/** "Plus que 12,00 € pour la livraison offerte", with a bar filling up (as on manali.fr). */
+function FreeShippingBar({ subtotal, threshold }: { subtotal: number; threshold: number }) {
+  const remaining = Math.max(0, threshold - subtotal);
+  const progress = threshold > 0 ? Math.min(1, subtotal / threshold) : 1;
+  return (
+    <div className="mt-4">
+      <p className="text-xs">
+        {remaining > 0 ? (
+          <>
+            Plus que <strong className="font-medium">{formatPrice(remaining)}</strong> pour la
+            livraison offerte
+          </>
+        ) : (
+          <strong className="font-medium">La livraison vous est offerte !</strong>
+        )}
+      </p>
+      <div
+        role="progressbar"
+        aria-label="Progression vers la livraison offerte"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress * 100)}
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-sand"
+      >
+        <m.div
+          className="h-full origin-left rounded-full bg-fuchsia"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: progress }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        />
+      </div>
+    </div>
   );
 }

@@ -1,10 +1,19 @@
 'use client';
 
+import * as m from 'motion/react-m';
+import { useState } from 'react';
 import { useCart } from './CartProvider';
 
 export function CartButton() {
   const { ids, open } = useCart();
   const count = ids.length;
+  // Bounce the counter when it grows, not on first render or when items are removed.
+  const [previous, setPrevious] = useState(count);
+  const [bumps, setBumps] = useState(0);
+  if (count !== previous) {
+    setPrevious(count);
+    if (count > previous) setBumps((b) => b + 1);
+  }
   return (
     <button
       type="button"
@@ -27,7 +36,16 @@ export function CartButton() {
       </svg>
       {/* Visible "Panier (N)"; the accessible name reads "Panier (N) articles". */}
       <span>
-        <span className="hidden sm:inline">Panier </span>({count})
+        <span className="hidden sm:inline">Panier </span>
+        <m.span
+          key={bumps}
+          className="inline-block"
+          initial={bumps > 0 ? { scale: 1.6, y: -3 } : false}
+          animate={{ scale: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 14 }}
+        >
+          ({count})
+        </m.span>
         <span className="sr-only"> article{count > 1 ? 's' : ''}</span>
       </span>
     </button>
