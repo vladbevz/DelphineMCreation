@@ -56,6 +56,17 @@
 | `olive` | `#5F6A4B` | другий акцент, бейджі |
 | `espresso` | `#2B1D14` | основний текст, темні секції |
 | `muted` | `#6B5646` | другорядний текст (перевір контраст 4.5:1 на фоні) |
+| `fuchsia` | `#E0457B` | декор, великі заголовки, смужки (текст на ньому — ні: espresso 4.12) |
+| `fuchsia-deep` | `#B8285F` | кнопки `primary` (текст `linen`, 5.61), дрібний рожевий текст, бейдж «Nouveau» |
+| `mandarine` | `#F28C38` | категорія bracelet, іконки; текст на ньому — `espresso` |
+| `soleil` | `#F5C542` | смужка оголошень, trust strip, shimmer; текст — `espresso` |
+| `turquoise` | `#2BB3B1` | категорія collier; текст — `espresso` |
+| `lavande` | `#B79CE8` | категорія bague; текст — `espresso` |
+| `blush` | `#FBE3EA` | фон секції категорій; `espresso` і `muted` проходять |
+
+Правило контрасту: текст на кольорових плашках — завжди `espresso`; `linen` — лише на `fuchsia-deep` і темних фото.
+
+**Кольори категорій** — `categoryColors` / `categoryColor()` у `src/lib/catalog.ts`: boucles-d-oreilles → fuchsia, collier → turquoise, bracelet → mandarine, bague → lavande, autre → soleil. Використовуються в плитках категорій (`Blob`), смужці під карткою товару при hover, крапках фільтрів.
 
 **Шрифти** (через `next/font/google`):
 - Заголовки: **Cormorant Garamond** (variable 300–600) — тонкі капси з трекінгом (утиліта `display-caps`); назви товарів — light, звичайний регістр.
@@ -64,12 +75,18 @@
 
 **Мотив:** контур краплеподібної сережки з пунктирним «швом» усередині (inline SVG, `stroke="currentColor"`). Використовуй як декоративний елемент і плейсхолдер замість фото.
 
+**Леопард** (`LeopardPattern`, inline SVG, `currentColor`) — дуже світлий, лише в секції переваг на головній і тонким краєм смужки оголошень. Не додавай більше місць.
+
+**Shimmer** (утиліта `shimmer`, градієнт currentColor → soleil) — тільки на 2–3 словах на весь сайт (зараз «collection» у рухомому рядку і «pareil»).
+
+**Анімації** — `motion` (LazyMotion + `m`), спільні easing/тривалості/варіанти в `src/lib/motion.ts`, компоненти в `src/components/motion/`. Лише transform / opacity / clip-path, один раз при появі; ніколи на LCP-елементі (hero-фото, перше фото галереї, h1 сторінок, крім слів hero). Анімовані елементи мають `data-reveal` — CSS при `prefers-reduced-motion` показує їх одразу. View Transitions (React `ViewTransition`) — фото картки → галерея.
+
 **Стиль (з жовтня 2026, натхнення — maigojoyas.com):**
 - **Гострі кути** у фото, картках, секціях, полях форм. Заокруглення лише в кнопок і бейджів (пігулки, `rounded-full`).
 - Фото товарів **квадратні** на фоні `sand`. Hero — фото на всю ширину з білими капсами.
-- Кнопки (`Button` / `ButtonLink`): тонкі пігулки капсом — `primary` (espresso), `secondary` (контур), `light` (на фото), `ghost` (підкреслене посилання). `cognac` — лише дрібні акценти.
-- Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого по центру, Entretien du cuir / Contact + кошик (іконка + «PANIER (N)») праворуч; на мобільному — бургер, лого, кошик. Футер і смужка оголошень — `espresso`.
-- Без тіней і градієнтів, без емодзі. Рухомий рядок (`Marquee`) і анімації поважають `prefers-reduced-motion`.
+- Кнопки (`Button` / `ButtonLink`): тонкі пігулки капсом — `primary` (fuchsia-deep, текст linen), `secondary` (контур), `light` (на фото), `ghost` (підкреслене посилання). `cognac` — лише дрібні акценти.
+- Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого по центру, Entretien du cuir / Contact + кошик (іконка + «PANIER (N)») праворуч; на мобільному — бургер, лого, кошик. Футер — `espresso`, смужка оголошень — `soleil` з леопардовим краєм.
+- Без тіней; градієнти лише для shimmer; без емодзі. Рухомий рядок (`Marquee`) і анімації поважають `prefers-reduced-motion`.
 - Mobile-first: більшість трафіку прийде з Instagram на телефоні.
 - Доступність: справжні `<button>`, `<a>`, `<label>`; `alt` у кожного фото; видимий focus.
 
