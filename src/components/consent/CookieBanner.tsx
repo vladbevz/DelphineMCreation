@@ -48,12 +48,12 @@ export function CookieBanner() {
       aria-labelledby={titleId}
       className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl border border-sand-border bg-linen p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
     >
-      <h2 id={titleId} className="display-caps text-xl">
+      <h2 id={titleId} className="display-caps text-lg">
         Un petit mot sur les <em className="heading-accent">cookies</em>
       </h2>
-      <p className="mt-2 text-sm text-muted">
-        Le panier fonctionne sans cookie. Avec votre accord, j’utilise aussi une mesure d’audience
-        et le pixel Meta pour comprendre d’où viennent les visites.{' '}
+      {/* Kept short: shown on first visit, it must not become the page's largest paint (LCP). */}
+      <p className="mt-2 text-xs leading-relaxed text-muted">
+        Avec votre accord : mesure d’audience et pixel Meta. Le panier n’en a pas besoin.{' '}
         <Link href="/confidentialite" className="text-cognac underline underline-offset-4">
           En savoir plus
         </Link>
