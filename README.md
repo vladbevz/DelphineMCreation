@@ -52,7 +52,7 @@ pnpm dev                     # http://localhost:3000, Studio на /studio
 2. Резерв однією транзакцією з `ifRevisionID` на кожен товар: дві вкладки, що купують ту саму прикрасу, — друга отримує 409. Статус пишеться і в опублікований документ, і в чернетку (якщо Delphine її відкрила), інакше публікація чернетки повернула б `available`.
 3. Резерв має `reservationToken` (також у `metadata` сесії Stripe) і `reservedUntil` = 32 хв. Сесія Stripe живе 31 хв (мінімум Stripe — 30).
 4. Повернення зі Stripe через «Annuler» або новий checkout з того ж браузера одразу закриває стару сесію й знімає резерв (не треба чекати 30 хв).
-5. `checkout.session.completed` → у **одній** транзакції: лічильник номерів у `settings` (`ifRevisionID`), `create` замовлення з `_id = order-<sessionId>` і `sold` для товарів. Повторна подія падає на `create` → нічого не дублюється, другий лист не йде (плюс idempotency key у Resend).
+5. `checkout.session.completed` → у **одній** транзакції: лічильник номерів у `settings` (`ifRevisionID`), `create` замовлення з `_id = orders.<sessionId>` (ID з крапкою не читається без токена — dataset публічний) і `sold` для товарів. Повторна подія падає на `create` → нічого не дублюється, другий лист не йде (плюс idempotency key у Resend).
 6. `expired` / `async_payment_failed` → знімає резерви з цим токеном. Cron кожні 15 хв — страховка.
 7. Оплати з відкладеним підтвердженням (SEPA): `completed` з `unpaid` продовжує резерв на 7 днів, замовлення створюється на `async_payment_succeeded`.
 

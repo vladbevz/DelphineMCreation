@@ -147,7 +147,7 @@ src/
 
 **`collection`** — `title`, `slug`, `cover`, `description`, `order`
 
-**`order`** (створює тільки сервер; `_id` = `order-${stripeSessionId}`)
+**`order`** (створює тільки сервер; `_id` = `orders.${stripeSessionId}`)
 - `number` (string, формат `DMC-2026-0001`), `stripeSessionId`, `stripePaymentIntentId`
 - `items[]` (product ref, title, price — знімок на момент покупки)
 - `customer` (name, email, phone), `shippingAddress`, `shippingMethod` (`colissimo | retrait`)
@@ -190,7 +190,7 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 
 ### 6.3 Webhook — `POST /api/webhooks/stripe`
 - Raw body + `stripe.webhooks.constructEvent` з `STRIPE_WEBHOOK_SECRET`. Невалідний підпис → 400.
-- **Ідемпотентність:** order `_id = order-${session.id}`, створення через `createIfNotExists`. Повторна подія нічого не дублює.
+- **Ідемпотентність:** order `_id = orders.${session.id}`, створення через `createIfNotExists`. Повторна подія нічого не дублює.
 - `checkout.session.completed`:
   1. Товари з `metadata.productIds` → `status: 'sold'`, `stock: 0`, `unset reservedUntil`.
   2. Створити `order` (дані з session: customer_details, shipping_details, amounts). Номер — інкремент через лічильник у `settings` в transaction.
@@ -359,6 +359,7 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 
 ## 16. Рішення, ухвалені під час розробки (доповнюють розділи вище)
 
+- **Публічний dataset** (безкоштовний тариф Sanity не має приватних): документи з персональними даними мають `_id` з крапкою — `orders.<sessionId>`, `requests.<uuid>` — такі не читаються без токена (як `drafts.`). Нові типи з персональними даними — так само. Товари, сторінки, settings — публічні.
 - **Офлайн-режим**: без `NEXT_PUBLIC_SANITY_PROJECT_ID` усі читання йдуть з `src/lib/sanity/fixtures.ts` через `src/lib/sanity/data.ts`. Сторінки читають дані **тільки** через `data.ts`. На Vercel production усі ключі обов'язкові (`REQUIRED_IN_PRODUCTION` у `src/lib/env.ts`).
 - **Резерв**: окрім `reservedUntil`, товар отримує `reservationToken` (той самий — у `metadata` сесії Stripe). Сесія Stripe — 31 хв (мінімум Stripe 30), резерв — 32 хв. «Annuler» у Stripe або новий checkout з того ж браузера одразу закривають попередню сесію й знімають резерв. Статус пишеться і в опублікований документ, і в чернетку `drafts.<id>`.
 - **Замовлення**: створюється через `create` (не `createIfNotExists`) в одній транзакції з лічильником і `sold` — дублікат події падає цілком і не шле листів. Плюс idempotency key у Resend. Оплати з відкладеним підтвердженням: резерв продовжується на 7 днів, замовлення — на `async_payment_succeeded`.

@@ -1,5 +1,6 @@
 'use server';
 
+import { randomUUID } from 'node:crypto';
 import * as Sentry from '@sentry/nextjs';
 import { headers } from 'next/headers';
 import { categoryLabel } from '@/lib/catalog';
@@ -124,6 +125,8 @@ export async function submitCustomRequest(
     );
 
     const request = await writeClient.create({
+      // Path ID: hidden from unauthenticated reads of the public dataset (personal data).
+      _id: `requests.${randomUUID()}`,
       _type: 'customRequest',
       status: 'new',
       createdAt: new Date().toISOString(),

@@ -8,6 +8,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { formatPrice } from '@/lib/format';
+import { orderIdFor } from '@/lib/orders';
 import { client } from '@/lib/sanity/client';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
 import { stripeSessionIdSchema } from '@/lib/validation';
@@ -39,7 +40,7 @@ export default async function MerciPage({ searchParams }: Props) {
     .withConfig({ useCdn: false })
     .fetch<string | null>(
       `*[_id == $id][0].number`,
-      { id: `order-${session.id}` },
+      { id: orderIdFor(session.id) },
       { cache: 'no-store' },
     )
     .catch(() => null);

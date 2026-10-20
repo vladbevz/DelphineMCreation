@@ -16,7 +16,11 @@ const MAX_COUNTER_RETRIES = 5;
 /** Delayed payment methods (e.g. SEPA) can take a few days to confirm. */
 const DELAYED_PAYMENT_HOLD_DAYS = 7;
 
-export const orderIdFor = (sessionId: string) => `order-${sessionId}`;
+/**
+ * The dataset is public (Sanity free plan): documents whose _id has a path ("orders.…") are only
+ * readable with a token, like drafts. Orders hold customers' personal data, so they live there.
+ */
+export const orderIdFor = (sessionId: string) => `orders.${sessionId}`;
 
 export function studioOrderUrl(orderId: string) {
   return absoluteUrl(`/studio/intent/edit/id=${orderId};type=order/`);
