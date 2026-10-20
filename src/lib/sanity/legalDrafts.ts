@@ -8,6 +8,17 @@ import type { BlockContent } from '@/sanity/types';
 
 type Block = BlockContent[number];
 
+/** Seller identity from the company register (INSEE / RNE, checked 19/10/2026). */
+export const owner = {
+  name: 'Delphine De Meulemeester',
+  siren: '104 189 527',
+  siret: '104 189 527 00013',
+  vatNumber: 'FR61104189527',
+  address: '4 rue de la Farigoule, 30870 Clarensac',
+  email: 'delphmeulemeester@gmail.com',
+  phone: '+33 7 81 36 86 33',
+};
+
 /** Splits `**bold**` runs into Portable Text spans. */
 function spans(key: string, text: string) {
   return text
@@ -63,10 +74,10 @@ const cgv = md('cgv', [
   DRAFT,
   'Version en vigueur au [À COMPLÉTER : date de mise en ligne].',
   '## 1. Qui sommes-nous',
-  'Le site [À COMPLÉTER : domaine] est édité par [À COMPLÉTER : prénom nom], entrepreneur individuel (EI) exerçant sous le nom commercial « Delphine M. Créations » (ci-après « la créatrice »).',
-  '- SIRET : [À COMPLÉTER]',
-  '- Adresse : [À COMPLÉTER]',
-  '- E-mail : [À COMPLÉTER] — Téléphone : [À COMPLÉTER]',
+  `Le site [À COMPLÉTER : domaine] est édité par ${owner.name}, entrepreneur individuel (EI) exerçant sous le nom commercial « Delphine M. Créations » (ci-après « la créatrice »).`,
+  `- SIRET : ${owner.siret} (SIREN ${owner.siren}), immatriculation au Registre national des entreprises (RNE)`,
+  `- Adresse : ${owner.address}`,
+  `- E-mail : ${owner.email} — Téléphone : ${owner.phone}`,
   '- TVA non applicable, art. 293 B du CGI.',
   '## 2. Champ d’application',
   'Les présentes conditions générales de vente (CGV) s’appliquent à toutes les ventes de bijoux conclues sur le site entre la créatrice et toute personne physique agissant en qualité de consommateur (ci-après « la cliente » ou « le client »).',
@@ -93,7 +104,7 @@ const cgv = md('cgv', [
   'Les risques de perte ou d’endommagement des bijoux sont transférés à la cliente au moment où elle, ou un tiers désigné par elle, en prend physiquement possession.',
   '## 8. Droit de rétractation',
   'La cliente dispose d’un délai de **14 jours** à compter de la réception du bijou pour exercer son droit de rétractation, sans avoir à motiver sa décision.',
-  'Pour l’exercer, elle adresse avant l’expiration de ce délai une déclaration dénuée d’ambiguïté par e-mail à [À COMPLÉTER : e-mail] ou par courrier à l’adresse indiquée à l’article 1, en utilisant si elle le souhaite le formulaire de rétractation joint à l’e-mail de confirmation de commande.',
+  `Pour l’exercer, elle adresse avant l’expiration de ce délai une déclaration dénuée d’ambiguïté par e-mail à ${owner.email} ou par courrier à l’adresse indiquée à l’article 1, en utilisant si elle le souhaite le formulaire de rétractation joint à l’e-mail de confirmation de commande.`,
   'Le bijou est renvoyé au plus tard 14 jours après la communication de sa décision, dans son état d’origine et soigneusement emballé. Les frais de retour sont à la charge de [À COMPLÉTER : la cliente / la créatrice].',
   'La créatrice rembourse la totalité des sommes versées, y compris les frais de livraison initiaux (sur la base du tarif de livraison standard), au plus tard 14 jours après avoir été informée de la décision de rétractation. Elle peut différer le remboursement jusqu’à la réception du bijou ou jusqu’à la preuve de son expédition. Le remboursement est effectué avec le même moyen de paiement que celui utilisé lors de la commande.',
   'La responsabilité de la cliente peut être engagée en cas de dépréciation du bijou résultant de manipulations autres que celles nécessaires pour établir sa nature, ses caractéristiques et son bon fonctionnement.',
@@ -114,7 +125,7 @@ const cgv = md('cgv', [
   '## 13. Données personnelles',
   'Les données collectées lors d’une commande servent à son traitement, à sa livraison et au respect des obligations légales. Leur traitement est décrit dans la page « Confidentialité ».',
   '## 14. Réclamations et médiation',
-  'En cas de difficulté, la cliente est invitée à contacter d’abord la créatrice à [À COMPLÉTER : e-mail] afin de trouver une solution amiable.',
+  `En cas de difficulté, la cliente est invitée à contacter d’abord la créatrice à ${owner.email} afin de trouver une solution amiable.`,
   'À défaut d’accord, elle peut recourir gratuitement au médiateur de la consommation dont relève la créatrice : [À COMPLÉTER : nom, site internet et adresse du médiateur].',
   '## 15. Droit applicable',
   'Les présentes CGV sont soumises au droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français sont compétents dans les conditions prévues par la loi ; la cliente consommatrice peut notamment saisir la juridiction du lieu où elle demeurait au moment de la conclusion du contrat.',
@@ -123,19 +134,19 @@ const cgv = md('cgv', [
 const mentionsLegales = md('ml', [
   DRAFT,
   '## Éditeur du site',
-  'Le site [À COMPLÉTER : domaine] est édité par [À COMPLÉTER : prénom nom], entrepreneur individuel (EI), sous le nom commercial « Delphine M. Créations ».',
-  '- SIRET : [À COMPLÉTER]',
-  '- Adresse : [À COMPLÉTER]',
-  '- E-mail : [À COMPLÉTER] — Téléphone : [À COMPLÉTER]',
-  '- TVA non applicable, art. 293 B du CGI.',
-  'Directrice de la publication : [À COMPLÉTER : prénom nom].',
+  `Le site [À COMPLÉTER : domaine] est édité par ${owner.name}, entrepreneur individuel (EI), sous le nom commercial « Delphine M. Créations ».`,
+  `- SIRET : ${owner.siret} (SIREN ${owner.siren}), immatriculation au Registre national des entreprises (RNE)`,
+  `- Adresse : ${owner.address}`,
+  `- E-mail : ${owner.email} — Téléphone : ${owner.phone}`,
+  `- N° de TVA intracommunautaire : ${owner.vatNumber} — TVA non applicable, art. 293 B du CGI.`,
+  `Directrice de la publication : ${owner.name}.`,
   '## Hébergement',
   'Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — vercel.com.',
   '## Conception et réalisation',
   'Site conçu et développé par AtelierCode.',
   '## Propriété intellectuelle',
   'L’ensemble des contenus du site (créations, photos, textes, logo, éléments graphiques) est la propriété exclusive de la créatrice, sauf mention contraire. Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation écrite préalable est interdite.',
-  'Crédits photos : [À COMPLÉTER].',
+  `Crédits photos : [À COMPLÉTER].`,
   '## Données personnelles et cookies',
   'Le traitement des données personnelles et l’utilisation des cookies sont décrits dans la page « Confidentialité ». Vous pouvez modifier vos choix de cookies à tout moment depuis le lien « Gérer les cookies » en bas de chaque page.',
   '## Conditions de vente',
@@ -152,22 +163,22 @@ const livraisonRetours = md('lr', [
   'Les frais de livraison sont toujours indiqués avant le paiement.',
   '## Délais',
   'Chaque bijou est emballé avec soin et expédié sous [À COMPLÉTER : X] jours ouvrés après votre paiement. Dès l’envoi, vous recevez un e-mail avec votre numéro de suivi Colissimo. Comptez ensuite en général 48 h ouvrées pour la livraison (délai indicatif de La Poste).',
-  'Si votre colis arrive abîmé, émettez des réserves auprès du transporteur et écrivez-moi rapidement à [À COMPLÉTER : e-mail], avec une photo si possible.',
+  `Si votre colis arrive abîmé, émettez des réserves auprès du transporteur et écrivez-moi rapidement à ${owner.email}, avec une photo si possible.`,
   '## Changer d’avis : 14 jours pour vous rétracter',
   'Vous disposez de **14 jours** à compter de la réception de votre bijou pour changer d’avis, sans avoir à vous justifier.',
-  '- Prévenez-moi par e-mail à [À COMPLÉTER : e-mail] (ou avec le formulaire de rétractation joint à votre e-mail de confirmation de commande).',
+  `- Prévenez-moi par e-mail à ${owner.email} (ou avec le formulaire de rétractation joint à votre e-mail de confirmation de commande).`,
   '- Renvoyez le bijou dans les 14 jours suivants, dans son état d’origine et bien protégé, à l’adresse que je vous indiquerai. Les frais de retour sont à la charge de [À COMPLÉTER : la cliente / la créatrice].',
   '- Je vous rembourse la totalité de votre commande, frais de livraison initiaux compris, au plus tard 14 jours après votre demande, avec le même moyen de paiement. Je peux attendre d’avoir reçu le bijou (ou la preuve de son envoi) pour vous rembourser.',
   '**Exceptions :** les créations sur-mesure, faites selon vos souhaits, ne peuvent pas être retournées. [À DÉCIDER : boucles d’oreilles portées, pour raisons d’hygiène.]',
   '## Un défaut ?',
-  'Tous les bijoux bénéficient de la garantie légale de conformité (2 ans) et de la garantie des vices cachés. Si votre bijou présente un défaut, écrivez-moi à [À COMPLÉTER : e-mail] avec votre numéro de commande et une photo : nous trouverons ensemble une solution (réparation, échange ou remboursement). Le détail figure dans les CGV.',
+  `Tous les bijoux bénéficient de la garantie légale de conformité (2 ans) et de la garantie des vices cachés. Si votre bijou présente un défaut, écrivez-moi à ${owner.email} avec votre numéro de commande et une photo : nous trouverons ensemble une solution (réparation, échange ou remboursement). Le détail figure dans les CGV.`,
 ]);
 
 const confidentialite = md('cf', [
   DRAFT,
   'Votre vie privée compte. Cette page explique quelles données sont collectées sur ce site, pourquoi, combien de temps elles sont conservées et comment exercer vos droits (règlement européen « RGPD » et loi Informatique et libertés).',
   '## Responsable du traitement',
-  '[À COMPLÉTER : prénom nom], entrepreneur individuel, « Delphine M. Créations », [À COMPLÉTER : adresse]. Contact : [À COMPLÉTER : e-mail].',
+  `${owner.name}, entrepreneur individuel, « Delphine M. Créations », ${owner.address}. Contact : ${owner.email}.`,
   '## Quelles données et pourquoi',
   '### Commandes',
   'Nom, e-mail, téléphone, adresse de livraison, bijoux commandés et montant. Ces données servent à traiter et livrer votre commande, à vous envoyer les e-mails de suivi et à respecter nos obligations comptables. **Base légale :** exécution du contrat et obligation légale. Les données de carte bancaire sont saisies directement sur la page de paiement de Stripe : je n’y ai jamais accès.',
@@ -201,7 +212,7 @@ const confidentialite = md('cf', [
   '- **Nécessaires** (toujours actifs) : le contenu de votre panier et votre choix de cookies sont enregistrés dans votre navigateur ; la protection anti-spam des formulaires et la page de paiement Stripe utilisent leurs propres cookies de sécurité.',
   '- **Mesure d’audience** et **publicité** : uniquement avec votre accord (voir ci-dessus).',
   '## Vos droits',
-  'Vous pouvez demander l’accès à vos données, leur rectification, leur effacement, la limitation de leur traitement ou leur portabilité, vous opposer à leur traitement, retirer votre consentement à tout moment et définir des directives sur leur sort après votre décès. Écrivez à [À COMPLÉTER : e-mail] ; une réponse vous sera apportée dans un délai d’un mois.',
+  `Vous pouvez demander l’accès à vos données, leur rectification, leur effacement, la limitation de leur traitement ou leur portabilité, vous opposer à leur traitement, retirer votre consentement à tout moment et définir des directives sur leur sort après votre décès. Écrivez à ${owner.email} ; une réponse vous sera apportée dans un délai d’un mois.`,
   'Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (cnil.fr).',
   'Dernière mise à jour : [À COMPLÉTER : date].',
 ]);

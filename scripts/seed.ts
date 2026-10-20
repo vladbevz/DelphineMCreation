@@ -5,7 +5,7 @@
  */
 import { getCliClient } from 'sanity/cli';
 import { entretienBlocks } from '../src/lib/sanity/fixtures';
-import { legalDrafts } from '../src/lib/sanity/legalDrafts';
+import { legalDrafts, owner } from '../src/lib/sanity/legalDrafts';
 
 const client = getCliClient({ apiVersion: '2026-10-01' });
 
@@ -49,6 +49,9 @@ async function main() {
     vacationMode: { enabled: false },
     announcementBar: { enabled: false },
     pickupEnabled: false,
+    email: owner.email,
+    phone: owner.phone,
+    postalAddress: owner.address,
   });
 
   const collections = ['A', 'B'].map((letter, i) => ({

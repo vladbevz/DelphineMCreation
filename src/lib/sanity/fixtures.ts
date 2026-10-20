@@ -6,6 +6,7 @@ import type {
   PRODUCT_QUERY_RESULT,
   SETTINGS_QUERY_RESULT,
 } from '@/sanity/types';
+import { owner } from './legalDrafts';
 
 type Product = NonNullable<PRODUCT_QUERY_RESULT>;
 
@@ -116,9 +117,9 @@ export const fixtureSettings: SETTINGS_QUERY_RESULT = {
   colissimoPrice: null,
   freeShippingThreshold: null,
   pickupEnabled: false,
-  email: null,
-  postalAddress: null,
-  phone: null,
+  email: owner.email,
+  postalAddress: owner.address,
+  phone: owner.phone,
   instagram: null,
   facebook: null,
 };

@@ -5,7 +5,8 @@
 ## 0. Отримати від клієнтки (CLAUDE.md §15)
 
 - [ ] Домен і точна назва бренду
-- [ ] Статус: micro-entreprise, SIRET, франшиза TVA (→ «TVA non applicable, art. 293 B du CGI» у CGV і футері)
+- [x] Реквізити (INSEE/RNE, 19.10.2026): EI Delphine De Meulemeester, SIRET 104 189 527 00013, 4 rue de la Farigoule 30870 Clarensac, tel, e-mail → `owner` у `src/lib/sanity/legalDrafts.ts`, вписано в юридичні сторінки, CGV і Réglages (seed)
+- [ ] Підтвердити: micro-entreprise + franchise en base TVA (є номер TVA FR61104189527 — «TVA non applicable, art. 293 B» лише якщо franchise); чи згодна публікувати домашню адресу (інакше domiciliation); публічний e-mail — gmail чи bonjour@домен
 - [ ] Тексти: CGV, mentions légales, livraison et retours, confidentialité, entretien, L'atelier, hero, переваги
 - [ ] Тариф Colissimo і поріг безкоштовної доставки; самовивіз так/ні; хто платить зворотну доставку
 - [ ] Терміни відправки (для сторінки товару, листів і `delivery_estimate` у Stripe — `src/lib/checkout.ts`)
