@@ -5,6 +5,7 @@
  */
 import { getCliClient } from 'sanity/cli';
 import { entretienBlocks } from '../src/lib/sanity/fixtures';
+import { legalDrafts } from '../src/lib/sanity/legalDrafts';
 
 const client = getCliClient({ apiVersion: '2026-10-01' });
 
@@ -110,8 +111,19 @@ async function main() {
     body: entretienBlocks,
   });
 
+  // Legal page drafts with [À COMPLÉTER] placeholders: created once, completed in the Studio.
+  for (const [slug, { title, body }] of Object.entries(legalDrafts)) {
+    tx.createIfNotExists({
+      _id: `page-${slug}`,
+      _type: 'page',
+      title,
+      slug: { _type: 'slug', current: slug },
+      body,
+    });
+  }
+
   await tx.commit();
-  console.log('Done: settings, 2 collections, 8 products.');
+  console.log('Done: settings, 2 collections, 8 products, care guide and legal page drafts.');
 }
 
 main().catch((error) => {

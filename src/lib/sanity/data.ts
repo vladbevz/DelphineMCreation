@@ -22,6 +22,7 @@ import {
   SETTINGS_QUERY,
   SITEMAP_QUERY,
 } from './queries';
+import { legalDrafts } from './legalDrafts';
 
 // Every storefront read goes through here. Without a Sanity project (local development
 // before the client's accounts exist) the functions return fixtures with the same shape.
@@ -123,8 +124,9 @@ export const getCollection = cache(async (slug: string) => {
 
 export const getPage = cache(async (slug: string) => {
   if (offline) {
-    const body = slug === 'entretien' ? entretienBlocks : placeholderBlocks();
-    return { _id: `page-${slug}`, title: '', body, seo: null };
+    const draft = legalDrafts[slug as keyof typeof legalDrafts];
+    const body = slug === 'entretien' ? entretienBlocks : (draft?.body ?? placeholderBlocks());
+    return { _id: `page-${slug}`, title: draft?.title ?? '', body, seo: null };
   }
   return sanityFetch(PAGE_QUERY, { params: { slug }, tags: ['page'] });
 });
