@@ -31,7 +31,7 @@ export function OrderSummary({ order }: { order: EmailOrder }) {
                 alt=""
                 width="60"
                 height="75"
-                style={{ borderRadius: '8px', backgroundColor: colors.sand }}
+                style={{ backgroundColor: colors.sand }}
               />
             </Column>
           )}
