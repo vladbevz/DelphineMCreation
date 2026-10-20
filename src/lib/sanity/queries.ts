@@ -59,7 +59,7 @@ export const COLLECTION_QUERY = defineQuery(`
   *[_type == "collection" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, cover, description,
     "products": *[${PUBLIC_PRODUCT_FILTER} && collection._ref == ^._id]
-      | order(status == "sold" asc, publishedAt desc){ ${PRODUCT_CARD_FIELDS} }
+      | order(select(status == "sold" => 1, 0) asc, publishedAt desc){ ${PRODUCT_CARD_FIELDS} }
   }
 `);
 
