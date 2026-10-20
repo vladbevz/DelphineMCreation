@@ -26,7 +26,7 @@ pnpm dev                     # http://localhost:3000, Studio на /studio
 
 ```
 Браузер ──► Next.js (Vercel)
-  │           ├─ Server Components ──► Sanity CDN (read token, dataset private)
+  │           ├─ Server Components ──► Sanity CDN (read token; public dataset, personal data in path IDs)
   │           ├─ /api/checkout ──────► Sanity (резерв, transaction + ifRevisionID) ──► Stripe Checkout Session
   │           ├─ /api/webhooks/stripe ◄── Stripe (completed / expired / async_*)
   │           ├─ /api/webhooks/sanity ◄── Sanity (публікація контенту, замовлення → shipped)
@@ -60,7 +60,7 @@ pnpm dev                     # http://localhost:3000, Studio на /studio
 
 Повний покроковий чекліст — у [docs/LAUNCH-CHECKLIST.md](docs/LAUNCH-CHECKLIST.md). Коротко:
 
-- **Sanity**: dataset `production` **private** (у ньому персональні дані). Токени Viewer (`SANITY_API_READ_TOKEN`) і Editor (`SANITY_API_WRITE_TOKEN`). CORS: домен сайту + `http://localhost:3000` з credentials. Webhook — див. нижче.
+- **Sanity**: dataset `production` публічний (безкоштовний тариф). Персональні дані — лише в документах з `_id` через крапку (`orders.…`, `requests.…`), їх без токена не видно. Токени Viewer (`SANITY_API_READ_TOKEN`) і Editor (`SANITY_API_WRITE_TOKEN`). CORS: домен сайту + `http://localhost:3000` з credentials. Webhook — див. нижче.
 - **Stripe**: Settings → Public details → Terms of service URL = `https://<домен>/cgv` (без нього `consent_collection` не працює). Webhook на `/api/webhooks/stripe` з подіями `checkout.session.completed`, `checkout.session.expired`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`.
 - **Resend**: верифікувати домен, `EMAIL_FROM="Delphine M. Créations <bonjour@домен>"`.
 - **Turnstile**: сайт-ключ і секрет для домену.

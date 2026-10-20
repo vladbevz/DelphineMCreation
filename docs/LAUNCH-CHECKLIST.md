@@ -20,13 +20,14 @@
 
 ## 1. Sanity
 
-- [ ] sanity.io → проєкт «Delphine M. Créations», dataset `production`, **Private**
-- [ ] API → CORS: `http://localhost:3000` і `https://<домен>`, обидва з **Allow credentials**
-- [ ] API → Tokens: `site-read` (Viewer), `site-write` (Editor)
-- [ ] `.env.local`: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`
-- [ ] `pnpm exec sanity login` → `pnpm seed` → перевірити `/studio` і головну
+- [x] sanity.io → проєкт, dataset `production` (публічний, free; замовлення і запити — `orders.…`/`requests.…`, перевірено: без токена не читаються)
+- [x] API → CORS: `http://localhost:3000` з **Allow credentials**
+- [ ] CORS: адреса Vercel і `https://<домен>`, з **Allow credentials**
+- [x] API → Tokens: `site-read` (Viewer), `site-write` (Editor)
+- [x] `.env.local` і Vercel: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`
+- [x] `pnpm exec sanity login` → `pnpm seed` → перевірити `/studio` і головну
 - [ ] Перевірити: SVG-плейсхолдери з seed віддаються CDN і `next/image`; blur (LQIP); OG-картинка товару
-- [ ] Критерій етапу 1: створити товар у Studio → опублікувати → з'являється на сайті (≤ 60 с або одразу з вебхуком)
+- [x] Критерій етапу 1: створити товар у Studio → опублікувати → з'являється на сайті (≤ 60 с або одразу з вебхуком)
 - [ ] Réglages: тариф Colissimo, поріг, самовивіз, контакти, Instagram
 - [ ] Réglages → Documents légaux: **PDF CGV** і **поштова адреса** (йдуть у лист-підтвердження з бланком відмови, L221-13). Перевірити, що PDF прикріпився в тестовому замовленні
 - [ ] Members → запросити Delphine з роллю **Editor**
