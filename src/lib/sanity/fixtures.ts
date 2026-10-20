@@ -117,6 +117,7 @@ export const fixtureSettings: SETTINGS_QUERY_RESULT = {
   freeShippingThreshold: null,
   pickupEnabled: false,
   email: null,
+  postalAddress: null,
   phone: null,
   instagram: null,
   facebook: null,

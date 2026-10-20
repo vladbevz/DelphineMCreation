@@ -16,10 +16,19 @@ type SendOptions = {
   replyTo?: string;
   /** Resend ignores a second send with the same key (webhook retries). */
   idempotencyKey?: string;
+  /** Files fetched by Resend from a public URL (e.g. the CGV PDF on the Sanity CDN). */
+  attachments?: { filename: string; path: string }[];
 };
 
 /** Sends an e-mail. Never throws: failures go to Sentry so webhooks still answer 200. */
-export async function sendEmail({ to, subject, react, replyTo, idempotencyKey }: SendOptions) {
+export async function sendEmail({
+  to,
+  subject,
+  react,
+  replyTo,
+  idempotencyKey,
+  attachments,
+}: SendOptions) {
   if (!serverEnv.RESEND_API_KEY) {
     console.info(`[email skipped, RESEND_API_KEY missing] ${subject} -> ${to}`);
     return false;
@@ -27,7 +36,7 @@ export async function sendEmail({ to, subject, react, replyTo, idempotencyKey }:
   resend ??= new Resend(serverEnv.RESEND_API_KEY);
   try {
     const { error } = await resend.emails.send(
-      { from: FROM, to, subject, react, replyTo },
+      { from: FROM, to, subject, react, replyTo, attachments },
       idempotencyKey ? { idempotencyKey } : undefined,
     );
     if (error) throw new Error(`${error.name}: ${error.message}`);

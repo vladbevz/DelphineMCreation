@@ -76,7 +76,7 @@ export const SITEMAP_QUERY = defineQuery(`{
 export const SETTINGS_QUERY = defineQuery(`
   *[_type == "settings" && _id == "settings"][0]{
     vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,
-    email, phone, instagram, facebook
+    email, postalAddress, phone, instagram, facebook
   }
 `);
 

@@ -347,7 +347,7 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 
 ## 14. Фаза 2 (не робити зараз)
 
-Англійська версія (next-intl) і доставка в ЄС · персоналізація в товарі (колір шкіри, ініціали) · sur-mesure з оплатою acompte через Stripe Payment Link · подарункове пакування, промокоди (Stripe coupons), подарункові картки · newsletter (Brevo) і покинутий кошик · етикетки Boxtal/Sendcloud, Mondial Relay · lookbook / блог.
+Англійська версія (next-intl) і доставка в ЄС · персоналізація в товарі (колір шкіри, ініціали) · sur-mesure з оплатою acompte через Stripe Payment Link · подарункове пакування, промокоди (Stripe coupons), подарункові картки · newsletter (Brevo) і покинутий кошик · e-reporting B2C (реформа e-facturation, з 09.2027) · автоматичні factures (Stripe `invoice_creation`), якщо бухгалтер скаже · етикетки Boxtal/Sendcloud, Mondial Relay · lookbook / блог.
 
 ---
 
@@ -367,4 +367,5 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 - **Фото sur-mesure** стискаються в браузері (≤1600 px) — ліміт тіла запиту на Vercel 4,5 МБ.
 - **Rate limit** — у пам'яті інстансу (достатньо разом із Turnstile).
 - **Cron** кожні 15 хв потребує Vercel Pro; на Hobby — щоденний (основний механізм — вебхук `expired`).
+- **CGV у листі**: лист «Confirmation de commande» = підтвердження на support durable (L221-13) — CGV PDF з `settings.cgvPdf` у вкладенні (Resend `attachments`), посилання на `/cgv`, блок «Droit de rétractation» і офіційний formulaire type (R221-1) з `settings.postalAddress`. Facture — не автоматично, на запит (уточнює бухгалтер клієнтки).
 - Документація: `README.md` (архітектура, сервіси, тест-сценарії), `docs/LAUNCH-CHECKLIST.md`, `docs/GUIDE-DELPHINE.md` (французькою).

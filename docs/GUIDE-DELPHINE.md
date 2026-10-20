@@ -78,7 +78,10 @@ Studio → **Réglages** :
 
 - **Bandeau d'annonce** : petit message en haut de toutes les pages (ex. une collection qui arrive).
 - **Livraison** : prix Colissimo, livraison offerte à partir de…, retrait dans la Vaunage.
-- **Contact** : e-mail, téléphone, liens Instagram et Facebook affichés sur le site.
+- **Contact** : e-mail, téléphone, adresse postale, liens Instagram et Facebook affichés sur le site.
+- **Documents légaux** : le **PDF de vos CGV** et votre **adresse postale**. Le PDF est joint automatiquement à chaque e-mail de confirmation de commande, avec le formulaire de rétractation (c'est une obligation légale). **Quand vous modifiez les CGV dans Pages, remplacez aussi le PDF.**
+
+**Factures** : elles ne sont pas envoyées automatiquement. Si une cliente en demande une, faites-la depuis le Stripe Dashboard ou votre outil habituel (mentions : SIRET, « EI », « TVA non applicable, art. 293 B du CGI », numéro qui se suit).
 
 Studio → **Pages** : les textes des pages Conditions générales de vente, Mentions légales, Livraison et retours, Confidentialité et Entretien du cuir.
 

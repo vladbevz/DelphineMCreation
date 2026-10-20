@@ -11,7 +11,9 @@
 - [ ] Терміни відправки (для сторінки товару, листів і `delivery_estimate` у Stripe — `src/lib/checkout.ts`)
 - [ ] Фото товарів і для сторінки L'atelier, блоку Instagram. Зараз там стокові фото Unsplash (`src/lib/photos.ts`) — замінити: покласти в `assets/photos/` з тими ж іменами → `pnpm images`
 - [ ] Посилання на Instagram/Facebook, e-mail і телефон для сайту
-- [ ] Погодити тексти, які я написав сам (позначені у звітах етапів): hero, «Réservé», «Vendu», банер cookies, листи
+- [ ] Бухгалтер Delphine: чи потрібна facture для B2C-продажів (зараз — «на запит», вручну); чи вмикати Stripe `invoice_creation` (платно)
+- [ ] CGV мають містити: droit de rétractation 14 днів і як повертати; виняток для sur-mesure (L221-28 3°); «facture sur demande»; TVA non applicable
+- [ ] Погодити тексти, які я написав сам (позначені у звітах етапів): hero, «Réservé», «Vendu», банер cookies, листи, зокрема короткий абзац «Droit de rétractation» у листі — `src/lib/email/templates/WithdrawalInfo.tsx`)
 
 ## 1. Sanity
 
@@ -23,6 +25,7 @@
 - [ ] Перевірити: SVG-плейсхолдери з seed віддаються CDN і `next/image`; blur (LQIP); OG-картинка товару
 - [ ] Критерій етапу 1: створити товар у Studio → опублікувати → з'являється на сайті (≤ 60 с або одразу з вебхуком)
 - [ ] Réglages: тариф Colissimo, поріг, самовивіз, контакти, Instagram
+- [ ] Réglages → Documents légaux: **PDF CGV** і **поштова адреса** (йдуть у лист-підтвердження з бланком відмови, L221-13). Перевірити, що PDF прикріпився в тестовому замовленні
 - [ ] Members → запросити Delphine з роллю **Editor**
 - [ ] Після запуску: видалити документи `seed-*`
 

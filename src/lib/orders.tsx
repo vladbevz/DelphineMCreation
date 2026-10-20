@@ -6,6 +6,7 @@ import { delphineEmail, sendEmail } from './email/send';
 import { NewOrderEmail } from './email/templates/NewOrderEmail';
 import { OrderConfirmationEmail } from './email/templates/OrderConfirmationEmail';
 import type { EmailOrder } from './email/templates/OrderSummary';
+import type { SellerInfo } from './email/templates/WithdrawalInfo';
 import { extendReservation, isConflict, releaseReservation } from './reservations';
 import { writeClient } from './sanity/writeClient';
 import { getStripe } from './stripe';
@@ -216,15 +217,44 @@ async function commitOrder(order: OrderDoc, productIds: string[], token: string 
   throw new Error(`Could not allocate an order number for ${order._id}`);
 }
 
+/** CGV PDF and seller details for the durable-medium confirmation (L221-13). */
+async function getSellerInfo(): Promise<{ seller: SellerInfo; cgvPdfUrl: string | null }> {
+  const legal = await writeClient
+    .fetch<{
+      email?: string | null;
+      postalAddress?: string | null;
+      cgvPdfUrl?: string | null;
+    } | null>(`*[_id == "settings"][0]{ email, postalAddress, "cgvPdfUrl": cgvPdf.asset->url }`)
+    .catch((error) => {
+      // The confirmation still goes out, with the CGV link only.
+      Sentry.captureException(error);
+      return null;
+    });
+  const cgvPdfUrl = legal?.cgvPdfUrl ?? null;
+  return {
+    cgvPdfUrl,
+    seller: {
+      cgvUrl: absoluteUrl('/cgv'),
+      cgvAttached: Boolean(cgvPdfUrl),
+      email: legal?.email,
+      postalAddress: legal?.postalAddress,
+    },
+  };
+}
+
 async function sendOrderEmails(order: OrderDoc) {
   const tasks: Promise<boolean>[] = [];
   if (order.customer.email) {
+    const { seller, cgvPdfUrl } = await getSellerInfo();
     tasks.push(
       sendEmail({
         to: order.customer.email,
         subject: `Votre commande ${order.number} est confirmée`,
-        react: <OrderConfirmationEmail order={order} />,
+        react: <OrderConfirmationEmail order={order} seller={seller} />,
         idempotencyKey: `order-confirmation/${order._id}`,
+        attachments: cgvPdfUrl
+          ? [{ filename: 'CGV-Delphine-M-Creations.pdf', path: cgvPdfUrl }]
+          : undefined,
       }),
     );
   }

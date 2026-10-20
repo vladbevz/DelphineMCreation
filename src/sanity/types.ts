@@ -40,6 +40,13 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: 'reference';
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+};
+
 export type Settings = {
   _id: string;
   _type: 'settings';
@@ -58,6 +65,12 @@ export type Settings = {
   freeShippingThreshold?: number;
   pickupEnabled?: boolean;
   email?: string;
+  postalAddress?: string;
+  cgvPdf?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: 'file';
+  };
   phone?: string;
   instagram?: string;
   facebook?: string;
@@ -341,6 +354,7 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | Seo
   | BlockContent
+  | SanityFileAssetReference
   | Settings
   | Page
   | Slug
@@ -616,7 +630,7 @@ export type SITEMAP_QUERY_RESULT = {
 
 // Source: src/lib/sanity/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "settings" && _id == "settings"][0]{    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,    email, phone, instagram, facebook  }
+// Query: *[_type == "settings" && _id == "settings"][0]{    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,    email, postalAddress, phone, instagram, facebook  }
 export type SETTINGS_QUERY_RESULT = {
   vacationMode: {
     enabled?: boolean;
@@ -630,6 +644,7 @@ export type SETTINGS_QUERY_RESULT = {
   freeShippingThreshold: number | null;
   pickupEnabled: boolean | null;
   email: string | null;
+  postalAddress: string | null;
   phone: string | null;
   instagram: string | null;
   facebook: string | null;
@@ -668,7 +683,7 @@ declare global {
     '\n  *[_type == "collection" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, cover, description,\n    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]\n      | order(status == "sold" asc, publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  status,\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n  }\n': COLLECTION_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{ _id, title, body, seo }\n': PAGE_QUERY_RESULT;
     '{\n  "products": *[_type == "product" && defined(slug.current) && count(images) > 0]{ "slug": slug.current, _updatedAt },\n  "collections": *[_type == "collection" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT;
-    '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    email, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    email, postalAddress, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "product" && _id in $ids]{\n    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,\n    "image": images[0]\n  }\n': CART_PRODUCTS_QUERY_RESULT;
   }
 }

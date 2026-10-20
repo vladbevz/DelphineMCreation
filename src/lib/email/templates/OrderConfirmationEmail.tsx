@@ -1,9 +1,16 @@
 import { Text } from '@react-email/components';
 import { EmailLayout, heading, label, text } from './EmailLayout';
 import { AddressBlock, OrderSummary, type EmailOrder } from './OrderSummary';
+import { WithdrawalInfo, type SellerInfo } from './WithdrawalInfo';
 
 /** To the customer, right after payment. */
-export function OrderConfirmationEmail({ order }: { order: EmailOrder }) {
+export function OrderConfirmationEmail({
+  order,
+  seller,
+}: {
+  order: EmailOrder;
+  seller: SellerInfo;
+}) {
   const firstName = order.customer.name?.split(' ')[0];
   return (
     <EmailLayout preview={`Votre commande ${order.number} est confirmée`}>
@@ -25,6 +32,7 @@ export function OrderConfirmationEmail({ order }: { order: EmailOrder }) {
           : 'Je prépare votre colis avec soin. Vous recevrez un e-mail avec le numéro de suivi dès son envoi.'}
       </Text>
       <Text style={text}>[TEXTE À FOURNIR : délais de préparation, signature]</Text>
+      <WithdrawalInfo orderNumber={order.number} seller={seller} />
     </EmailLayout>
   );
 }

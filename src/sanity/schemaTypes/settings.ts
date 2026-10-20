@@ -13,6 +13,7 @@ export const settings = defineType({
     { name: 'shop', title: 'Boutique', default: true },
     { name: 'shipping', title: 'Livraison' },
     { name: 'contact', title: 'Contact' },
+    { name: 'legal', title: 'Documents légaux' },
   ],
   fields: [
     defineField({
@@ -64,6 +65,24 @@ export const settings = defineType({
       initialValue: false,
     }),
     defineField({ name: 'email', title: 'E-mail de contact', type: 'email', group: 'contact' }),
+    defineField({
+      name: 'postalAddress',
+      title: 'Adresse postale',
+      description:
+        'Imprimée dans le formulaire de rétractation envoyé avec chaque commande (obligation légale).',
+      type: 'text',
+      rows: 3,
+      group: ['contact', 'legal'],
+    }),
+    defineField({
+      name: 'cgvPdf',
+      title: 'CGV (PDF)',
+      description:
+        'Joint automatiquement à l’e-mail de confirmation de commande. Remplacez-le à chaque modification des CGV.',
+      type: 'file',
+      options: { accept: 'application/pdf' },
+      group: 'legal',
+    }),
     defineField({ name: 'phone', title: 'Téléphone', type: 'string', group: 'contact' }),
     defineField({ name: 'instagram', title: 'Lien Instagram', type: 'url', group: 'contact' }),
     defineField({ name: 'facebook', title: 'Lien Facebook', type: 'url', group: 'contact' }),
