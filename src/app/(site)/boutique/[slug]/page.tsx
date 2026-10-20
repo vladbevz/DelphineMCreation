@@ -217,6 +217,23 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </Container>
 
+      {related.length > 0 && (
+        <section className="mt-16 lg:mt-24">
+          <Container>
+            <SectionHeading
+              align="center"
+              title={
+                <>
+                  Vous aimerez <em>aussi</em>
+                </>
+              }
+              className="mb-10"
+            />
+            <ProductGrid products={related} variant="row" />
+          </Container>
+        </section>
+      )}
+
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
         <Container size="medium" className="grid md:grid-cols-2">
@@ -277,23 +294,6 @@ export default async function ProductPage({ params }: Props) {
           </RevealImage>
         </Container>
       </section>
-
-      {related.length > 0 && (
-        <section className="mt-16 lg:mt-24">
-          <Container>
-            <SectionHeading
-              align="center"
-              title={
-                <>
-                  Vous aimerez <em>aussi</em>
-                </>
-              }
-              className="mb-10"
-            />
-            <ProductGrid products={related} />
-          </Container>
-        </section>
-      )}
     </>
   );
 }

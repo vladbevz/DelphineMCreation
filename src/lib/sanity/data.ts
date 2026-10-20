@@ -73,29 +73,38 @@ export const getProduct = cache(async (slug: string) => {
   return sanityFetch(PRODUCT_QUERY, { params: { slug }, tags: ['product'] });
 });
 
-export const getRelatedProducts = cache(
-  async (product: { _id: string; category: string; collection: { _id: string } | null }) => {
-    if (offline) {
-      return fixtureProducts
-        .filter(
-          (p) =>
-            p._id !== product._id &&
-            p.status !== 'sold' &&
-            (p.collection?._id === product.collection?._id || p.category === product.category),
-        )
-        .slice(0, 4)
-        .map(toCard);
-    }
-    return sanityFetch(RELATED_PRODUCTS_QUERY, {
-      params: {
-        id: product._id,
-        category: product.category,
-        collectionId: product.collection?._id ?? null,
-      },
-      tags: ['product'],
-    });
-  },
-);
+const RELATED_COUNT = 4;
+
+type RelatedSource = { _id: string; category: string; collection: { _id: string } | null };
+
+/** Same collection or category first, then topped up with the newest pieces: always a full row. */
+export const getRelatedProducts = cache(async (product: RelatedSource) => {
+  const [close, latest] = await Promise.all([findRelated(product), getLatestProducts()]);
+  const seen = new Set([product._id, ...close.map((p) => p._id)]);
+  return [...close, ...latest.filter((p) => !seen.has(p._id))].slice(0, RELATED_COUNT);
+});
+
+const findRelated = cache(async (product: RelatedSource) => {
+  if (offline) {
+    return fixtureProducts
+      .filter(
+        (p) =>
+          p._id !== product._id &&
+          p.status !== 'sold' &&
+          (p.collection?._id === product.collection?._id || p.category === product.category),
+      )
+      .slice(0, 4)
+      .map(toCard);
+  }
+  return sanityFetch(RELATED_PRODUCTS_QUERY, {
+    params: {
+      id: product._id,
+      category: product.category,
+      collectionId: product.collection?._id ?? null,
+    },
+    tags: ['product'],
+  });
+});
 
 export const getCollections = cache(async () => {
   if (offline) return fixtureCollections;
