@@ -12,6 +12,7 @@
 - [ ] Фото товарів і для сторінки L'atelier, блоку Instagram. Зараз там стокові фото Unsplash (`src/lib/photos.ts`) — замінити: покласти в `assets/photos/` з тими ж іменами → `pnpm images`
 - [ ] Посилання на Instagram/Facebook, e-mail і телефон для сайту
 - [ ] Бухгалтер Delphine: чи потрібна facture для B2C-продажів (зараз — «на запит», вручну); чи вмикати Stripe `invoice_creation` (платно)
+- [ ] Проєкт CGV: `docs/legal/cgv.html` (джерело) → `docs/legal/CGV-PROJET.pdf`. Заповнити всі `[À COMPLÉTER]`, вирішити: хто платить повернення, виняток для сережок (гігієна), acompte для sur-mesure, медіатор (обов'язково). Дати на перевірку юристу/CCI, прибрати рамку «PROJET», перегенерувати PDF (Chrome → Друк → Зберегти як PDF, A4, з фоном) → Réglages → CGV (PDF); той самий текст — у Pages → cgv
 - [ ] CGV мають містити: droit de rétractation 14 днів і як повертати; виняток для sur-mesure (L221-28 3°); «facture sur demande»; TVA non applicable
 - [ ] Погодити тексти, які я написав сам (позначені у звітах етапів): hero, «Réservé», «Vendu», банер cookies, листи, зокрема короткий абзац «Droit de rétractation» у листі — `src/lib/email/templates/WithdrawalInfo.tsx`)
 
