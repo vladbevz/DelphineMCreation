@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ColorRule } from '@/components/brand/ColorRule';
 import { Container, type ContainerSize } from './Container';
 import { SectionHeading } from './SectionHeading';
 
@@ -20,6 +21,7 @@ export function PageHeader({
   return (
     <Container size={size} className="pt-8 pb-8 sm:pt-12 sm:pb-10">
       <SectionHeading as="h1" label={label} title={title} intro={intro} />
+      <ColorRule className="mt-6" />
       {children}
     </Container>
   );

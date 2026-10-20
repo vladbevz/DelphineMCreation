@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import type Stripe from 'stripe';
+import { EarringMotif } from '@/components/brand/EarringMotif';
 import { ClearCart } from '@/components/cart/ClearCart';
 import { TrackPurchase } from '@/components/cart/TrackPurchase';
 import { ButtonLink } from '@/components/ui/Button';
@@ -62,6 +63,11 @@ export default async function MerciPage({ searchParams }: Props) {
         />
       )}
 
+      <div aria-hidden className="mb-6 flex items-end gap-3">
+        <EarringMotif className="h-10 w-auto text-fuchsia" />
+        <EarringMotif className="h-14 w-auto text-soleil" />
+        <EarringMotif className="h-10 w-auto text-turquoise" />
+      </div>
       <SectionHeading
         as="h1"
         label={orderNumber ? `Commande ${orderNumber}` : 'Commande confirmée'}
@@ -81,7 +87,7 @@ export default async function MerciPage({ searchParams }: Props) {
         }
       />
 
-      <div className="mt-8 bg-cream p-6 sm:p-8">
+      <div className="mt-8 bg-blush p-6 sm:p-8">
         <ul className="divide-y divide-sand-border">
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">

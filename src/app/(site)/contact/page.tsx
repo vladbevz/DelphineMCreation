@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { EarringMotif } from '@/components/brand/EarringMotif';
 import { ContactForm } from '@/components/forms/ContactForm';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -31,12 +32,13 @@ export default async function ContactPage() {
         }
       />
       <Container size="medium" className="grid gap-10 lg:grid-cols-[1fr_2fr]">
-        <dl className="space-y-6">
+        <dl className="relative space-y-6 self-start overflow-hidden bg-blush p-6 sm:p-8">
+          <EarringMotif className="absolute -right-3 -bottom-4 h-28 w-auto text-turquoise" />
           <div>
             <dt className="label-caps text-muted">E-mail</dt>
             <dd className="mt-2 text-lg">
               {settings?.email ? (
-                <a href={`mailto:${settings.email}`} className="hover:text-cognac">
+                <a href={`mailto:${settings.email}`} className="hover:text-fuchsia-deep">
                   {settings.email}
                 </a>
               ) : (
@@ -52,7 +54,7 @@ export default async function ContactPage() {
                   href={settings.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-cognac"
+                  className="hover:text-fuchsia-deep"
                 >
                   Suivre l’atelier
                 </a>

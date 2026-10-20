@@ -40,7 +40,7 @@ export default async function CollectionPage({ params }: Props) {
         {collection.products.length > 0 ? (
           <ProductGrid products={collection.products} />
         ) : (
-          <p className="bg-cream px-6 py-16 text-center text-muted">
+          <p className="bg-blush px-6 py-16 text-center text-muted">
             Les créations de cette collection arrivent bientôt.
           </p>
         )}

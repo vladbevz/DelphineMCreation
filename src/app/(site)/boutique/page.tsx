@@ -180,7 +180,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
           {products.length > 0 ? (
             <ProductGrid products={products} variant="sidebar" />
           ) : (
-            <div className="bg-cream px-6 py-14 text-center">
+            <div className="bg-blush px-6 py-14 text-center">
               <p className="font-display text-2xl">Aucune création ne correspond</p>
               <p className="mt-2 text-sm text-muted">Essayez une autre catégorie ou couleur.</p>
               <ButtonLink href="/boutique" variant="secondary" className="mt-6">

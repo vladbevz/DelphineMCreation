@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { FloatingMotifs } from '@/components/brand/FloatingMotifs';
 import { CustomRequestForm } from '@/components/forms/CustomRequestForm';
+import { Stagger, StaggerItem } from '@/components/motion/Reveal';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -13,19 +15,23 @@ export const metadata: Metadata = {
 
 const steps = [
   {
+    color: 'bg-fuchsia',
     title: 'Votre demande',
     text: 'Décrivez votre envie avec le formulaire ci-dessous : couleurs, type de bijou, occasion. Une photo d’inspiration aide toujours.',
   },
   {
+    color: 'bg-mandarine',
     title: 'Échange et devis',
     // TODO(client): response time.
     text: 'Je vous réponds sous [X] jours pour affiner l’idée ensemble et vous proposer un prix.',
   },
   {
+    color: 'bg-turquoise',
     title: 'Création',
     text: 'Une fois votre accord donné, je découpe et assemble votre bijou à la main dans mon atelier.',
   },
   {
+    color: 'bg-lavande',
     title: 'Livraison',
     text: 'Votre bijou part par la poste ou vous attend à l’atelier, dans la Vaunage.',
   },
@@ -51,35 +57,49 @@ export default function SurMesurePage() {
         }
       />
 
-      <section className="bg-cream py-12">
+      <section className="bg-blush py-12">
         <Container size="medium">
           <SectionHeading label="Comment ça marche" title="En quatre étapes" className="mb-8" />
-          <ol className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4">
+          <Stagger as="ol" className="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4">
             {steps.map((step, i) => (
-              <li key={step.title}>
-                <p className="font-display text-4xl leading-none font-light text-cognac">{i + 1}</p>
-                <h3 className="mt-1 text-xl">{step.title}</h3>
+              <StaggerItem as="li" key={step.title}>
+                {/* Number badge: espresso on the colour (contrast table, CLAUDE.md §3). */}
+                <p
+                  className={`flex size-11 items-center justify-center rounded-full font-display text-2xl leading-none text-espresso ${step.color}`}
+                >
+                  {i + 1}
+                </p>
+                <h3 className="mt-3 text-xl">{step.title}</h3>
                 <p className="mt-1 text-sm text-muted">{step.text}</p>
-              </li>
+              </StaggerItem>
             ))}
-          </ol>
+          </Stagger>
         </Container>
       </section>
 
-      <Container size="narrow" className="py-14">
-        <SectionHeading
-          align="center"
-          label="Votre projet"
-          title={
-            <>
-              Parlez-moi de votre <em>idée</em>
-            </>
-          }
+      <section className="relative py-14">
+        <FloatingMotifs
+          className="hidden lg:block"
+          motifs={[
+            { className: 'top-24 left-[8%] h-24', color: 'text-fuchsia', speed: 1 },
+            { className: 'right-[9%] bottom-40 h-16', color: 'text-soleil', speed: 1.5 },
+          ]}
         />
-        <div className="mt-8">
-          <CustomRequestForm />
-        </div>
-      </Container>
+        <Container size="narrow" className="relative">
+          <SectionHeading
+            align="center"
+            label="Votre projet"
+            title={
+              <>
+                Parlez-moi de votre <em>idée</em>
+              </>
+            }
+          />
+          <div className="mt-8">
+            <CustomRequestForm />
+          </div>
+        </Container>
+      </section>
     </>
   );
 }
