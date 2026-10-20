@@ -17,6 +17,7 @@ export const owner = {
   address: '4 rue de la Farigoule, 30870 Clarensac',
   email: 'delphmeulemeester@gmail.com',
   phone: '+33 7 81 36 86 33',
+  instagram: 'https://www.instagram.com/delphinemcreations/',
 };
 
 /** Splits `**bold**` runs into Portable Text spans. */

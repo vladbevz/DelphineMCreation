@@ -4,6 +4,7 @@ import { Blob } from '@/components/brand/Blob';
 import { EarringMotif } from '@/components/brand/EarringMotif';
 import { FloatingMotifs } from '@/components/brand/FloatingMotifs';
 import { LeopardPattern } from '@/components/brand/LeopardPattern';
+import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { HeroMedia } from '@/components/home/HeroMedia';
 import { TrustStrip } from '@/components/home/TrustStrip';
 import { RevealImage, RevealWords, Stagger, StaggerItem } from '@/components/motion/Reveal';
@@ -283,9 +284,10 @@ export default async function HomePage() {
                 variant="ghost"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="order-first self-start sm:order-none sm:mb-2 sm:self-auto"
+                className="order-first gap-2 self-start sm:order-none sm:mb-2 sm:self-auto"
               >
-                Suivre l’atelier
+                <InstagramIcon className="size-4" />
+                @delphinemcreations
               </ButtonLink>
             ) : (
               <p className="order-first text-xs text-muted sm:order-none sm:mb-3">

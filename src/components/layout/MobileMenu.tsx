@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useState } from 'react';
 import { mainNav } from '@/lib/site';
 
-export function MobileMenu() {
+export function MobileMenu({ instagram }: { instagram: string | null }) {
   const pathname = usePathname();
   // Remember the path the menu was opened on, so navigating away closes it.
   const [openedOn, setOpenedOn] = useState<string | null>(null);
@@ -67,6 +68,17 @@ export function MobileMenu() {
             </li>
           ))}
         </ul>
+        {instagram && (
+          <a
+            href={instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex min-h-11 items-center gap-3 label-caps"
+          >
+            <InstagramIcon />
+            Suivre l’atelier sur Instagram
+          </a>
+        )}
       </nav>
     </div>
   );

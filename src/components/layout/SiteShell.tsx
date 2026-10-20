@@ -16,7 +16,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
     <MotionProvider>
       <CartProvider>
         <AnnouncementBar />
-        <Header />
+        <Header instagram={settings?.instagram ?? null} />
         {/* Soft cross-fade between pages (browsers without View Transitions: plain navigation). */}
         <main id="contenu">
           <ViewTransition>{children}</ViewTransition>

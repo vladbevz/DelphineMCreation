@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { CartButton } from '@/components/cart/CartButton';
 import { mainNav } from '@/lib/site';
 import { Logo } from './Logo';
@@ -33,7 +34,7 @@ function NavLinks({
   );
 }
 
-export function Header() {
+export function Header({ instagram }: { instagram: string | null }) {
   return (
     <header className="sticky top-0 z-50 border-b border-espresso/80 bg-linen">
       <a
@@ -45,7 +46,7 @@ export function Header() {
       {/* Three columns: menu | centred logo | menu + cart. */}
       <div className="mx-auto grid h-[4.5rem] max-w-[90rem] grid-cols-[1fr_auto_1fr] items-center gap-3 px-3 sm:gap-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          <MobileMenu />
+          <MobileMenu instagram={instagram} />
           <NavLinks items={leftNav} label="Navigation principale" />
         </div>
 
@@ -53,6 +54,17 @@ export function Header() {
 
         <div className="flex items-center justify-end gap-7">
           <NavLinks items={rightNav} label="Informations" />
+          {instagram && (
+            <a
+              href={instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram (nouvel onglet)"
+              className="-mx-2 hidden p-2 transition-colors hover:text-fuchsia-deep lg:block"
+            >
+              <InstagramIcon />
+            </a>
+          )}
           <CartButton />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { EarringMotif } from '@/components/brand/EarringMotif';
+import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { ContactForm } from '@/components/forms/ContactForm';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -54,9 +55,10 @@ export default async function ContactPage() {
                   href={settings.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-fuchsia-deep"
+                  className="inline-flex items-center gap-2 hover:text-fuchsia-deep"
                 >
-                  Suivre l’atelier
+                  <InstagramIcon />
+                  @delphinemcreations
                 </a>
               ) : (
                 '[LIEN À FOURNIR]'

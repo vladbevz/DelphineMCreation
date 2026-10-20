@@ -52,6 +52,7 @@ async function main() {
     email: owner.email,
     phone: owner.phone,
     postalAddress: owner.address,
+    instagram: owner.instagram,
   });
 
   const collections = ['A', 'B'].map((letter, i) => ({

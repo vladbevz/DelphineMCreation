@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ColorRule } from '@/components/brand/ColorRule';
 import { EarringMotif } from '@/components/brand/EarringMotif';
+import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { Container } from '@/components/ui/Container';
 import { getSettings } from '@/lib/sanity/data';
@@ -86,7 +87,13 @@ export async function Footer() {
             </li>
             <li>
               {instagram ? (
-                <a href={instagram} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                <a
+                  href={instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${linkClass} inline-flex items-center gap-2`}
+                >
+                  <InstagramIcon className="size-4" />
                   Instagram
                 </a>
               ) : (

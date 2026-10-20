@@ -120,6 +120,6 @@ export const fixtureSettings: SETTINGS_QUERY_RESULT = {
   email: owner.email,
   postalAddress: owner.address,
   phone: owner.phone,
-  instagram: null,
+  instagram: owner.instagram,
   facebook: null,
 };
