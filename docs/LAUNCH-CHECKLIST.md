@@ -11,7 +11,7 @@
 - [ ] Тариф Colissimo і поріг безкоштовної доставки; самовивіз так/ні; хто платить зворотну доставку
 - [ ] Терміни відправки (для сторінки товару, листів і `delivery_estimate` у Stripe — `src/lib/checkout.ts`)
 - [ ] Фото товарів і для сторінки L'atelier, блоку Instagram. Зараз там стокові фото Unsplash (`src/lib/photos.ts`) — замінити: покласти в `assets/photos/` з тими ж іменами → `pnpm images`
-- [ ] Посилання на Instagram/Facebook, e-mail і телефон для сайту
+- [x] Посилання на Instagram, e-mail і телефон для сайту (Facebook — немає)
 - [ ] Бухгалтер Delphine: чи потрібна facture для B2C-продажів (зараз — «на запит», вручну); чи вмикати Stripe `invoice_creation` (платно)
 - [ ] Юридичні сторінки (CGV, mentions légales, livraison et retours, confidentialité): чернетки в `src/lib/sanity/legalDrafts.ts`, `pnpm seed` створює їх у Studio → Pages. Заповнити всі `[À COMPLÉTER]` / `[À DÉCIDER]` / `[À VALIDER]` у Studio, прибрати абзац «Projet à valider», звірити адресу хостингу Vercel і прив'язку сервісів (Analytics, Sentry retention) з реальними налаштуваннями
 - [ ] Проєкт CGV: `docs/legal/cgv.html` (джерело) → `docs/legal/CGV-PROJET.pdf`. Заповнити всі `[À COMPLÉTER]`, вирішити: хто платить повернення, виняток для сережок (гігієна), acompte для sur-mesure, медіатор (обов'язково). Дати на перевірку юристу/CCI, прибрати рамку «PROJET», перегенерувати PDF (Chrome → Друк → Зберегти як PDF, A4, з фоном) → Réglages → CGV (PDF); той самий текст — у Pages → cgv
@@ -37,7 +37,7 @@
 
 - [ ] Акаунт на Delphine, профіль бізнесу, IBAN
 - [ ] Settings → Public details → **Terms of service URL** = `https://<домен>/cgv`
-- [ ] Branding: колір `#9C5A33`, лого
+- [ ] Branding: колір `#B8285F` (fuchsia-deep), лого
 - [ ] Ключ `sk_test_…` → `STRIPE_SECRET_KEY`
 - [ ] Локально: `stripe listen --forward-to localhost:3000/api/webhooks/stripe` → `STRIPE_WEBHOOK_SECRET`
 - [ ] Пройти сценарії 1–9 з [README](../README.md#тест-сценарії-claudemd-13)
@@ -56,7 +56,7 @@
 
 - [ ] Проєкт Next.js → `SENTRY_DSN` = `NEXT_PUBLIC_SENTRY_DSN`
 - [ ] `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` у Vercel (source maps)
-- [ ] Alert: будь-яка нова помилка → e-mail Владу (особливо `stripeEvent`, «Paid order for a piece reserved by another checkout»)
+- [ ] Alert: будь-яка нова помилка → e-mail Владу (особливо `stripeEvent`, «Paid order for a piece reserved or sold by another checkout», «Order e-mails failed», «Sur-mesure photos lost»)
 
 ## 6. Vercel
 
