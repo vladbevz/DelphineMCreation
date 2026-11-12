@@ -17,11 +17,5 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function EntretienPage() {
   const page = await getPage('entretien');
-  return (
-    <ContentPage
-      label="Conseils"
-      title={page?.title || 'Entretien du cuir'}
-      body={page?.body ?? null}
-    />
-  );
+  return <ContentPage title={page?.title || 'Entretien du cuir'} body={page?.body ?? null} />;
 }

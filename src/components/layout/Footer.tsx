@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ColorRule } from '@/components/brand/ColorRule';
-import { EarringMotif } from '@/components/brand/EarringMotif';
 import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { Container } from '@/components/ui/Container';
@@ -11,14 +10,8 @@ import { legalNav, mainNav, site } from '@/lib/site';
 const linkClass =
   'text-[0.7rem] font-medium tracking-[0.12em] uppercase underline-offset-4 hover:underline';
 
-/** Column title with a small colour mark, like the category colours on the site. */
-function ColumnTitle({ children, color }: { children: string; color: string }) {
-  return (
-    <p className="mb-4 flex items-center gap-2.5 display-caps text-lg">
-      <span aria-hidden className={`size-2 rounded-full ${color}`} />
-      {children}
-    </p>
-  );
+function ColumnTitle({ children }: { children: string }) {
+  return <p className="mb-4 display-caps text-lg">{children}</p>;
 }
 
 export async function Footer() {
@@ -30,7 +23,6 @@ export async function Footer() {
       {/* Keyboard focus stays visible on pink: linen outline instead of cognac. */}
       {/* The five colours across the top edge, solid segments (no gradient). */}
       <ColorRule className="h-1.5 w-full" />
-      <EarringMotif className="pointer-events-none absolute -right-12 -bottom-24 h-72 w-auto -rotate-12 text-linen/15" />
       <Container className="relative grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-16">
         <div className="col-span-2 lg:col-span-1">
           <p className="display-caps text-2xl leading-tight">
@@ -42,7 +34,7 @@ export async function Footer() {
         </div>
 
         <nav aria-label="Pied de page">
-          <ColumnTitle color="bg-soleil">Découvrez</ColumnTitle>
+          <ColumnTitle>Découvrez</ColumnTitle>
           <ul className="space-y-2.5">
             {mainNav.map((item) => (
               <li key={item.href}>
@@ -55,7 +47,7 @@ export async function Footer() {
         </nav>
 
         <div>
-          <ColumnTitle color="bg-turquoise">Informations</ColumnTitle>
+          <ColumnTitle>Informations</ColumnTitle>
           <ul className="space-y-2.5">
             {legalNav.map((item) => (
               <li key={item.href}>
@@ -71,7 +63,7 @@ export async function Footer() {
         </div>
 
         <div>
-          <ColumnTitle color="bg-lavande">Contact</ColumnTitle>
+          <ColumnTitle>Contact</ColumnTitle>
           <ul className="space-y-2.5">
             <li>
               {settings?.email ? (

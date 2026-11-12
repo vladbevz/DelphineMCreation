@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductGrid } from '@/components/catalog/ProductGrid';
 import { Gallery, type GalleryImage } from '@/components/product/Gallery';
-import { RevealImage } from '@/components/motion/Reveal';
 import { ProductActions } from '@/components/product/ProductActions';
 import { TrackViewContent } from '@/components/product/TrackViewContent';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -220,15 +219,7 @@ export default async function ProductPage({ params }: Props) {
       {related.length > 0 && (
         <section className="mt-16 lg:mt-24">
           <Container>
-            <SectionHeading
-              align="center"
-              title={
-                <>
-                  Vous aimerez <em>aussi</em>
-                </>
-              }
-              className="mb-10"
-            />
+            <SectionHeading align="center" title={<>Vous aimerez aussi</>} className="mb-10" />
             <ProductGrid products={related} variant="row" />
           </Container>
         </section>
@@ -237,7 +228,7 @@ export default async function ProductPage({ params }: Props) {
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
         <Container size="medium" className="grid md:grid-cols-2">
-          <RevealImage className="relative aspect-[4/3] bg-sand md:aspect-square">
+          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-square">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -245,14 +236,10 @@ export default async function ProductPage({ params }: Props) {
               sizes="(min-width: 768px) 460px, 100vw"
               className="object-cover"
             />
-          </RevealImage>
+          </div>
           <div className="flex flex-col justify-center py-8 md:px-10 lg:px-14">
             <SectionHeading
-              title={
-                <>
-                  <em>Une création</em> faite main
-                </>
-              }
+              title={<>Une création faite main</>}
               intro={
                 <p>
                   Ce bijou a été découpé et assemblé à la main dans mon atelier de Clarensac, dans
@@ -267,11 +254,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
           <div className="order-last flex flex-col justify-center py-8 md:order-none md:px-10 lg:px-14">
             <SectionHeading
-              title={
-                <>
-                  <em>Votre bijou</em> sur-mesure
-                </>
-              }
+              title={<>Votre bijou sur-mesure</>}
               intro={
                 <p>
                   Vous l’aimez dans une autre couleur, sur clips ou avec le collier assorti ?
@@ -283,7 +266,7 @@ export default async function ProductPage({ params }: Props) {
               Faire une demande
             </ButtonLink>
           </div>
-          <RevealImage className="relative aspect-[4/3] bg-sand md:aspect-square">
+          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-square">
             <Image
               src={photos.presentoir.src}
               alt={photos.presentoir.alt}
@@ -291,7 +274,7 @@ export default async function ProductPage({ params }: Props) {
               sizes="(min-width: 768px) 460px, 100vw"
               className="object-cover"
             />
-          </RevealImage>
+          </div>
         </Container>
       </section>
     </>

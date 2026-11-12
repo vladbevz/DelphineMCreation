@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { EarringMotif } from '@/components/brand/EarringMotif';
 import { InstagramIcon } from '@/components/brand/InstagramIcon';
 import { ContactForm } from '@/components/forms/ContactForm';
 import { Container } from '@/components/ui/Container';
@@ -19,12 +18,7 @@ export default async function ContactPage() {
     <>
       <PageHeader
         size="medium"
-        label="Contact"
-        title={
-          <>
-            Écrivez-<em>moi</em>
-          </>
-        }
+        title={<>Écrivez-moi</>}
         intro={
           <p>
             Une question sur un bijou, une commande ou un sur-mesure ? Écrivez-moi, je vous réponds
@@ -33,8 +27,7 @@ export default async function ContactPage() {
         }
       />
       <Container size="medium" className="grid gap-10 lg:grid-cols-[1fr_2fr]">
-        <dl className="relative space-y-6 self-start overflow-hidden bg-blush p-6 sm:p-8">
-          <EarringMotif className="absolute -right-3 -bottom-4 h-28 w-auto text-turquoise" />
+        <dl className="space-y-6 self-start bg-blush p-6 sm:p-8">
           <div>
             <dt className="label-caps text-muted">E-mail</dt>
             <dd className="mt-2 text-lg">

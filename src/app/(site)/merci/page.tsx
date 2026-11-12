@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import type Stripe from 'stripe';
-import { EarringMotif } from '@/components/brand/EarringMotif';
 import { ClearCart } from '@/components/cart/ClearCart';
 import { TrackPurchase } from '@/components/cart/TrackPurchase';
 import { ButtonLink } from '@/components/ui/Button';
@@ -64,19 +63,10 @@ export default async function MerciPage({ searchParams }: Props) {
         />
       )}
 
-      <div aria-hidden className="mb-6 flex items-end gap-3">
-        <EarringMotif className="h-10 w-auto text-fuchsia" />
-        <EarringMotif className="h-14 w-auto text-soleil" />
-        <EarringMotif className="h-10 w-auto text-turquoise" />
-      </div>
       <SectionHeading
         as="h1"
         label={orderNumber ? `Commande ${orderNumber}` : 'Commande confirmée'}
-        title={
-          <>
-            Merci <em>infiniment</em>
-          </>
-        }
+        title={<>Merci infiniment</>}
         intro={
           <p>
             {paid

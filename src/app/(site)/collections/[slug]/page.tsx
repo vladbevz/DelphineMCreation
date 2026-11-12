@@ -35,7 +35,7 @@ export default async function CollectionPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader label="Collection" title={collection.title} intro={collection.description} />
+      <PageHeader title={collection.title} intro={collection.description} />
       <Container>
         {collection.products.length > 0 ? (
           <ProductGrid products={collection.products} />

@@ -105,32 +105,6 @@
   }
 }
 
-/* Paillettes: a light glint travelling across a word. Gradients are reserved for this effect. */
-@keyframes shimmer {
-  from {
-    background-position: 150% 0;
-  }
-  to {
-    background-position: -50% 0;
-  }
-}
-
-@utility shimmer {
-  background-image: linear-gradient(
-    100deg,
-    currentColor 0%,
-    currentColor 40%,
-    var(--color-soleil) 50%,
-    currentColor 60%,
-    currentColor 100%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3.6s var(--ease-premium) infinite;
-}
-
 /* Slow zoom on the hero photo (starts once the image is painted, see Hero). */
 @keyframes ken-burns {
   from {
@@ -147,24 +121,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
-  .animate-ken-burns,
-  .shimmer {
+  .animate-ken-burns {
     animation: none !important;
-  }
-  .shimmer {
-    -webkit-text-fill-color: currentColor;
-    background-image: none;
-  }
-}
-
-/* Gentle bob for the floating earring motifs. */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
   }
 }
 

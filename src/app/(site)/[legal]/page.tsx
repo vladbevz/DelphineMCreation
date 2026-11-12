@@ -32,11 +32,5 @@ export default async function LegalPage({ params }: Props) {
   if (!isLegalSlug(legal)) notFound();
   const page = await getPage(legal);
 
-  return (
-    <ContentPage
-      label="Informations"
-      title={page?.title || legalPages[legal]}
-      body={page?.body ?? null}
-    />
-  );
+  return <ContentPage title={page?.title || legalPages[legal]} body={page?.body ?? null} />;
 }

@@ -2,11 +2,10 @@
 
 import * as m from 'motion/react-m';
 import type { ReactNode } from 'react';
-import { cn } from '@/components/ui/cn';
-import { fadeUp, imageReveal, lineUp, staggerChildren, VIEWPORT } from '@/lib/motion';
+import { fadeUp, lineUp, staggerChildren, VIEWPORT } from '@/lib/motion';
 
 /**
- * Scroll reveals. Rules (CLAUDE.md §3): transform / opacity / clip-path only, once, and never on
+ * Scroll reveals. Rules (CLAUDE.md §3): transform / opacity only, once, and never on
  * the LCP element (hero photo, first product photo) — those render as plain markup.
  */
 
@@ -65,24 +64,6 @@ export function StaggerItem({
     <Tag data-reveal className={className} variants={fadeUp}>
       {children}
     </Tag>
-  );
-}
-
-/** Photo uncovered with a clip-path inset. The box keeps its size from the start (no CLS). */
-export function RevealImage({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    // The wrapper is observed, not the clipped element: a fully clipped box (inset 100%) has no
-    // visible area, so IntersectionObserver would never report it (and lazy images never load).
-    <m.div
-      className={cn('overflow-hidden', className)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT}
-    >
-      <m.div data-reveal className="relative h-full w-full" variants={imageReveal}>
-        {children}
-      </m.div>
-    </m.div>
   );
 }
 

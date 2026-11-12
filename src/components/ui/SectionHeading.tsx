@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { MaskReveal } from '@/components/motion/MaskReveal';
 import { cn } from './cn';
 
 type SectionHeadingProps = {
@@ -32,8 +31,7 @@ export function SectionHeading({
           Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2rem]',
         )}
       >
-        {/* h1 can be the LCP element: it renders as-is; section titles slide up from a mask. */}
-        {Tag === 'h1' ? title : <MaskReveal>{title}</MaskReveal>}
+        {title}
       </Tag>
       {intro && <div className="mt-4 text-sm leading-relaxed text-muted sm:text-base">{intro}</div>}
     </div>

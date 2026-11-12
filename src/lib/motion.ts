@@ -24,16 +24,6 @@ export const lineUp: Variants = {
   visible: { y: '0%', transition: { duration: DURATION.long, ease: EASE_PREMIUM } },
 };
 
-/** Photo uncovered from the bottom while it settles from a slight zoom. */
-export const imageReveal: Variants = {
-  hidden: { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.08 },
-  visible: {
-    clipPath: 'inset(0% 0% 0% 0%)',
-    scale: 1,
-    transition: { duration: DURATION.long + 0.2, ease: EASE_PREMIUM },
-  },
-};
-
 export const staggerChildren = (stagger = STAGGER): Variants => ({
   hidden: {},
   visible: { transition: { staggerChildren: stagger } },
