@@ -1,8 +1,12 @@
 @import 'tailwindcss';
 
+/* next/font variables have their own names: a token named like its source would reference itself. */
 @theme inline {
-  --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
-  --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
+  --font-display: var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  /* Logo only, until Delphine provides her SVG. */
+  --font-logo: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 }
 
 @theme {
@@ -28,7 +32,7 @@
 
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --tracking-label: 0.3em;
+  --tracking-label: 0.14em;
 }
 
 @layer base {
@@ -38,15 +42,20 @@
   }
 
   body {
-    @apply bg-linen font-sans text-espresso antialiased;
+    @apply bg-linen font-body text-base text-espresso antialiased;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-display font-normal text-balance;
+    @apply font-display font-bold text-balance;
+    letter-spacing: -0.02em;
     line-height: 1.1;
+    /* A long French word in a large H1 must not push the page sideways on a phone. */
+    /* "anywhere" (not "break-word") also shrinks the min-content width of grid/flex items. */
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
 
   ::selection {
@@ -71,21 +80,53 @@
   }
 }
 
-@utility label-caps {
-  @apply font-sans text-xs font-medium uppercase;
+/* Small capitals: labels, buttons, menus. Never for headings. */
+@utility display-caps {
+  @apply font-body font-medium uppercase;
   letter-spacing: var(--tracking-label);
 }
 
-/* Thin high-contrast capitals for display titles (hero, section titles). */
-@utility display-caps {
-  @apply font-display font-light uppercase;
-  letter-spacing: 0.06em;
+@utility label-caps {
+  @apply font-body text-xs font-medium uppercase;
+  letter-spacing: var(--tracking-label);
 }
 
-/* Accent word inside display capitals: same Cormorant capitals, heavier weight
-   (« LES DERNIÈRES CRÉATIONS » with CRÉATIONS in medium). No second typeface or italic. */
-@utility heading-accent {
-  @apply font-display font-medium not-italic;
+/* Heading look for elements that are not h1-h4 (empty states, large quotes, marquee). */
+@utility heading {
+  @apply font-display font-bold text-balance;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+/* Accent word in a heading (<em> in SectionHeading). Bricolage has no italic: heavier weight
+   and colour instead. Fuchsia passes 3:1 only for large text (>= 24px, or 18.7px bold).
+   Override the colour with --word-accent (e.g. a category colour). */
+@utility word-accent {
+  @apply font-extrabold not-italic;
+  color: var(--word-accent, var(--color-fuchsia));
+}
+
+@utility product-title {
+  @apply font-display font-semibold;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+@utility price {
+  @apply font-body font-medium tabular-nums;
+}
+
+/* Comfortable reading line. */
+@utility measure {
+  max-width: 65ch;
+}
+
+/* The current text logo, kept in Cormorant capitals until the SVG arrives. */
+@utility logo-caps {
+  @apply font-logo font-light uppercase;
+  letter-spacing: 0.06em;
 }
 
 @keyframes marquee {

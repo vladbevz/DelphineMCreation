@@ -114,7 +114,7 @@ export default async function ProductPage({ params }: Props) {
       <Container size="medium" className="pt-6 sm:pt-12">
         <nav
           aria-label="Fil d’Ariane"
-          className="mb-3 text-[0.65rem] tracking-[0.12em] text-muted uppercase"
+          className="mb-3 text-[0.65rem] tracking-label text-muted uppercase"
         >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
@@ -160,13 +160,11 @@ export default async function ProductPage({ params }: Props) {
                 product.stock <= 1 && <Badge>Pièce unique</Badge>
               )}
             </div>
-            <h1 className="mt-4 font-display text-3xl leading-tight font-light sm:text-[2.6rem]">
-              {product.title}
-            </h1>
-            <p className="mt-2 text-base">{formatPrice(product.price)}</p>
+            <h1 className="mt-4 product-title text-3xl sm:text-[2.6rem]">{product.title}</h1>
+            <p className="mt-2 price text-lg">{formatPrice(product.price)}</p>
             {/* The two strongest selling points for earrings, right next to the button. */}
             {product.category === 'boucles-d-oreilles' && (
-              <p className="mt-2 text-[0.7rem] font-medium tracking-[0.12em] text-cognac uppercase">
+              <p className="mt-2 text-[0.7rem] font-medium tracking-label text-cognac uppercase">
                 Ultra léger · Apprêts en acier inoxydable hypoallergénique
               </p>
             )}

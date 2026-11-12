@@ -98,7 +98,7 @@ export function ProductCard({
             className="absolute inset-x-0 bottom-0 translate-y-full bg-linen/95 px-4 py-3 transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0"
           >
             {details && <p className="truncate text-[0.7rem] text-muted">{details}</p>}
-            <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-[0.2em] text-espresso uppercase">
+            <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-label text-espresso uppercase">
               {sold ? 'Voir la pièce' : 'Voir la création'}
               <svg
                 viewBox="0 0 24 24"
@@ -121,10 +121,10 @@ export function ProductCard({
         className={`block h-1 origin-left scale-x-0 transition-transform duration-500 ease-premium group-hover:scale-x-100 group-focus-visible:scale-x-100 ${categoryColor(product.category).bg}`}
       />
 
-      <p className="mt-3 font-display text-lg leading-snug sm:text-xl">{product.title}</p>
+      <p className="mt-3 product-title text-base sm:text-lg">{product.title}</p>
       <p className="mt-0.5 text-[0.8rem] text-espresso/80">
         {category && <span className="text-muted">{category} · </span>}
-        {formatPrice(product.price)}
+        <span className="price">{formatPrice(product.price)}</span>
       </p>
     </Link>
   );

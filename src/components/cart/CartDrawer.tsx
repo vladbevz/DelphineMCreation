@@ -119,8 +119,8 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
         transition={{ type: 'spring', stiffness: 260, damping: 32, mass: 0.9 }}
       >
         <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
-          <h2 id="cart-title" className="display-caps text-2xl">
-            Votre <em className="heading-accent">panier</em>
+          <h2 id="cart-title" className="text-2xl">
+            Votre panier
           </h2>
           <button
             type="button"
@@ -160,7 +160,7 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
 
           {ids.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="font-display text-2xl">Votre panier est vide</p>
+              <p className="heading text-2xl">Votre panier est vide</p>
               <Link
                 href="/boutique"
                 onClick={close}
@@ -199,11 +199,11 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
                     <Link
                       href={`/boutique/${item.slug}`}
                       onClick={close}
-                      className="font-display text-xl hover:text-cognac"
+                      className="product-title text-lg hover:text-cognac"
                     >
                       {item.title}
                     </Link>
-                    <p className="text-sm text-cognac">{formatPrice(item.price)}</p>
+                    <p className="price text-sm text-cognac">{formatPrice(item.price)}</p>
                     {item.availability === 'reserved' && (
                       <p className="mt-1 text-xs text-muted">
                         Réservée par une autre personne en cours de paiement. Elle sera peut-être de
@@ -228,7 +228,7 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
           <div className="border-t border-sand-border px-5 py-5">
             <div className="flex items-baseline justify-between">
               <span>Sous-total</span>
-              <span className="text-xl text-cognac">{formatPrice(subtotal)}</span>
+              <span className="price text-xl text-cognac">{formatPrice(subtotal)}</span>
             </div>
             <p className="mt-1 text-xs text-muted">Livraison calculée à l’étape suivante.</p>
             {freeShippingThreshold !== null && (

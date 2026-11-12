@@ -13,7 +13,7 @@ export async function AnnouncementBar() {
   if (!text) return null;
 
   return (
-    <div className="relative overflow-hidden bg-soleil px-5 pt-2.5 pb-3.5 text-center text-[0.7rem] font-medium tracking-[0.15em] text-espresso uppercase">
+    <div className="relative overflow-hidden bg-soleil px-5 pt-2.5 pb-3.5 text-center text-[0.7rem] font-medium tracking-label text-espresso uppercase">
       {text}
       {/* Thin leopard edge along the bottom. */}
       <span aria-hidden className="absolute inset-x-0 bottom-0 h-1.5 text-espresso/70">

@@ -1,23 +1,33 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Jost } from 'next/font/google';
+import { Bricolage_Grotesque, Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import { isDemoMode, publicEnv } from '@/lib/env';
 import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
 import './globals.css';
 
-const cormorant = Cormorant_Garamond({
+// Headings. Variable font: weights 200-800 plus the optical-size axis (12-96), so small titles
+// get sturdier shapes and large ones tighter ones automatically.
+const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  // Variable font: one file covers weights 300 to 600. No italic: accents use weight.
-  style: ['normal'],
+  axes: ['opsz'],
   display: 'swap',
-  variable: '--font-cormorant',
+  variable: '--font-bricolage',
 });
 
-const jost = Jost({
+// Body text, menus, buttons, prices.
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  // Variable font: a single file covers weights 400 and 500.
+  weight: ['400', '500'],
   display: 'swap',
-  variable: '--font-jost',
+  variable: '--font-dm-sans',
+});
+
+// Logo only, until Delphine provides her SVG.
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '500'],
+  display: 'swap',
+  variable: '--font-cormorant',
 });
 
 export const metadata: Metadata = {
@@ -45,7 +55,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang="fr" className={`${bricolage.variable} ${dmSans.variable} ${cormorant.variable}`}>
       <body>{children}</body>
     </html>
   );

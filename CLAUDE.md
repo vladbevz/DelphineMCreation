@@ -68,10 +68,15 @@
 
 **Кольори категорій** — `categoryColors` / `categoryColor()` у `src/lib/catalog.ts`: boucles-d-oreilles → fuchsia, collier → turquoise, bracelet → mandarine, bague → lavande, autre → soleil. Використовуються в плитках категорій (`Blob`), смужці під карткою товару при hover, крапках фільтрів.
 
-**Шрифти** (через `next/font/google`):
-- Заголовки: **Cormorant Garamond** (variable 300–600) — тонкі капси з трекінгом (утиліта `display-caps`); назви товарів — light, звичайний регістр.
-- Акцент: те саме Cormorant капсом, але товщим накресленням (утиліта `heading-accent`, font-medium): у `SectionHeading` слово в `<em>` автоматично стає акцентом — «LES DERNIÈRES **CRÉATIONS**», як у рухомому рядку «NOUVELLE **COLLECTION**». Курсив і рукописні шрифти не використовуємо (не поєднувалися з основним). Лого — «DELPHINE **M.**» капсом.
-- Текст: **Jost** 400/500. Дрібні лейбли, меню, кнопки, accordion — капс з трекінгом (`label-caps` або `text-[0.7rem] tracking-[0.15em] uppercase`).
+**Шрифти** (через `next/font/google` у `src/app/layout.tsx`; рішення клієнтки, листопад 2026):
+- Змінні next/font — `--font-bricolage`, `--font-dm-sans`, `--font-cormorant`; токени Tailwind у `@theme inline` — `font-display`, `font-body` (= `font-sans`), `font-logo`. Не називай змінну next/font так само, як токен (`--font-display: var(--font-display)` посилається сам на себе).
+- Заголовки (`h1–h4` у base): **Bricolage Grotesque** (variable, opsz 12–96, wght 200–800) — 700, `letter-spacing: -0.02em`, звичайний регістр (не капс), `text-wrap: balance`, `overflow-wrap: anywhere` + `hyphens: auto` (довгі слова в H1 на мобільному). Для не-h елементів (порожні стани, цитати, рухомий рядок) — утиліта `heading`.
+- Акцент: у Bricolage немає курсиву — `<em>` у `SectionHeading` = утиліта `word-accent` (font-style normal, 800, колір `var(--word-accent, fuchsia)`; можна підставити колір категорії через `--word-accent`). Fuchsia на linen ≈ 3.7:1 — лише для великого тексту (≥ 24px або ≥ 18.7px bold). Курсив і рукописні шрифти не використовуємо.
+- Назви товарів: утиліта `product-title` (Bricolage 600, -0.01em). Ціни: утиліта `price` (DM Sans 500, `tabular-nums`).
+- Текст: **DM Sans** 400/500, 16px (інтро секцій 17px), рядок ≤ 65 символів (утиліта `measure`).
+- Лейбли, кнопки, меню, accordion, бейджі: DM Sans 500, капс, трекінг 0.14em — `label-caps` (text-xs), `display-caps` (без розміру) або `tracking-label uppercase`. `display-caps` — тільки для дрібних лейблів, не для заголовків.
+- **Лого** — єдиний виняток: лишається **Cormorant Garamond** (утиліта `logo-caps`, ваги 300/500), «DELPHINE **M.**» капсом, поки Delphine не дасть свій SVG. Той самий напис у футері й листах. Ніде більше Cormorant не використовуємо.
+- Листи: ті самі шрифти зі стеком fallback (`display`, `sans` у `EmailLayout.tsx`) — поштові клієнти зазвичай показують Helvetica/Arial.
 
 **Мотив:** контур краплеподібної сережки з пунктирним «швом» усередині (inline SVG, `stroke="currentColor"`). Використовуй як декоративний елемент і плейсхолдер замість фото.
 
@@ -83,7 +88,7 @@
 
 **Стиль (з жовтня 2026, натхнення — maigojoyas.com):**
 - **Гострі кути** у фото, картках, секціях, полях форм. Заокруглення лише в кнопок і бейджів (пігулки, `rounded-full`).
-- Фото товарів **квадратні** на фоні `sand`. Hero — фото на всю ширину з білими капсами.
+- Фото товарів **квадратні** на фоні `sand`. Hero — фото на всю ширину з білим заголовком Bricolage.
 - Кнопки (`Button` / `ButtonLink`): тонкі пігулки капсом — `primary` (fuchsia-deep, текст linen), `secondary` (контур), `light` (на фото), `ghost` (підкреслене посилання). `cognac` — лише дрібні акценти.
 - Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого по центру, Entretien du cuir / Contact + кошик (іконка + «PANIER (N)») праворуч; на мобільному — бургер, лого, кошик. Футер — `fuchsia-deep` (текст linen, hover — підкреслення), смужка оголошень — `soleil` з леопардовим краєм.
 - Без тіней, без градієнтів, без емодзі. Рухомий рядок (`Marquee`) і анімації поважають `prefers-reduced-motion`.
@@ -222,7 +227,7 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 
 | Сторінка | Зміст |
 | --- | --- |
-| **Accueil** | Hero з фото та заголовком Cormorant, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (pièce unique, cuir sélectionné, fait main), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
+| **Accueil** | Hero з фото та заголовком Bricolage, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (pièce unique, cuir sélectionné, fait main), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
 | **Boutique** | Сітка 2 кол. (mobile) / 3–4 (desktop), фільтр за категорією й кольором шкіри (query params), сортування «Nouveautés / Prix». Продані — з бейджем «Vendu», в кінці списку |
 | **Fiche produit** | Галерея зі свайпом і зумом, назва, ціна, бейдж «Pièce unique», колір шкіри, розміри, опис, догляд (accordion), доставка й повернення (accordion), кнопка «Ajouter au panier» / «Vendu» (disabled), «Vous aimerez aussi». JSON-LD `Product` з `availability` |
 | **L'atelier** | Історія Delphine, процес (фото рук, інструментів), матеріали |

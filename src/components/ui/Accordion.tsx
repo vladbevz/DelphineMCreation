@@ -12,7 +12,7 @@ export function AccordionItem({
 }) {
   return (
     <details className="group border-b border-espresso/30" open={defaultOpen}>
-      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-[0.7rem] font-medium tracking-[0.15em] uppercase [&::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-[0.7rem] font-medium tracking-label uppercase [&::-webkit-details-marker]:hidden">
         {title}
         <svg
           viewBox="0 0 24 24"

@@ -19,7 +19,7 @@ export function CartButton() {
       type="button"
       onClick={open}
       aria-haspopup="dialog"
-      className="inline-flex min-h-11 items-center gap-2 px-1 text-[0.7rem] font-medium tracking-[0.15em] whitespace-nowrap uppercase transition-colors hover:text-cognac"
+      className="inline-flex min-h-11 items-center gap-2 px-1 text-[0.7rem] font-medium tracking-label whitespace-nowrap uppercase transition-colors hover:text-cognac"
     >
       <svg
         viewBox="0 0 24 24"

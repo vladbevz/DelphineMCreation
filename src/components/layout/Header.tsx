@@ -23,7 +23,7 @@ function NavLinks({
           <li key={item.href}>
             <Link
               href={item.href}
-              className="py-2 text-[0.7rem] font-medium tracking-[0.15em] whitespace-nowrap uppercase decoration-1 underline-offset-[6px] hover:underline"
+              className="py-2 text-[0.7rem] font-medium tracking-label whitespace-nowrap uppercase decoration-1 underline-offset-[6px] hover:underline"
             >
               {item.label}
             </Link>

@@ -83,16 +83,16 @@ export default async function MerciPage({ searchParams }: Props) {
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">
               <span>{item.description}</span>
-              <span className="shrink-0">{formatPrice(item.amount_total)}</span>
+              <span className="shrink-0 price">{formatPrice(item.amount_total)}</span>
             </li>
           ))}
           <li className="flex justify-between gap-4 py-3 text-muted">
             <span>Livraison</span>
-            <span>{formatPrice(session.shipping_cost?.amount_total ?? 0)}</span>
+            <span className="price">{formatPrice(session.shipping_cost?.amount_total ?? 0)}</span>
           </li>
           <li className="flex justify-between gap-4 pt-4 text-lg">
             <span>Total</span>
-            <span className="text-cognac">{formatPrice(session.amount_total ?? 0)}</span>
+            <span className="price text-cognac">{formatPrice(session.amount_total ?? 0)}</span>
           </li>
         </ul>
       </div>

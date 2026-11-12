@@ -1,6 +1,6 @@
 import { Column, Img, Row, Section, Text } from '@react-email/components';
 import { formatPrice } from '@/lib/format';
-import { colors, sans, serif, text } from './EmailLayout';
+import { colors, display, sans, text } from './EmailLayout';
 
 export type EmailOrder = {
   number: string;
@@ -36,7 +36,17 @@ export function OrderSummary({ order }: { order: EmailOrder }) {
             </Column>
           )}
           <Column style={{ padding: '12px 0' }}>
-            <Text style={{ ...cell, fontFamily: serif, fontSize: '19px' }}>{item.title}</Text>
+            <Text
+              style={{
+                ...cell,
+                fontFamily: display,
+                fontWeight: 600,
+                fontSize: '17px',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              {item.title}
+            </Text>
           </Column>
           <Column align="right" style={{ padding: '12px 0', whiteSpace: 'nowrap' }}>
             <Text style={cell}>{formatPrice(item.price)}</Text>

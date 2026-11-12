@@ -62,7 +62,7 @@ export function TrustStrip({ freeShippingThreshold }: { freeShippingThreshold: n
           {items.map((item) => (
             <li
               key={item.label}
-              className="flex items-center gap-2.5 text-[0.65rem] font-medium tracking-[0.12em] uppercase sm:text-[0.7rem]"
+              className="flex items-center gap-2.5 text-[0.65rem] font-medium tracking-label uppercase sm:text-[0.7rem]"
             >
               {icons[item.icon]}
               {item.label}

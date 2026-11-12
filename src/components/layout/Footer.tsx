@@ -8,10 +8,10 @@ import { legalNav, mainNav, site } from '@/lib/site';
 
 // Linen on fuchsia-deep: 5.61:1 (CLAUDE.md §3). Hover = underline only: soleil would be 4:1.
 const linkClass =
-  'text-[0.7rem] font-medium tracking-[0.12em] uppercase underline-offset-4 hover:underline';
+  'text-[0.7rem] font-medium tracking-label uppercase underline-offset-4 hover:underline';
 
 function ColumnTitle({ children }: { children: string }) {
-  return <p className="mb-4 display-caps text-lg">{children}</p>;
+  return <p className="mb-4 display-caps text-sm">{children}</p>;
 }
 
 export async function Footer() {
@@ -25,10 +25,10 @@ export async function Footer() {
       <ColorRule className="h-1.5 w-full" />
       <Container className="relative grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-16">
         <div className="col-span-2 lg:col-span-1">
-          <p className="display-caps text-2xl leading-tight">
+          <p className="logo-caps text-2xl leading-tight">
             Delphine <span className="font-medium">M.</span> Créations
           </p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-linen">
+          <p className="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-linen">
             Bijoux en cuir colorés et ultra légers, faits main à Clarensac, dans la Vaunage.
           </p>
         </div>
@@ -69,7 +69,7 @@ export async function Footer() {
               {settings?.email ? (
                 <a
                   href={`mailto:${settings.email}`}
-                  className={`${linkClass} text-xs tracking-normal normal-case`}
+                  className="text-sm underline-offset-4 hover:underline"
                 >
                   {settings.email}
                 </a>

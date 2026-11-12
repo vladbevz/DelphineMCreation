@@ -181,7 +181,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
             <ProductGrid products={products} variant="sidebar" />
           ) : (
             <div className="bg-blush px-6 py-14 text-center">
-              <p className="font-display text-2xl">Aucune création ne correspond</p>
+              <p className="heading text-2xl">Aucune création ne correspond</p>
               <p className="mt-2 text-sm text-muted">Essayez une autre catégorie ou couleur.</p>
               <ButtonLink href="/boutique" variant="secondary" className="mt-6">
                 Voir toute la boutique

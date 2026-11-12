@@ -48,8 +48,8 @@ export function CookieBanner() {
       aria-labelledby={titleId}
       className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl border border-sand-border bg-linen p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
     >
-      <h2 id={titleId} className="display-caps text-lg">
-        Un petit mot sur les <em className="heading-accent">cookies</em>
+      <h2 id={titleId} className="text-xl">
+        Un petit mot sur les cookies
       </h2>
       {/* Kept short: shown on first visit, it must not become the page's largest paint (LCP). */}
       <p className="mt-2 text-xs leading-relaxed text-muted">

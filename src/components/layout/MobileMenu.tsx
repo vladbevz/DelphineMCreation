@@ -61,7 +61,7 @@ export function MobileMenu({ instagram }: { instagram: string | null }) {
               <Link
                 href={item.href}
                 aria-current={pathname === item.href ? 'page' : undefined}
-                className="block border-b border-sand-border py-4 display-caps text-2xl aria-[current=page]:text-cognac"
+                className="block border-b border-sand-border py-4 display-caps text-base aria-[current=page]:text-cognac"
               >
                 {item.label}
               </Link>

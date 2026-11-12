@@ -8,7 +8,7 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'light';
 // ghost link does not fight them (no tailwind-merge here).
 const pill = 'min-h-11 rounded-full px-7';
 const base =
-  'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-label uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
   /** fuchsia-deep: the pink that passes 4.5:1 with linen text. */

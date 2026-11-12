@@ -31,8 +31,11 @@ export const colors = {
   blush: '#FBE3EA',
 };
 
-export const serif = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
-export const sans = "'Jost', 'Helvetica Neue', Arial, sans-serif";
+// Mail clients rarely load web fonts: the site fonts first, then close system fallbacks.
+export const display = "'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif";
+export const sans = "'DM Sans', 'Helvetica Neue', Arial, sans-serif";
+/** Logo only (Cormorant capitals, as on the site until the SVG arrives). */
+const logoFont = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
 
 export const text: CSSProperties = {
   fontFamily: sans,
@@ -42,14 +45,13 @@ export const text: CSSProperties = {
   margin: '0 0 12px',
 };
 
-// Thin capitals with tracking, as on the site (display-caps).
+// Bold, normal case, tight tracking, as the site headings.
 export const heading: CSSProperties = {
-  fontFamily: serif,
-  fontWeight: 400,
+  fontFamily: display,
+  fontWeight: 700,
   fontSize: '28px',
-  lineHeight: '34px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
+  lineHeight: '32px',
+  letterSpacing: '-0.02em',
   color: colors.espresso,
   margin: '0 0 16px',
 };
@@ -57,7 +59,8 @@ export const heading: CSSProperties = {
 export const label: CSSProperties = {
   fontFamily: sans,
   fontSize: '11px',
-  letterSpacing: '0.3em',
+  fontWeight: 500,
+  letterSpacing: '0.14em',
   textTransform: 'uppercase',
   color: colors.muted,
   margin: '0 0 8px',
@@ -97,7 +100,7 @@ export function EmailLayout({ preview, children }: { preview: string; children: 
             {/* Logo as on the site: DELPHINE in thin capitals, M. heavier. */}
             <Text
               style={{
-                fontFamily: serif,
+                fontFamily: logoFont,
                 fontSize: '24px',
                 lineHeight: '28px',
                 letterSpacing: '0.12em',
@@ -143,6 +146,6 @@ export const buttonStyle: CSSProperties = {
   fontFamily: sans,
   fontSize: '12px',
   fontWeight: 500,
-  letterSpacing: '0.15em',
+  letterSpacing: '0.14em',
   textTransform: 'uppercase',
 };

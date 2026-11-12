@@ -86,7 +86,7 @@ export default async function HomePage() {
         <HeroMedia src={photos.bouclesLiege.src} alt={photos.bouclesLiege.alt} />
         <div className="absolute inset-0 bg-espresso/35" aria-hidden />
         <div className="relative px-5 text-center text-linen">
-          <h1 className="mx-auto max-w-4xl display-caps text-4xl leading-[1.1] sm:text-6xl">
+          <h1 className="mx-auto max-w-4xl text-4xl sm:text-6xl">
             <RevealWords text="Des bijoux en cuir, façonnés de mes mains" delay={0.15} />
           </h1>
           <ButtonLink href="/boutique" variant="light" className="mt-8">
@@ -99,8 +99,8 @@ export default async function HomePage() {
 
       {/* New pieces */}
       <section className="pt-10 pb-14 lg:pb-20">
-        <Marquee className="display-caps text-3xl sm:text-5xl">
-          Nouvelle <span className="font-medium text-fuchsia-deep">collection</span>
+        <Marquee className="heading text-3xl sm:text-5xl">
+          Nouvelle <span className="word-accent">collection</span>
         </Marquee>
         <Container className="mt-8 lg:mt-10">
           <Stagger as="ul" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
@@ -167,7 +167,7 @@ export default async function HomePage() {
                         )}
                       </div>
                     </div>
-                    <p className="mt-5 display-caps text-lg decoration-1 underline-offset-4 group-hover:underline">
+                    <p className="mt-5 product-title text-lg decoration-1 underline-offset-4 group-hover:underline">
                       {categoryFilterLabels[value]}
                     </p>
                   </Link>
@@ -215,7 +215,7 @@ export default async function HomePage() {
           <ul className="grid gap-6 sm:grid-cols-3 sm:gap-10">
             {promises.map((p) => (
               <li key={p.title} className="border-t border-espresso/20 pt-4">
-                <h3 className="display-caps text-lg leading-tight sm:text-xl">{p.title}</h3>
+                <h3 className="text-lg sm:text-xl">{p.title}</h3>
                 <p className="mt-2 max-w-xs text-sm text-espresso/80">{p.text}</p>
               </li>
             ))}
@@ -234,10 +234,10 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-espresso/40" aria-hidden />
         <Container className="relative pb-12 text-linen sm:pb-16">
-          <p className="max-w-xl font-display text-5xl leading-[1.05] font-light sm:text-7xl">
+          <p className="max-w-xl heading text-5xl leading-[1.02] sm:text-7xl">
             Jamais deux fois
             <br />
-            <span className="font-normal">pareil</span>
+            <span className="font-extrabold">pareil</span>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure
@@ -249,7 +249,7 @@ export default async function HomePage() {
       <section className="overflow-hidden pt-14 lg:pt-20">
         <Container>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-            <h2 className="font-display text-[3.2rem] leading-[0.9] font-light text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[5rem] lg:text-[6.5rem]">
+            <h2 className="text-[3.2rem] leading-[0.9] text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[5rem] lg:text-[6.5rem]">
               Instagram
             </h2>
             {settings?.instagram ? (
