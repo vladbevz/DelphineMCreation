@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 import { serverEnv } from '@/lib/env.server';
-import { revalidateCatalog } from '@/lib/orders';
+import { revalidateCatalog } from '@/lib/revalidate';
 import { releaseExpiredReservations } from '@/lib/reservations';
 
 /** Safety net if a checkout.session.expired webhook never arrived. Called by Vercel Cron. */

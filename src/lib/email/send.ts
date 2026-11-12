@@ -9,6 +9,9 @@ const FROM = serverEnv.EMAIL_FROM ?? 'Delphine M. Créations <onboarding@resend.
 
 let resend: Resend | null = null;
 
+/** Without a key (local development, demo deploys) e-mails are skipped, not failed. */
+export const isEmailConfigured = Boolean(serverEnv.RESEND_API_KEY);
+
 type SendOptions = {
   to: string;
   subject: string;
@@ -16,8 +19,8 @@ type SendOptions = {
   replyTo?: string;
   /** Resend ignores a second send with the same key (webhook retries). */
   idempotencyKey?: string;
-  /** Files fetched by Resend from a public URL (e.g. the CGV PDF on the Sanity CDN). */
-  attachments?: { filename: string; path: string }[];
+  /** Fetched by Resend from a public URL (`path`, e.g. the CGV PDF) or sent inline (`content`). */
+  attachments?: ({ filename: string } & ({ path: string } | { content: Buffer }))[];
 };
 
 /** Sends an e-mail. Never throws: failures go to Sentry so webhooks still answer 200. */

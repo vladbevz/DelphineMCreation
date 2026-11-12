@@ -17,15 +17,21 @@ export function TrackPurchase({
     const key = `dmc-purchase-${sessionId}`;
     try {
       if (localStorage.getItem(key)) return;
-      localStorage.setItem(key, '1');
     } catch {
       // Storage unavailable: eventID still lets Meta deduplicate.
     }
-    trackEvent(
+    const tracked = trackEvent(
       'Purchase',
       { content_ids: productIds, content_type: 'product', value: value / 100, currency: 'EUR' },
       { eventID: sessionId },
     );
+    // Remember only an event that was actually sent or queued (needs marketing consent).
+    if (!tracked) return;
+    try {
+      localStorage.setItem(key, '1');
+    } catch {
+      // See above.
+    }
   }, [sessionId, value, productIds]);
   return null;
 }

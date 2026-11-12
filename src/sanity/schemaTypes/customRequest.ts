@@ -1,6 +1,6 @@
 import { EnvelopeIcon } from '@sanity/icons/Envelope';
 import { defineField, defineType } from 'sanity';
-import { categories, imageArrayMember } from './shared';
+import { categories } from './shared';
 
 const requestStatuses = [
   { title: 'Nouvelle', value: 'new' },
@@ -39,12 +39,12 @@ export const customRequest = defineType({
     defineField({ name: 'budget', title: 'Budget', type: 'string', readOnly: true }),
     defineField({ name: 'message', title: 'Message', type: 'text', rows: 6, readOnly: true }),
     defineField({
-      name: 'images',
+      name: 'imageCount',
       title: 'Photos d’inspiration',
-      type: 'array',
+      description:
+        'Nombre de photos envoyées. Elles sont jointes à l’e-mail de la demande et ne sont pas stockées sur le site (confidentialité).',
+      type: 'number',
       readOnly: true,
-      of: [imageArrayMember],
-      options: { layout: 'grid' },
     }),
   ],
   orderings: [

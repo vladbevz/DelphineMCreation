@@ -155,7 +155,7 @@ src/
 - `status` (`paid | shipped | delivered | refunded | cancelled`) — Delphine змінює
 - `trackingNumber` — Delphine вписує; `createdAt`
 
-**`customRequest`** — `name`, `email`, `phone?`, `type`, `colors`, `budget`, `message`, `images[]`, `status` (`new | replied | accepted | closed`), `createdAt`
+**`customRequest`** — `name`, `email`, `phone?`, `type`, `colors`, `budget`, `message`, `imageCount` (самі фото — лише у вкладенні листа), `status` (`new | replied | accepted | closed`), `createdAt`; `_id` = `requests.<uuid>`
 
 **`page`** — `title`, `slug`, `body` (Portable Text), `seo`
 
@@ -214,7 +214,7 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 
 ### 6.7 Форми (Sur-mesure, Contact)
 - Server Actions + Zod + Turnstile + простий rate limit (IP, 5 запитів/год).
-- Sur-mesure: створює `customRequest` (фото завантажуються в Sanity assets, макс. 3 × 5 МБ) + лист Delphine.
+- Sur-mesure: створює `customRequest` + лист Delphine з фото у вкладенні (макс. 3 × 5 МБ; у Sanity фото не зберігаються).
 
 ---
 
@@ -365,7 +365,8 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 - **Замовлення**: створюється через `create` (не `createIfNotExists`) в одній транзакції з лічильником і `sold` — дублікат події падає цілком і не шле листів. Плюс idempotency key у Resend. Оплати з відкладеним підтвердженням: резерв продовжується на 7 днів, замовлення — на `async_payment_succeeded`.
 - **Статус товару в Studio**: редагується лише зі стану `sold` (щоб повернути в продаж повернений товар).
 - **Клієнтський бандл**: клієнтські компоненти не імпортують `src/lib/env.ts` і `validation.ts` (Zod) — для публічних змінних є `src/lib/env.client.ts`, для лімітів форм — `src/lib/formLimits.ts`.
-- **Фото sur-mesure** стискаються в браузері (≤1600 px) — ліміт тіла запиту на Vercel 4,5 МБ.
+- **Фото sur-mesure** стискаються в браузері (≤1600 px) — ліміт тіла запиту на Vercel 4,5 МБ. Не зберігаються в Sanity (assets публічні навіть за ID): лише вкладення в лист Delphine; у `customRequest` — `imageCount`.
+- **Лічильник замовлень** — окремий документ `counters.orders` (не `settings`: чернетка Réglages відкотила б його). Лист-підтвердження обов'язковий: якщо не пішов — webhook 500, Stripe повторює, `order.emailsSent` позначає успіх.
 - **Rate limit** — у пам'яті інстансу (достатньо разом із Turnstile).
 - **Cron** кожні 15 хв потребує Vercel Pro; на Hobby — щоденний (основний механізм — вебхук `expired`).
 - **CGV у листі**: лист «Confirmation de commande» = підтвердження на support durable (L221-13) — CGV PDF з `settings.cgvPdf` у вкладенні (Resend `attachments`), посилання на `/cgv`, блок «Droit de rétractation» і офіційний formulaire type (R221-1) з `settings.postalAddress`. Facture — не автоматично, на запит (уточнює бухгалтер клієнтки).

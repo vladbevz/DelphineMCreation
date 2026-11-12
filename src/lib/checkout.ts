@@ -10,6 +10,7 @@ import {
   ReservationConflictError,
   RESERVATION_MINUTES,
 } from './reservations';
+import { revalidateCatalog } from './revalidate';
 import { urlFor } from './sanity/image';
 import { writeClient } from './sanity/writeClient';
 import { CHECKOUT_SESSION_MINUTES, getStripe } from './stripe';
@@ -41,10 +42,7 @@ export async function createCheckout(input: CheckoutInput): Promise<CheckoutResu
     );
   }
 
-  const [settings, { products, draftIds }] = await Promise.all([
-    writeClient.fetch<CheckoutSettings | null>(`*[_id == "settings"][0]`),
-    loadCheckoutProducts(input.productIds),
-  ]);
+  const settings = await writeClient.fetch<CheckoutSettings | null>(`*[_id == "settings"][0]`);
 
   if (settings?.vacationMode?.enabled) {
     return {
@@ -55,40 +53,12 @@ export async function createCheckout(input: CheckoutInput): Promise<CheckoutResu
     };
   }
 
-  const now = new Date();
-  const found = new Set(products.map((p) => p._id));
-  const unavailable = [
-    ...input.productIds.filter((id) => !found.has(id)),
-    ...products.filter((p) => !isAvailable(p, now)).map((p) => p._id),
-  ];
-  if (unavailable.length > 0) return { ok: false, status: 409, error: 'unavailable', unavailable };
-
+  const token = randomUUID();
+  const reserved = await reserveWithRetry(input.productIds, token, settings);
+  if (!reserved.ok) return reserved;
+  const { products, now } = reserved;
   const subtotal = products.reduce((sum, p) => sum + p.price, 0);
   const shippingOptions = buildShippingOptions(settings, subtotal);
-  if (shippingOptions.length === 0)
-    return { ok: false, status: 503, error: 'shipping-not-configured' };
-
-  const token = randomUUID();
-  try {
-    await reserveProducts(
-      products,
-      draftIds,
-      token,
-      new Date(now.getTime() + RESERVATION_MINUTES * 60_000),
-    );
-  } catch (error) {
-    if (error instanceof ReservationConflictError) {
-      // Someone else reserved in the meantime: report what is no longer available.
-      const fresh = await loadCheckoutProducts(input.productIds);
-      return {
-        ok: false,
-        status: 409,
-        error: 'unavailable',
-        unavailable: fresh.products.filter((p) => !isAvailable(p)).map((p) => p._id),
-      };
-    }
-    throw error;
-  }
 
   try {
     const metadata = { productIds: products.map((p) => p._id).join(','), reservationToken: token };
@@ -131,6 +101,55 @@ export async function createCheckout(input: CheckoutInput): Promise<CheckoutResu
   } catch (error) {
     await releaseReservation(token);
     throw error;
+  }
+}
+
+const RESERVE_ATTEMPTS = 3;
+
+type ReserveResult =
+  | { ok: true; products: Awaited<ReturnType<typeof loadCheckoutProducts>>['products']; now: Date }
+  | Extract<CheckoutResult, { ok: false }>;
+
+/**
+ * Checks availability and reserves all pieces at once. A revision conflict is not always a
+ * competing buyer (Delphine publishing an edit, a draft deleted between read and commit):
+ * reload and try again, and only answer 409 when a piece really is gone.
+ */
+async function reserveWithRetry(
+  productIds: string[],
+  token: string,
+  settings: CheckoutSettings | null,
+): Promise<ReserveResult> {
+  for (let attempt = 1; ; attempt++) {
+    const { products, draftIds } = await loadCheckoutProducts(productIds);
+    const now = new Date();
+    const found = new Set(products.map((p) => p._id));
+    const unavailable = [
+      ...productIds.filter((id) => !found.has(id)),
+      ...products.filter((p) => !isAvailable(p, now)).map((p) => p._id),
+    ];
+    if (unavailable.length > 0)
+      return { ok: false, status: 409, error: 'unavailable', unavailable };
+
+    const subtotal = products.reduce((sum, p) => sum + p.price, 0);
+    if (buildShippingOptions(settings, subtotal).length === 0)
+      return { ok: false, status: 503, error: 'shipping-not-configured' };
+
+    try {
+      await reserveProducts(
+        products,
+        draftIds,
+        token,
+        new Date(now.getTime() + RESERVATION_MINUTES * 60_000),
+      );
+      return { ok: true, products, now };
+    } catch (error) {
+      if (!(error instanceof ReservationConflictError) || attempt >= RESERVE_ATTEMPTS) {
+        if (error instanceof ReservationConflictError)
+          return { ok: false, status: 409, error: 'unavailable', unavailable: [] };
+        throw error;
+      }
+    }
   }
 }
 
@@ -185,5 +204,6 @@ export async function abandonCheckoutSession(sessionId: string) {
   if (session.status !== 'open') return; // already paid or expired: nothing to release
   await stripe.checkout.sessions.expire(sessionId);
   const token = session.metadata?.reservationToken;
-  if (token) await releaseReservation(token);
+  // Pages cached while the piece was reserved must show it for sale again.
+  if (token && (await releaseReservation(token)) > 0) revalidateCatalog();
 }

@@ -29,6 +29,13 @@ function MetaPixel({ pixelId }: { pixelId: string }) {
   const firstRender = useRef(true);
 
   // The init snippet tracks the first PageView; client-side navigations are tracked here.
+  // The script stays in memory once loaded: grant again when consent comes back, revoke when
+  // it is withdrawn (the inline snippet below only runs on the first load).
+  useEffect(() => {
+    window.fbq?.('consent', 'grant');
+    return () => window.fbq?.('consent', 'revoke');
+  }, []);
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -45,7 +52,9 @@ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', ${JSON.stringify(pixelId)});
-fbq('track', 'PageView');`}
+fbq('track', 'PageView');
+(window.__dmcPixelQueue || []).forEach(function (a) { fbq.apply(null, a); });
+window.__dmcPixelQueue = [];`}
     </Script>
   );
 }

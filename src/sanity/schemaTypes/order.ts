@@ -122,6 +122,8 @@ export const order = defineType({
     }),
     // Idempotency for the "Votre colis est parti" e-mail (Sanity webhook).
     defineField({ name: 'shippedEmailSentAt', type: 'datetime', readOnly: true, hidden: true }),
+    // Set once the confirmation and Delphine's notification are sent (webhook retries resend).
+    defineField({ name: 'emailsSent', type: 'boolean', readOnly: true, hidden: true }),
     defineField({
       name: 'stripeSessionId',
       title: 'Session Checkout',

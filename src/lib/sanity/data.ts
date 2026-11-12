@@ -92,7 +92,8 @@ const findRelated = cache(async (product: RelatedSource) => {
         (p) =>
           p._id !== product._id &&
           p.status !== 'sold' &&
-          (p.collection?._id === product.collection?._id || p.category === product.category),
+          ((product.collection && p.collection?._id === product.collection._id) ||
+            p.category === product.category),
       )
       .slice(0, 4)
       .map(toCard);

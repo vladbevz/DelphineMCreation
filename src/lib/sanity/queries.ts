@@ -8,7 +8,9 @@ const PRODUCT_CARD_FIELDS = /* groq */ `
   title,
   "slug": slug.current,
   price,
-  status,
+  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for
+  // /api/checkout: the page must not keep showing « Réservé ».
+  "status": select(status == "reserved" && reservedUntil < now() => "available", status),
   stock,
   category,
   leatherColor,
@@ -45,7 +47,7 @@ export const PRODUCT_QUERY = defineQuery(`
 /** "Vous aimerez aussi": same collection or category, still available. */
 export const RELATED_PRODUCTS_QUERY = defineQuery(`
   *[${PUBLIC_PRODUCT_FILTER} && _id != $id && status != "sold"
-    && (collection._ref == $collectionId || category == $category)]
+    && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]
     | order(publishedAt desc)[0...4]{ ${PRODUCT_CARD_FIELDS} }
 `);
 

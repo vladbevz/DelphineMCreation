@@ -41,7 +41,8 @@ export function CustomRequestEmail({
       <Text style={{ ...text, whiteSpace: 'pre-line' }}>{request.message}</Text>
       {request.imageCount > 0 && (
         <Text style={{ ...text, color: colors.muted }}>
-          {request.imageCount} photo(s) jointe(s), visibles dans le Studio.
+          {request.imageCount} photo(s) d’inspiration en pièce jointe (conservées uniquement dans
+          cet e-mail).
         </Text>
       )}
       <Button href={studioUrl} style={buttonStyle}>

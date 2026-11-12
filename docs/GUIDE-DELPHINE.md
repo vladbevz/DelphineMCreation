@@ -69,7 +69,7 @@ Le message s'affiche en haut du site et les achats sont suspendus. Pour rouvrir 
 
 ## 6. Les demandes sur-mesure et les messages
 
-- Une **demande sur-mesure** arrive par e-mail et dans Studio → **Demandes sur-mesure** → **Nouvelles**, avec les photos d'inspiration. Après avoir répondu, changez le **Suivi** (Répondu, Acceptée, Clôturée) pour vous y retrouver.
+- Une **demande sur-mesure** arrive par e-mail et dans Studio → **Demandes sur-mesure** → **Nouvelles**. Les photos d'inspiration sont **uniquement dans l'e-mail** (pièces jointes) : elles ne sont pas stockées sur le site, pour protéger les clientes. Gardez l'e-mail. Après avoir répondu, changez le **Suivi** (Répondu, Acceptée, Clôturée) pour vous y retrouver.
 - Un **message du formulaire de contact** arrive uniquement par e-mail : il suffit de cliquer sur **Répondre**.
 
 ## 7. Les autres réglages

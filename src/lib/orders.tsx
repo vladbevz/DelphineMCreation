@@ -1,18 +1,24 @@
 import 'server-only';
 import * as Sentry from '@sentry/nextjs';
-import { revalidateTag } from 'next/cache';
 import type Stripe from 'stripe';
-import { delphineEmail, sendEmail } from './email/send';
+import { delphineEmail, isEmailConfigured, sendEmail } from './email/send';
 import { NewOrderEmail } from './email/templates/NewOrderEmail';
 import { OrderConfirmationEmail } from './email/templates/OrderConfirmationEmail';
 import type { EmailOrder } from './email/templates/OrderSummary';
 import type { SellerInfo } from './email/templates/WithdrawalInfo';
+import { revalidateCatalog } from './revalidate';
 import { extendReservation, isConflict, releaseReservation } from './reservations';
 import { writeClient } from './sanity/writeClient';
 import { getStripe } from './stripe';
 import { absoluteUrl } from './url';
 
 const MAX_COUNTER_RETRIES = 5;
+/**
+ * Order number counter (DMC-YYYY-0001). Its own document, not a field of `settings`: a
+ * Studio draft of Réglages would otherwise copy the counter and roll it back on publish.
+ * Path ID: hidden from the public API and from the Studio lists.
+ */
+const COUNTER_ID = 'counters.orders';
 /** Delayed payment methods (e.g. SEPA) can take a few days to confirm. */
 const DELAYED_PAYMENT_HOLD_DAYS = 7;
 
@@ -24,12 +30,6 @@ export const orderIdFor = (sessionId: string) => `orders.${sessionId}`;
 
 export function studioOrderUrl(orderId: string) {
   return absoluteUrl(`/studio/intent/edit/id=${orderId};type=order/`);
-}
-
-/** Invalidates every cached page that shows products (catalog, product pages, home). */
-export function revalidateCatalog() {
-  revalidateTag('product', { expire: 0 });
-  revalidateTag('collection', { expire: 0 });
 }
 
 type OrderItem = EmailOrder['items'][number] & {
@@ -67,18 +67,34 @@ export async function handleCheckoutCompleted(sessionId: string) {
     return { created: false, reason: 'awaiting-payment' as const };
   }
 
-  const orderId = orderIdFor(session.id);
-  if (await writeClient.getDocument(orderId))
-    return { created: false, reason: 'duplicate' as const };
-
   const order = buildOrder(session);
+  const existing = await writeClient.getDocument<{ number: string; emailsSent?: boolean }>(
+    order._id,
+  );
+  if (existing) {
+    // A retry after the order was saved but before its e-mails went out (send error,
+    // timeout): send them now. Resend idempotency keys prevent doubles.
+    if (!existing.emailsSent) await deliverOrderEmails({ ...order, number: existing.number });
+    return { created: false, reason: 'duplicate' as const };
+  }
+
   const productIds = (session.metadata?.productIds ?? '').split(',').filter(Boolean);
   const created = await commitOrder(order, productIds, token);
   if (!created) return { created: false, reason: 'duplicate' as const };
 
   revalidateCatalog();
-  await sendOrderEmails(order);
+  await deliverOrderEmails(order);
   return { created: true, number: order.number };
+}
+
+/**
+ * The confirmation is the legal durable-medium copy (L221-13): if it fails, throw so the
+ * webhook answers 500 and Stripe retries; the order is flagged once both e-mails are sent.
+ */
+async function deliverOrderEmails(order: OrderDoc) {
+  if (!isEmailConfigured) return; // nothing to retry: sendEmail only logs
+  if (!(await sendOrderEmails(order))) throw new Error(`Order e-mails failed for ${order._id}`);
+  await writeClient.patch(order._id).set({ emailsSent: true }).commit();
 }
 
 /** checkout.session.expired / async_payment_failed: put the pieces back on sale. */
@@ -162,14 +178,16 @@ async function commitOrder(order: OrderDoc, productIds: string[], token: string 
     `{
       "existing": *[_id in $ids]._id,
       "drafts": *[_id in $draftIds]._id,
-      "foreign": *[_id in $ids && status == "reserved" && reservationToken != $reservation]._id
+      "foreign": *[_id in $ids && (
+        status == "sold" || (status == "reserved" && reservationToken != $reservation)
+      )]._id
     }`,
     { ids: productIds, draftIds: productIds.map((id) => `drafts.${id}`), reservation: token ?? '' },
   );
   if (foreign.length > 0) {
-    // Paid for a piece someone else had reserved in between: should never happen (the
-    // reservation outlives the Stripe session), but Delphine must know before shipping.
-    Sentry.captureMessage('Paid order for a piece reserved by another checkout', {
+    // Paid for a piece already sold, or reserved by someone else, in between (e.g. a webhook
+    // retried hours later): should never happen, but Delphine must know before shipping.
+    Sentry.captureMessage('Paid order for a piece reserved or sold by another checkout', {
       level: 'error',
       extra: { orderId: order._id, foreign },
     });
@@ -179,21 +197,20 @@ async function commitOrder(order: OrderDoc, productIds: string[], token: string 
   const year = new Date().getFullYear();
 
   for (let attempt = 0; attempt < MAX_COUNTER_RETRIES; attempt++) {
-    const settings = await writeClient.getDocument<{
+    const counter = await writeClient.getDocument<{
       _rev: string;
-      orderCounterYear?: number;
-      orderCounter?: number;
-    }>('settings');
-    const next = settings?.orderCounterYear === year ? (settings.orderCounter ?? 0) + 1 : 1;
+      year?: number;
+      value?: number;
+    }>(COUNTER_ID);
+    const next = counter?.year === year ? (counter.value ?? 0) + 1 : 1;
     order.number = `DMC-${year}-${String(next).padStart(4, '0')}`;
 
     const tx = writeClient.transaction();
-    if (settings) {
-      tx.patch('settings', (p) =>
-        p.ifRevisionId(settings._rev).set({ orderCounterYear: year, orderCounter: next }),
-      );
+    if (counter) {
+      tx.patch(COUNTER_ID, (p) => p.ifRevisionId(counter._rev).set({ year, value: next }));
     } else {
-      tx.create({ _id: 'settings', _type: 'settings', orderCounterYear: year, orderCounter: next });
+      // `create` fails if another order created it first: the loop then retries.
+      tx.create({ _id: COUNTER_ID, _type: 'orderCounter', year, value: next });
     }
     // imageUrl is only for the e-mails; the Studio shows the product reference instead.
     tx.create({
@@ -274,5 +291,5 @@ async function sendOrderEmails(order: OrderDoc) {
       }),
     );
   }
-  await Promise.all(tasks);
+  return (await Promise.all(tasks)).every(Boolean);
 }

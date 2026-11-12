@@ -115,13 +115,13 @@ export async function submitCustomRequest(
 
   const data = parsed.data;
   try {
-    const assets = await Promise.all(
-      files.map(async (file, i) =>
-        writeClient.assets.upload('image', Buffer.from(await file.arrayBuffer()), {
-          filename: `sur-mesure-${i + 1}.${file.type.split('/')[1]}`,
-          contentType: file.type,
-        }),
-      ),
+    // Inspiration photos go to Delphine as e-mail attachments only. Sanity assets are public
+    // (listable in the public dataset, open CDN URLs), so customers' photos are never stored.
+    const attachments = await Promise.all(
+      files.map(async (file, i) => ({
+        filename: `sur-mesure-${i + 1}.${file.type.split('/')[1]}`,
+        content: Buffer.from(await file.arrayBuffer()),
+      })),
     );
 
     const request = await writeClient.create({
@@ -137,27 +137,30 @@ export async function submitCustomRequest(
       colors: data.colors,
       budget: data.budget,
       message: data.message,
-      images: assets.map((asset, i) => ({
-        _key: `img${i}`,
-        _type: 'image',
-        asset: { _type: 'reference', _ref: asset._id },
-        alt: `Photo d’inspiration ${i + 1} envoyée par ${data.name}`,
-      })),
+      imageCount: attachments.length,
     });
 
     const to = delphineEmail();
     if (to) {
-      await sendEmail({
+      const sent = await sendEmail({
         to,
         subject: `Demande sur-mesure de ${data.name}`,
         replyTo: data.email,
         react: (
           <CustomRequestEmail
-            request={{ ...data, type: categoryLabel(data.type), imageCount: assets.length }}
+            request={{ ...data, type: categoryLabel(data.type), imageCount: attachments.length }}
             studioUrl={absoluteUrl(`/studio/intent/edit/id=${request._id};type=customRequest/`)}
           />
         ),
+        attachments,
       });
+      // The request is saved in the Studio, but its photos only existed in this e-mail.
+      if (!sent && attachments.length > 0) {
+        Sentry.captureMessage('Sur-mesure photos lost: e-mail not sent', {
+          level: 'warning',
+          extra: { requestId: request._id },
+        });
+      }
     }
   } catch (error) {
     Sentry.captureException(error, { tags: { form: 'sur-mesure' } });

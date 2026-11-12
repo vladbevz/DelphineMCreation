@@ -86,9 +86,6 @@ export const settings = defineType({
     defineField({ name: 'phone', title: 'Téléphone', type: 'string', group: 'contact' }),
     defineField({ name: 'instagram', title: 'Lien Instagram', type: 'url', group: 'contact' }),
     defineField({ name: 'facebook', title: 'Lien Facebook', type: 'url', group: 'contact' }),
-    // Order number counter (DMC-YYYY-0001), incremented by the Stripe webhook in a transaction.
-    defineField({ name: 'orderCounterYear', type: 'number', readOnly: true, hidden: true }),
-    defineField({ name: 'orderCounter', type: 'number', readOnly: true, hidden: true }),
   ],
   preview: { prepare: () => ({ title: 'Réglages' }) },
 });
