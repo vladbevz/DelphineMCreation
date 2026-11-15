@@ -235,9 +235,9 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-espresso/40" aria-hidden />
         <Container className="relative pb-12 text-linen sm:pb-16">
           <p className="max-w-xl heading text-5xl leading-[1.02] sm:text-7xl">
-            Jamais deux fois
+            Votre idée,
             <br />
-            <span className="font-extrabold">pareil</span>
+            <span className="font-extrabold">mes mains</span>
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure
