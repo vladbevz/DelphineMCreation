@@ -9,7 +9,7 @@
 ## 1. Що будуємо
 
 Інтернет-бутік для **Delphine M. Créations** — бренду прикрас зі шкіри ручної роботи (Vaunage, Gard).
-Товарів мало (10–30 на старті), майже всі — **pièces uniques** (залишок 1). Продажі на старті скромні.
+Товарів мало (10–30 на старті). **Кожну прикрасу можна купити завжди** (рішення клієнтки, листопад 2026): `stock` — це вже готові екземпляри, а коли їх немає, Delphine виготовляє прикрасу на замовлення за кілька днів. Продажі на старті скромні.
 
 Цілі:
 - Сайт написаний з нуля під бренд, **без шаблонів і без Shopify**.
@@ -34,7 +34,7 @@
 | Листи | Resend + React Email |
 | Валідація | Zod |
 | Антиспам | Cloudflare Turnstile |
-| Хостинг | Vercel (+ Vercel Cron) |
+| Хостинг | Vercel |
 | Моніторинг | Sentry |
 | Аналітика | Vercel Analytics або Plausible; Meta Pixel — лише після згоди на cookies |
 | Менеджер пакетів | pnpm |
@@ -116,9 +116,8 @@ src/
       layout.tsx
     studio/[[...tool]]/page.tsx   # Sanity Studio
     api/
-      checkout/route.ts           # POST: резерв + створення Stripe session
+      checkout/route.ts           # POST: створення Stripe session (ціни з Sanity)
       webhooks/stripe/route.ts    # POST: події Stripe
-      cron/release-reservations/route.ts
     sitemap.ts
     robots.ts
   components/
@@ -130,7 +129,7 @@ src/
     sanity/                       # client.ts (read), writeClient.ts (server-only), queries.ts, image.ts
     stripe.ts                     # server-only
     email/                        # templates React Email + send.ts
-    reservations.ts               # логіка резерву pièce unique
+    delivery.ts                   # готові vs на замовлення, терміни, MAX_QUANTITY (і клієнт, і сервер)
     validation.ts                 # Zod схеми
   sanity/
     schemaTypes/                  # product, collection, order, customRequest, page, settings
@@ -147,14 +146,14 @@ src/
 - `title` (string, req), `slug` (slug, req), `collection` (ref → collection), `category` (string list: `boucles-d-oreilles | collier | bracelet | bague | autre`)
 - `price` (number, **у центах**, req), `images` (array image з hotspot + `alt`, min 1), `leatherColor` (string), `dimensions` (string), `weight` (number, грами — для доставки)
 - `description` (Portable Text), `care` (Portable Text)
-- `stock` (number, default 1), `status` (`available | reserved | sold`, default `available`, **readOnly у Studio**), `reservedUntil` (datetime, readOnly, hidden)
+- `stock` (number, default 0) — **готові до відправки** екземпляри. Delphine вписує, вебхук зменшує після оплати. При 0 товар лишається в продажу: виготовляється на замовлення. Статусів `available/reserved/sold` немає. Зняти модель з продажу — Unpublish у Studio.
 - `featured` (boolean), `publishedAt` (datetime), `seo` (object: title, description)
 
 **`collection`** — `title`, `slug`, `cover`, `description`, `order`
 
 **`order`** (створює тільки сервер; `_id` = `orders.${stripeSessionId}`)
 - `number` (string, формат `DMC-2026-0001`), `stripeSessionId`, `stripePaymentIntentId`
-- `items[]` (product ref, title, price — знімок на момент покупки)
+- `items[]` (product ref, title, `quantity`, price — сума рядка, знімок на момент покупки; `fromStock` — взято з готових, `toMake` — виготовити)
 - `customer` (name, email, phone), `shippingAddress`, `shippingMethod` (`colissimo | retrait`)
 - `amounts` (subtotal, shipping, total — центи)
 - `status` (`paid | shipped | delivered | refunded | cancelled`) — Delphine змінює
@@ -164,7 +163,7 @@ src/
 
 **`page`** — `title`, `slug`, `body` (Portable Text), `seo`
 
-**`settings`** (singleton) — тарифи доставки (`colissimoPrice`, `freeShippingThreshold`), `pickupEnabled`, контакти, соцмережі, `announcementBar`, `vacationMode` (boolean + message: якщо true — кнопка купівлі вимкнена)
+**`settings`** (singleton) — тарифи доставки (`colissimoPrice`, `freeShippingThreshold`), терміни відправки в робочих днях (`shippingDays` — готова прикраса, `madeToOrderDays` — на замовлення), `pickupEnabled`, контакти, соцмережі, `announcementBar`, `vacationMode` (boolean + message: якщо true — кнопка купівлі вимкнена)
 
 Studio: окремі розділи «Produits», «Commandes» (сортування за датою, фільтр за статусом), «Demandes sur-mesure», «Pages», «Réglages». Delphine має роль Editor.
 
@@ -173,43 +172,41 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 ## 6. Ключові потоки
 
 ### 6.1 Кошик
-- Клієнтський стан (React context + `localStorage`), зберігаємо лише `productId[]`.
-- Pièce unique → кількість завжди 1, повторне додавання ігнорується.
-- Відкриття drawer → перевірка актуального статусу товарів (server action); проданий товар позначається й прибирається з кнопкою пояснення.
+- Клієнтський стан (React context + `localStorage`), зберігаємо лише `{ id, qty }[]` (старий формат `id[]` конвертується).
+- Кількість 1–`MAX_QUANTITY` (5) на прикрасу, до `MAX_CART_LINES` (10) різних прикрас (`src/lib/delivery.ts`). Повторне «Ajouter au panier» додає ще один екземпляр; у drawer — степпер − / +.
+- Відкриття drawer → актуальні ціни й `stock` (server action); біля кожного рядка — «Prêt à partir» або «Fabriqué pour vous» з терміном. Знятий з публікації товар прибирається з поясненням.
 
 ### 6.2 Checkout — `POST /api/checkout`
-1. Zod-валідація: `{ productIds: string[] }` (1–10 шт.).
-2. Завантажити товари з Sanity **на сервері**. Ціни беремо тільки звідси, ніколи з клієнта.
+1. Zod-валідація: `{ items: { productId, quantity 1–5 }[] }` (1–10 рядків, без повторів).
+2. Завантажити товари з Sanity **на сервері** (лише опубліковані, зі slug і фото). Ціни беремо тільки звідси, ніколи з клієнта. Немає товару → 409 `unavailable` зі списком.
 3. Якщо `settings.vacationMode` — 409.
-4. Для кожного товару: якщо `status === 'available'` або (`reserved` і `reservedUntil < now`) → резерв у **transaction** з `ifRevisionID` (оптимістичне блокування): `status: 'reserved'`, `reservedUntil: now + 30 хв`. Якщо хоч один не вдалось — відкотити зроблені резерви й повернути 409 зі списком недоступних.
+4. **Резерву немає**: товар не може «закінчитися». Залишок списує вебхук після оплати.
 5. Створити Stripe Checkout Session:
-   - `mode: 'payment'`, `line_items` з `price_data` (EUR, назва, фото)
+   - `mode: 'payment'`, `line_items` з `price_data` (EUR, назва, фото) і `quantity`
    - `shipping_address_collection: { allowed_countries: ['FR'] }` (ЄС — у фазі 2)
    - `shipping_options`: Colissimo (`settings.colissimoPrice`, безкоштовно від `freeShippingThreshold`) + «Retrait dans la Vaunage» (0 €), якщо `pickupEnabled`
    - `phone_number_collection: { enabled: true }`
-   - `consent_collection: { terms_of_service: 'required' }` + `custom_text` з посиланням на CGV
-   - `expires_at: now + 30 хв`, `locale: 'fr'`
-   - `metadata: { productIds: ids.join(',') }`
+   - `consent_collection: { terms_of_service: 'required' }` + `custom_text` з посиланням на CGV; `custom_text.submit` — термін відправки (довший, якщо хоч одну позицію треба виготовити; L216-1 — термін до оплати)
+   - `locale: 'fr'`, `expires_at` за замовчуванням Stripe (24 год)
+   - `metadata: { items: 'id:qty,id:qty' }`
    - `success_url: /merci?session_id={CHECKOUT_SESSION_ID}`, `cancel_url: /boutique?annule=1`
 6. Повернути `{ url }`, клієнт робить redirect.
 
 ### 6.3 Webhook — `POST /api/webhooks/stripe`
 - Raw body + `stripe.webhooks.constructEvent` з `STRIPE_WEBHOOK_SECRET`. Невалідний підпис → 400.
-- **Ідемпотентність:** order `_id = orders.${session.id}`, створення через `createIfNotExists`. Повторна подія нічого не дублює.
-- `checkout.session.completed`:
-  1. Товари з `metadata.productIds` → `status: 'sold'`, `stock: 0`, `unset reservedUntil`.
-  2. Створити `order` (дані з session: customer_details, shipping_details, amounts). Номер — інкремент через лічильник у `settings` в transaction.
-  3. Листи: клієнтці (підтвердження) і Delphine (нове замовлення, посилання на Studio).
-  4. `revalidatePath` для каталогу й сторінок товарів.
-- `checkout.session.expired` → повернути `status: 'available'` для товарів, які ще `reserved` цією сесією.
-- Відповідати 200 швидко; будь-яка помилка → Sentry з `session.id`.
+- **Ідемпотентність:** order `_id = orders.${session.id}`, створення через `create` в одній транзакції (див. §16). Повторна подія нічого не дублює.
+- `checkout.session.completed` / `async_payment_succeeded` (якщо `unpaid` — чекаємо на `async_payment_succeeded`):
+  1. В одній transaction: номер замовлення (лічильник `counters.orders`), `create` order, для кожного рядка `fromStock = min(qty, stock)` → `stock -= fromStock` (опублікований документ з `ifRevisionID`, чернетка — дзеркально), `toMake = qty - fromStock`. Конфлікт ревізії → повтор: друга одночасна оплата останнього готового екземпляра стає «на замовлення».
+  2. Листи: клієнтці (підтвердження з терміном) і Delphine (нове замовлення, «À fabriquer : N», посилання на Studio).
+  3. `revalidateTag` каталогу (змінився залишок → термін на сторінці).
+- `expired` / `async_payment_failed` — нічого не робимо (резерву не було).
+- Відповідати 200 швидко; будь-яка помилка → Sentry з `session.id`, 500 → Stripe повторює.
 
-### 6.4 Cron — `/api/cron/release-reservations`
-- Кожні 15 хв (`vercel.json`), захищений `CRON_SECRET`.
-- Знімає резерви з `reservedUntil < now` (страховка, якщо вебхук не дійшов).
+### 6.4 Cron
+- Немає (був для зняття резервів; з моделлю «завжди в продажу» не потрібен).
 
 ### 6.5 Сторінка «Merci»
-- Читає `session_id` через Stripe API (не чекає на вебхук), показує номер, суму, що далі.
+- Читає `session_id` через Stripe API (не чекає на вебхук), показує номер, суму, кількості, термін відправки (якщо вебхук уже створив order), що далі.
 - Очищує кошик.
 - Невалідний `session_id` → редірект на головну.
 
@@ -227,10 +224,10 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 
 | Сторінка | Зміст |
 | --- | --- |
-| **Accueil** | Hero з фото та заголовком Bricolage, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (pièce unique, cuir sélectionné, fait main), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
-| **Boutique** | Сітка 2 кол. (mobile) / 3–4 (desktop), фільтр за категорією й кольором шкіри (query params), сортування «Nouveautés / Prix». Продані — з бейджем «Vendu», в кінці списку |
-| **Fiche produit** | Галерея зі свайпом і зумом, назва, ціна, бейдж «Pièce unique», колір шкіри, розміри, опис, догляд (accordion), доставка й повернення (accordion), кнопка «Ajouter au panier» / «Vendu» (disabled), «Vous aimerez aussi». JSON-LD `Product` з `availability` |
-| **L'atelier** | Історія Delphine, процес (фото рук, інструментів), матеріали |
+| **Accueil** | Hero з фото та заголовком Bricolage, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (fait main, ultra léger, cuir de Colombie), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
+| **Boutique** | Сітка 2 кол. (mobile) / 3–4 (desktop), фільтр за категорією й кольором шкіри (query params), сортування «Nouveautés / Prix». Усі товари завжди в продажу (без «Vendu») |
+| **Fiche produit** | Галерея зі свайпом і зумом, назва, ціна, колір шкіри, розміри, кнопка «Ajouter au panier» + термін («Prêt à partir» / «Fabriqué à la main pour vous»), опис, догляд (accordion), доставка й повернення (accordion), «Vous aimerez aussi». JSON-LD `Product` з `availability` `InStock` або `MadeToOrder` |
+| **L'atelier** | Історія Delphine, 4 кроки процесу (фото рук, інструментів), матеріали, «Fabriqué pour vous» (на замовлення + sur-mesure) |
 | **Sur-mesure** | Пояснення, як працює, форма |
 | **Entretien du cuir** | Поради з догляду (контент із Sanity `page`) |
 | **Contact** | Форма, email, Instagram |
@@ -280,7 +277,6 @@ EMAIL_FROM=
 EMAIL_DELPHINE=
 TURNSTILE_SECRET_KEY=
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=
-CRON_SECRET=
 SENTRY_DSN=
 NEXT_PUBLIC_SENTRY_DSN=          # same DSN, for the browser SDK (lazy-loaded)
 NEXT_PUBLIC_META_PIXEL_ID=
@@ -320,11 +316,11 @@ Accueil, Boutique (фільтри, сортування), Fiche produit (гал�
 ✅ Готово, коли: усі сторінки з розділу 7 працюють на тестових даних, mobile-first, доступність базово перевірена.
 
 ### Етап 3 — Кошик і оплата
-CartProvider, CartDrawer, `/api/checkout` з резервом, Stripe Checkout, сторінка Merci.
+CartProvider, CartDrawer, `/api/checkout`, Stripe Checkout, сторінка Merci.
 ✅ Готово, коли: тестова оплата карткою `4242…` проходить end-to-end у test mode.
 
 ### Етап 4 — Вебхуки, замовлення, листи
-Stripe webhook (completed / expired), створення order, позначка sold, cron, листи React Email, Sanity webhook на `shipped`, revalidation.
+Stripe webhook (completed / async), створення order зі списанням залишку, листи React Email, Sanity webhook на `shipped`, revalidation.
 ✅ Готово, коли: усі сценарії з розділу 13 проходять.
 
 ### Етап 5 — Форми, аналітика, RGPD
@@ -337,12 +333,12 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 
 ## 13. Обов'язкові тест-сценарії (Stripe test mode, Stripe CLI `stripe listen`)
 
-1. Звичайна покупка 1 товару → order створено, товар `sold`, 2 листи надіслано.
-2. **Дві вкладки одночасно купують ту саму прикрасу** → лише одна отримує сесію, друга бачить 409 «déjà réservé».
-3. Клієнтка закрила Stripe без оплати → після `expired` (або cron) товар знову `available`.
+1. Звичайна покупка 1 товару зі `stock` ≥ 1 → order створено, `stock` −1, `toMake: 0`, 2 листи надіслано.
+2. **`stock: 1`, дві вкладки одночасно купують ту саму прикрасу** → обидві оплати проходять, `stock` 0 (не −1), друге замовлення має `toMake: 1`, Delphine бачить «À fabriquer».
+3. Кількість більша за залишок (`stock: 1`, купують 3) → `fromStock: 1`, `toMake: 2`, у Stripe і в листі — термін «на замовлення». Закрила Stripe без оплати → нічого не змінилось.
 4. Stripe надсилає `completed` двічі → один order, один лист.
 5. Невалідний підпис вебхука → 400, нічого не змінено.
-6. Підміна ціни/ID з клієнта → сервер ігнорує, ціна з Sanity.
+6. Підміна ціни/ID з клієнта → сервер ігнорує, ціна з Sanity; `quantity: 6`, дробова чи повтор товару → 400.
 7. Відмова картки (`4000 0000 0000 0002`) і 3D Secure (`4000 0025 0000 3155`) → коректна поведінка.
 8. `vacationMode = true` → купити неможливо, видно повідомлення.
 9. Статус `shipped` + трек-номер у Studio → лист клієнтці.
@@ -366,13 +362,11 @@ Sur-mesure і Contact (Turnstile, rate limit), cookie-банер, аналіти
 
 - **Публічний dataset** (безкоштовний тариф Sanity не має приватних): документи з персональними даними мають `_id` з крапкою — `orders.<sessionId>`, `requests.<uuid>` — такі не читаються без токена (як `drafts.`). Нові типи з персональними даними — так само. Товари, сторінки, settings — публічні.
 - **Офлайн-режим**: без `NEXT_PUBLIC_SANITY_PROJECT_ID` усі читання йдуть з `src/lib/sanity/fixtures.ts` через `src/lib/sanity/data.ts`. Сторінки читають дані **тільки** через `data.ts`. На Vercel production усі ключі обов'язкові (`REQUIRED_IN_PRODUCTION` у `src/lib/env.ts`).
-- **Резерв**: окрім `reservedUntil`, товар отримує `reservationToken` (той самий — у `metadata` сесії Stripe). Сесія Stripe — 31 хв (мінімум Stripe 30), резерв — 32 хв. «Annuler» у Stripe або новий checkout з того ж браузера одразу закривають попередню сесію й знімають резерв. Статус пишеться і в опублікований документ, і в чернетку `drafts.<id>`.
-- **Замовлення**: створюється через `create` (не `createIfNotExists`) в одній транзакції з лічильником і `sold` — дублікат події падає цілком і не шле листів. Плюс idempotency key у Resend. Оплати з відкладеним підтвердженням: резерв продовжується на 7 днів, замовлення — на `async_payment_succeeded`.
-- **Статус товару в Studio**: редагується лише зі стану `sold` (щоб повернути в продаж повернений товар).
+- **Модель «завжди в продажу»** (листопад 2026, замість pièce unique з резервом): `stock` = готові екземпляри, решта виготовляється на замовлення; без резерву, статусів, cron і `CRON_SECRET`. Залишок списується у транзакції замовлення (опублікований документ з `ifRevisionID` + чернетка `drafts.<id>`, якщо є). Терміни — `settings.shippingDays` / `madeToOrderDays`, тексти — `src/lib/delivery.ts`; поки не заповнені — `[DÉLAI]`. Право відмови 14 днів лишається: повтор моделі з каталогу — не персоналізація (L221-28 3° — лише sur-mesure).
+- **Замовлення**: створюється через `create` (не `createIfNotExists`) в одній транзакції з лічильником і списанням `stock` — дублікат події падає цілком і не шле листів. Плюс idempotency key у Resend. Оплати з відкладеним підтвердженням: замовлення — на `async_payment_succeeded`.
 - **Клієнтський бандл**: клієнтські компоненти не імпортують `src/lib/env.ts` і `validation.ts` (Zod) — для публічних змінних є `src/lib/env.client.ts`, для лімітів форм — `src/lib/formLimits.ts`.
 - **Фото sur-mesure** стискаються в браузері (≤1600 px) — ліміт тіла запиту на Vercel 4,5 МБ. Не зберігаються в Sanity (assets публічні навіть за ID): лише вкладення в лист Delphine; у `customRequest` — `imageCount`.
 - **Лічильник замовлень** — окремий документ `counters.orders` (не `settings`: чернетка Réglages відкотила б його). Лист-підтвердження обов'язковий: якщо не пішов — webhook 500, Stripe повторює, `order.emailsSent` позначає успіх.
 - **Rate limit** — у пам'яті інстансу (достатньо разом із Turnstile).
-- **Cron** кожні 15 хв потребує Vercel Pro; на Hobby — щоденний (основний механізм — вебхук `expired`).
 - **CGV у листі**: лист «Confirmation de commande» = підтвердження на support durable (L221-13) — CGV PDF з `settings.cgvPdf` у вкладенні (Resend `attachments`), посилання на `/cgv`, блок «Droit de rétractation» і офіційний formulaire type (R221-1) з `settings.postalAddress`. Facture — не автоматично, на запит (уточнює бухгалтер клієнтки).
 - Документація: `README.md` (архітектура, сервіси, тест-сценарії), `docs/LAUNCH-CHECKLIST.md`, `docs/GUIDE-DELPHINE.md` (французькою).

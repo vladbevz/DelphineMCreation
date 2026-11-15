@@ -23,7 +23,7 @@ Ce guide explique comment gérer la boutique au quotidien. Vous n'avez besoin qu
    - **Prix** en euros (ex. `45` ou `45,50`).
    - **Couleur du cuir** : écrivez toujours la même chose pour la même couleur (« Cognac », pas « cognac » une fois et « Cognac clair » une autre) — c'est ce qui sert au filtre de la boutique.
    - **Dimensions**, **Poids** (en grammes).
-   - **Quantité disponible** : `1` pour une pièce unique.
+   - **Pièces prêtes à expédier** : le nombre d'exemplaires déjà fabriqués (ex. `2`). Mettez `0` si vous n'en avez aucun d'avance : le bijou reste en vente, et vous le fabriquez à la commande.
 4. **Publier**.
 
 **Modifier** un bijou : ouvrez-le, changez, **Publier**. **Retirer** un bijou du site : menu `⋯` en haut à droite → **Supprimer la publication** (il reste dans le Studio, invisible sur le site).
@@ -32,7 +32,9 @@ Ce guide explique comment gérer la boutique au quotidien. Vous n'avez besoin qu
 
 Vous recevez un e-mail **« Nouvelle commande DMC-2026-0001 »** avec le bouton **Ouvrir la commande**. La cliente reçoit sa confirmation automatiquement.
 
-Le bijou passe tout seul en **Vendu** sur le site : vous n'avez rien à faire.
+Le nombre de **pièces prêtes** diminue tout seul. Un bijou n'est jamais « vendu » sur le site : quand il n'y a plus de pièces prêtes, il reste en vente avec le délai de fabrication.
+
+Si une commande contient des bijoux à fabriquer, l'objet de l'e-mail se termine par **(à fabriquer)**, et chaque bijou indique **À fabriquer : 2** (par exemple). Dans le Studio, la commande affiche aussi, pour chaque bijou, combien ont été pris dans les pièces prêtes et combien sont à fabriquer.
 
 Dans le Studio → **Commandes** → **À expédier**, vous voyez toutes les commandes payées à préparer : bijoux, adresse, téléphone, montant.
 
@@ -59,7 +61,7 @@ L'argent se gère **uniquement dans Stripe**.
 3. Ouvrez le paiement → **Rembourser** → montant total ou partiel → **Rembourser**.
 4. De retour dans le Studio : commande → **État** → **Remboursée** → **Publier**.
 
-**Remettre en vente** un bijou retourné : Studio → ouvrez le bijou → **Prix et détails** → **État** : **Disponible**, **Quantité disponible** : `1` → **Publier**.
+**Bijou retourné** en bon état : Studio → ouvrez le bijou → **Prix et détails** → ajoutez `1` aux **Pièces prêtes à expédier** → **Publier**.
 
 ## 5. Partir en vacances
 
@@ -77,7 +79,7 @@ Le message s'affiche en haut du site et les achats sont suspendus. Pour rouvrir 
 Studio → **Réglages** :
 
 - **Bandeau d'annonce** : petit message en haut de toutes les pages (ex. une collection qui arrive).
-- **Livraison** : prix Colissimo, livraison offerte à partir de…, retrait dans la Vaunage.
+- **Livraison** : prix Colissimo, livraison offerte à partir de…, retrait dans la Vaunage, et vos **deux délais d'expédition** en jours ouvrés : pour un bijou prêt, et pour un bijou à fabriquer. Ils s'affichent sur chaque fiche, dans le panier, au paiement et dans les e-mails — gardez-les réalistes.
 - **Contact** : e-mail, téléphone, adresse postale, liens Instagram et Facebook affichés sur le site.
 - **Documents légaux** : le **PDF de vos CGV** et votre **adresse postale**. Le PDF est joint automatiquement à chaque e-mail de confirmation de commande, avec le formulaire de rétractation (c'est une obligation légale). **Quand vous modifiez les CGV dans Pages, remplacez aussi le PDF.**
 
@@ -87,7 +89,8 @@ Studio → **Pages** : les textes des pages Conditions générales de vente, Men
 
 ## Bon à savoir
 
-- **« Réservé »** : quand une cliente est en train de payer, le bijou est réservé pour elle pendant 30 minutes. S'il n'y a pas de paiement, il redevient disponible tout seul.
-- Vous ne pouvez pas modifier l'**État** d'un bijou disponible ou réservé : c'est la boutique qui s'en charge, pour éviter de vendre deux fois une pièce unique.
+- Une cliente peut commander jusqu'à **5 exemplaires** d'un même bijou.
+- **Arrêter de vendre** un modèle (cuir épuisé, modèle retiré) : menu `⋯` → **Supprimer la publication**. Pour une pause de toute la boutique : **Mode vacances**.
+- Studio → **Produits** → **Sur commande (à fabriquer)** liste les bijoux sans pièce prête : pratique pour savoir quoi préparer d'avance.
 - Une commande ne peut pas être supprimée : c'est votre historique de ventes.
 - En cas de doute ou de problème : [CONTACT DÉVELOPPEUR À COMPLÉTER].
