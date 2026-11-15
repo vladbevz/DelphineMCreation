@@ -313,6 +313,20 @@
         },
         "optional": true
       },
+      "shippingDays": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "madeToOrderDays": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "pickupEnabled": {
         "type": "objectAttribute",
         "value": {
@@ -770,7 +784,28 @@
                 },
                 "optional": true
               },
+              "quantity": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "number"
+                },
+                "optional": true
+              },
               "price": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "fromStock": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "toMake": {
                 "type": "objectAttribute",
                 "value": {
                   "type": "number"
@@ -1230,41 +1265,6 @@
           "type": "number"
         },
         "optional": false
-      },
-      "status": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "available"
-            },
-            {
-              "type": "string",
-              "value": "reserved"
-            },
-            {
-              "type": "string",
-              "value": "sold"
-            }
-          ]
-        },
-        "optional": true
-      },
-      "reservationToken": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "reservedUntil": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
       },
       "publishedAt": {
         "type": "objectAttribute",

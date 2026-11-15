@@ -17,6 +17,3 @@ export function getStripe() {
   });
   return stripe;
 }
-
-/** Minimum lifetime Stripe accepts for a Checkout Session is 30 minutes. */
-export const CHECKOUT_SESSION_MINUTES = 31;

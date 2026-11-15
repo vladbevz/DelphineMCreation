@@ -1,71 +1,33 @@
 'use server';
 
-import * as Sentry from '@sentry/nextjs';
-import { abandonCheckoutSession } from '@/lib/checkout';
 import { getCartProducts } from '@/lib/sanity/data';
 import { urlFor } from '@/lib/sanity/image';
-import { getStripe, isStripeConfigured } from '@/lib/stripe';
-import { cartIdsSchema, stripeSessionIdSchema } from '@/lib/validation';
+import { cartIdsSchema } from '@/lib/validation';
 
 export type CartItem = {
   _id: string;
   title: string;
   slug: string;
   price: number;
-  availability: 'available' | 'reserved' | 'sold';
+  /** Pieces ready to ship; the rest of the quantity is made to order. */
+  stock: number;
   imageUrl: string | null;
   imageAlt: string;
 };
 
-/**
- * Current data for the ids stored in the browser cart. Unknown ids are dropped.
- * Pieces reserved by this browser's own unfinished Stripe session count as available.
- */
-export async function getCartItems(ids: unknown, pendingSessionId?: unknown): Promise<CartItem[]> {
+/** Current price and ready stock for the ids in the browser cart. Unknown or unpublished ids are dropped. */
+export async function getCartItems(ids: unknown): Promise<CartItem[]> {
   const parsed = cartIdsSchema.safeParse(ids);
   if (!parsed.success) return [];
 
-  const [products, ownToken] = await Promise.all([
-    getCartProducts(parsed.data),
-    reservationTokenOf(pendingSessionId),
-  ]);
-  const now = new Date();
-
-  return products.map((p) => {
-    const reserved =
-      p.status === 'reserved' &&
-      (!p.reservedUntil || new Date(p.reservedUntil) > now) &&
-      !(ownToken && p.reservationToken === ownToken);
-    return {
-      _id: p._id,
-      title: p.title,
-      slug: p.slug,
-      price: p.price,
-      availability: p.status === 'sold' ? 'sold' : reserved ? 'reserved' : 'available',
-      imageUrl: p.image?.asset ? urlFor(p.image).width(160).height(160).url() : null,
-      imageAlt: p.image?.alt ?? p.title,
-    };
-  });
-}
-
-/** Called when the customer comes back from Stripe without paying. */
-export async function abandonCheckout(sessionId: unknown) {
-  const parsed = stripeSessionIdSchema.safeParse(sessionId);
-  if (!parsed.success || !isStripeConfigured) return;
-  try {
-    await abandonCheckoutSession(parsed.data);
-  } catch (error) {
-    Sentry.captureException(error, { extra: { sessionId: parsed.data } });
-  }
-}
-
-async function reservationTokenOf(sessionId: unknown) {
-  const parsed = stripeSessionIdSchema.safeParse(sessionId);
-  if (!parsed.success || !isStripeConfigured) return null;
-  try {
-    const session = await getStripe().checkout.sessions.retrieve(parsed.data);
-    return session.status === 'open' ? (session.metadata?.reservationToken ?? null) : null;
-  } catch {
-    return null;
-  }
+  const products = await getCartProducts(parsed.data);
+  return products.map((p) => ({
+    _id: p._id,
+    title: p.title ?? '',
+    slug: p.slug ?? '',
+    price: p.price ?? 0,
+    stock: p.stock ?? 0,
+    imageUrl: p.image?.asset ? urlFor(p.image).width(160).height(160).url() : null,
+    imageAlt: p.image?.alt ?? p.title ?? '',
+  }));
 }

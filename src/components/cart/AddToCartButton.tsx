@@ -4,6 +4,7 @@ import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { MAX_QUANTITY } from '@/lib/delivery';
 import { trackEvent } from '@/lib/tracking';
 import { useCart } from './CartProvider';
 
@@ -20,30 +21,33 @@ export function AddToCartButton({
   title: string;
   price: number;
 }) {
-  const { ids, add, open } = useCart();
-  const inCart = ids.includes(productId);
+  const { lines, add, open } = useCart();
+  const inCart = lines.find((l) => l.id === productId)?.qty ?? 0;
+  const atMax = inCart >= MAX_QUANTITY;
   const [justAdded, setJustAdded] = useState(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
 
+  // Same piece again = one more (made to order if the ready ones run out), up to MAX_QUANTITY.
   const label = justAdded
     ? 'Ajouté'
-    : inCart
-      ? 'Dans votre panier — voir le panier'
-      : 'Ajouter au panier';
+    : atMax
+      ? 'Quantité maximale — voir le panier'
+      : inCart
+        ? `Ajouter encore (${inCart} dans le panier)`
+        : 'Ajouter au panier';
 
   return (
     <Button
       className="w-full overflow-hidden sm:w-auto sm:min-w-64"
-      variant={inCart && !justAdded ? 'secondary' : 'primary'}
+      variant={atMax && !justAdded ? 'secondary' : 'primary'}
       aria-live="polite"
       onClick={() => {
-        if (inCart) {
+        if (!add(productId)) {
           open();
           return;
         }
-        add(productId);
         trackEvent('AddToCart', {
           content_ids: [productId],
           content_name: title,

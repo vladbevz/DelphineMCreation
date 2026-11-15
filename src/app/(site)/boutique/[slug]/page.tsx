@@ -8,7 +8,6 @@ import { ProductActions } from '@/components/product/ProductActions';
 import { TrackViewContent } from '@/components/product/TrackViewContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { AccordionItem } from '@/components/ui/Accordion';
-import { Badge } from '@/components/ui/Badge';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { RichText } from '@/components/ui/RichText';
@@ -36,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const image = product.images.find((i) => i.asset);
   const description =
     product.seo?.description ??
-    `${product.title}, bijou en cuir fait main${product.leatherColor ? ` (cuir ${product.leatherColor.toLowerCase()})` : ''}. Pièce unique, ${formatPrice(product.price)}.`;
+    `${product.title}, bijou en cuir fait main${product.leatherColor ? ` (cuir ${product.leatherColor.toLowerCase()})` : ''}. Fait main à Clarensac, ${formatPrice(product.price)}.`;
   return {
     title: product.seo?.title ?? product.title,
     description,
@@ -79,7 +78,6 @@ export default async function ProductPage({ params }: Props) {
       'La boutique est en pause : les commandes reprendront bientôt.'
     : null;
 
-  const sold = product.status === 'sold';
   const details = [
     { label: 'Catégorie', value: categoryLabel(product.category) },
     { label: 'Cuir', value: product.leatherColor },
@@ -105,7 +103,9 @@ export default async function ProductPage({ params }: Props) {
             price: (product.price / 100).toFixed(2),
             priceCurrency: 'EUR',
             itemCondition: 'https://schema.org/NewCondition',
-            availability: sold ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+            // Always for sale: ready to ship, or made to order once the ready pieces run out.
+            availability:
+              product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/MadeToOrder',
             url: absoluteUrl(`/boutique/${product.slug}`),
           },
         }}
@@ -153,14 +153,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
 
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <div className="flex flex-wrap gap-2">
-              {sold ? (
-                <Badge tone="espresso">Vendu</Badge>
-              ) : (
-                product.stock <= 1 && <Badge>Pièce unique</Badge>
-              )}
-            </div>
-            <h1 className="mt-4 product-title text-3xl sm:text-[2.6rem]">{product.title}</h1>
+            <h1 className="product-title text-3xl sm:text-[2.6rem]">{product.title}</h1>
             <p className="mt-2 price text-lg">{formatPrice(product.price)}</p>
             {/* The two strongest selling points for earrings, right next to the button. */}
             {product.category === 'boucles-d-oreilles' && (
@@ -185,7 +178,11 @@ export default async function ProductPage({ params }: Props) {
                 productId={product._id}
                 title={product.title}
                 price={product.price}
-                status={product.status}
+                stock={product.stock}
+                delays={{
+                  shippingDays: settings?.shippingDays ?? null,
+                  madeToOrderDays: settings?.madeToOrderDays ?? null,
+                }}
                 vacationMessage={vacationMessage}
               />
             </div>
@@ -240,9 +237,10 @@ export default async function ProductPage({ params }: Props) {
               title={<>Une création faite main</>}
               intro={
                 <p>
-                  Ce bijou a été découpé et assemblé à la main dans mon atelier de Clarensac, dans
-                  un cuir rapporté de Colombie. Je crée rarement deux fois le même modèle dans les
-                  mêmes couleurs.
+                  Chaque exemplaire de ce bijou est découpé, assemblé et fini à la main dans mon
+                  atelier de Clarensac, dans un cuir rapporté de Colombie. Le grain et les nuances
+                  du cuir changent d’une peau à l’autre : le vôtre aura toujours sa petite
+                  personnalité.
                 </p>
               }
             />

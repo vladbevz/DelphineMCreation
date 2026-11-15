@@ -33,7 +33,6 @@ const toCard = ({
   title,
   slug,
   price,
-  status,
   stock,
   category,
   leatherColor,
@@ -45,7 +44,6 @@ const toCard = ({
   title,
   slug,
   price,
-  status,
   stock,
   category,
   leatherColor,
@@ -60,7 +58,7 @@ export const getSettings = cache(async () => {
 });
 
 export const getLatestProducts = cache(async () => {
-  if (offline) return fixtureProducts.filter((p) => p.status !== 'sold').map(toCard);
+  if (offline) return fixtureProducts.slice(0, 8).map(toCard);
   return sanityFetch(LATEST_PRODUCTS_QUERY, { tags: ['product'] });
 });
 
@@ -91,7 +89,6 @@ const findRelated = cache(async (product: RelatedSource) => {
       .filter(
         (p) =>
           p._id !== product._id &&
-          p.status !== 'sold' &&
           ((product.collection && p.collection?._id === product.collection._id) ||
             p.category === product.category),
       )
@@ -144,20 +141,18 @@ export const getSitemapEntries = cache(async () => {
   return sanityFetch(SITEMAP_QUERY, { tags: ['product', 'collection', 'page'] });
 });
 
-/** Uncached read for the cart: availability must be current, not ISR-stale. */
+/** Uncached read for the cart: price and ready stock must be current, not ISR-stale. */
 export async function getCartProducts(ids: string[]) {
   if (ids.length === 0) return [];
   if (offline) {
     return fixtureProducts
       .filter((p) => ids.includes(p._id))
-      .map(({ _id, title, slug, price, status, image }) => ({
+      .map(({ _id, title, slug, price, stock, image }) => ({
         _id,
         title,
         slug,
         price,
-        status,
-        reservedUntil: null,
-        reservationToken: null,
+        stock,
         image,
       }));
   }

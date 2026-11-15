@@ -1,8 +1,6 @@
 import { TagIcon } from '@sanity/icons/Tag';
 import { defineField, defineType } from 'sanity';
-import { categories, imageArrayMember, moneyField, productStatuses } from './shared';
-
-const statusLabel = Object.fromEntries(productStatuses.map((s) => [s.value, s.title]));
+import { categories, imageArrayMember, moneyField } from './shared';
 
 export const product = defineType({
   name: 'product',
@@ -99,33 +97,13 @@ export const product = defineType({
     }),
     defineField({
       name: 'stock',
-      title: 'Quantité disponible',
-      description: 'Une pièce unique = 1.',
+      title: 'Pièces prêtes à expédier',
+      description:
+        'Bijoux déjà fabriqués. Diminue tout seul à chaque commande. À 0, le bijou reste en vente : il est fabriqué à la commande (délai dans Réglages → Livraison).',
       type: 'number',
       group: 'details',
-      initialValue: 1,
+      initialValue: 0,
       validation: (rule) => rule.required().integer().min(0),
-    }),
-    defineField({
-      name: 'status',
-      title: 'État',
-      description:
-        'Mis à jour automatiquement lors des paiements. Pour remettre en vente un bijou retourné : choisir « Disponible » et remettre la quantité à 1.',
-      type: 'string',
-      group: 'details',
-      options: { list: productStatuses },
-      initialValue: 'available',
-      // Reservations and sales belong to the checkout; only a sold piece can be put back on sale.
-      readOnly: ({ document }) => document?.status !== 'sold',
-    }),
-    // Set by /api/checkout, shared with the Stripe session metadata.
-    defineField({ name: 'reservationToken', type: 'string', readOnly: true, hidden: true }),
-    defineField({
-      name: 'reservedUntil',
-      title: 'Réservé jusqu’à',
-      type: 'datetime',
-      readOnly: true,
-      hidden: true,
     }),
     defineField({
       name: 'publishedAt',
@@ -146,8 +124,8 @@ export const product = defineType({
     { title: 'Prix croissant', name: 'priceAsc', by: [{ field: 'price', direction: 'asc' }] },
   ],
   preview: {
-    select: { title: 'title', price: 'price', status: 'status', media: 'images.0' },
-    prepare({ title, price, status, media }) {
+    select: { title: 'title', price: 'price', stock: 'stock', media: 'images.0' },
+    prepare({ title, price, stock, media }) {
       const euros =
         typeof price === 'number'
           ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
@@ -156,7 +134,7 @@ export const product = defineType({
           : 'Prix à définir';
       return {
         title,
-        subtitle: `${euros} · ${statusLabel[status as string] ?? 'Disponible'}`,
+        subtitle: `${euros} · ${typeof stock === 'number' && stock > 0 ? `${stock} prête(s)` : 'sur commande'}`,
         media,
       };
     },

@@ -63,6 +63,8 @@ export type Settings = {
   };
   colissimoPrice?: number;
   freeShippingThreshold?: number;
+  shippingDays?: number;
+  madeToOrderDays?: number;
   pickupEnabled?: boolean;
   email?: string;
   postalAddress?: string;
@@ -132,7 +134,10 @@ export type Order = {
   items?: Array<{
     product?: ProductReference;
     title?: string;
+    quantity?: number;
     price?: number;
+    fromStock?: number;
+    toMake?: number;
     _type: 'orderItem';
     _key: string;
   }>;
@@ -202,9 +207,6 @@ export type Product = {
   dimensions?: string;
   weight?: number;
   stock: number;
-  status?: 'available' | 'reserved' | 'sold';
-  reservationToken?: string;
-  reservedUntil?: string;
   publishedAt?: string;
   seo?: Seo;
 };
@@ -369,13 +371,12 @@ export type AllSanitySchemaTypes =
 
 // Source: src/lib/sanity/queries.ts
 // Variable: LATEST_PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]    | order(featured desc, publishedAt desc)[0...8]{   _id,  title,  "slug": slug.current,  price,  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for  // /api/checkout: the page must not keep showing « Réservé ».  "status": select(status == "reserved" && reservedUntil < now() => "available", status),  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0]    | order(featured desc, publishedAt desc)[0...8]{   _id,  title,  "slug": slug.current,  price,  // Pieces ready to ship; at 0 the piece is still for sale, made to order.  "stock": coalesce(stock, 0),  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type LATEST_PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
   stock: number;
   category: 'autre' | 'bague' | 'boucles-d-oreilles' | 'bracelet' | 'collier';
   leatherColor: string | null;
@@ -403,13 +404,12 @@ export type LATEST_PRODUCTS_QUERY_RESULT = Array<{
 
 // Source: src/lib/sanity/queries.ts
 // Variable: PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){   _id,  title,  "slug": slug.current,  price,  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for  // /api/checkout: the page must not keep showing « Réservé ».  "status": select(status == "reserved" && reservedUntil < now() => "available", status),  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){   _id,  title,  "slug": slug.current,  price,  // Pieces ready to ship; at 0 the piece is still for sale, made to order.  "stock": coalesce(stock, 0),  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
   stock: number;
   category: 'autre' | 'bague' | 'boucles-d-oreilles' | 'bracelet' | 'collier';
   leatherColor: string | null;
@@ -437,13 +437,12 @@ export type PRODUCTS_QUERY_RESULT = Array<{
 
 // Source: src/lib/sanity/queries.ts
 // Variable: PRODUCT_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  price,  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for  // /api/checkout: the page must not keep showing « Réservé ».  "status": select(status == "reserved" && reservedUntil < now() => "available", status),  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... },    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },    description,    care,    dimensions,    weight,    seo,    collection->{ _id, title, "slug": slug.current }  }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{      _id,  title,  "slug": slug.current,  price,  // Pieces ready to ship; at 0 the piece is still for sale, made to order.  "stock": coalesce(stock, 0),  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... },    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },    description,    care,    dimensions,    weight,    seo,    collection->{ _id, title, "slug": slug.current }  }
 export type PRODUCT_QUERY_RESULT = {
   _id: string;
   title: string;
   slug: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
   stock: number;
   category: 'autre' | 'bague' | 'boucles-d-oreilles' | 'bracelet' | 'collier';
   leatherColor: string | null;
@@ -492,13 +491,12 @@ export type PRODUCT_QUERY_RESULT = {
 
 // Source: src/lib/sanity/queries.ts
 // Variable: RELATED_PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"    && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]    | order(publishedAt desc)[0...4]{   _id,  title,  "slug": slug.current,  price,  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for  // /api/checkout: the page must not keep showing « Réservé ».  "status": select(status == "reserved" && reservedUntil < now() => "available", status),  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id    && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]    | order(publishedAt desc)[0...4]{   _id,  title,  "slug": slug.current,  price,  // Pieces ready to ship; at 0 the piece is still for sale, made to order.  "stock": coalesce(stock, 0),  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }
 export type RELATED_PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
   stock: number;
   category: 'autre' | 'bague' | 'boucles-d-oreilles' | 'bracelet' | 'collier';
   leatherColor: string | null;
@@ -545,7 +543,7 @@ export type COLLECTIONS_QUERY_RESULT = Array<{
 
 // Source: src/lib/sanity/queries.ts
 // Variable: COLLECTION_QUERY
-// Query: *[_type == "collection" && slug.current == $slug][0]{    _id, title, "slug": slug.current, cover, description,    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]      | order(select(status == "sold" => 1, 0) asc, publishedAt desc){   _id,  title,  "slug": slug.current,  price,  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for  // /api/checkout: the page must not keep showing « Réservé ».  "status": select(status == "reserved" && reservedUntil < now() => "available", status),  stock,  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }  }
+// Query: *[_type == "collection" && slug.current == $slug][0]{    _id, title, "slug": slug.current, cover, description,    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]      | order(publishedAt desc){   _id,  title,  "slug": slug.current,  price,  // Pieces ready to ship; at 0 the piece is still for sale, made to order.  "stock": coalesce(stock, 0),  category,  leatherColor,  publishedAt,  "image": images[0]{ ..., "lqip": asset->metadata.lqip },  // Second photo, shown on hover in the catalog.  "hoverImage": images[1]{ ... } }  }
 export type COLLECTION_QUERY_RESULT = {
   _id: string;
   title: string;
@@ -564,7 +562,6 @@ export type COLLECTION_QUERY_RESULT = {
     title: string;
     slug: string;
     price: number;
-    status: 'available' | 'reserved' | 'sold' | null;
     stock: number;
     category: 'autre' | 'bague' | 'boucles-d-oreilles' | 'bracelet' | 'collier';
     leatherColor: string | null;
@@ -621,7 +618,7 @@ export type SITEMAP_QUERY_RESULT = {
 
 // Source: src/lib/sanity/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "settings" && _id == "settings"][0]{    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,    email, postalAddress, phone, instagram, facebook  }
+// Query: *[_type == "settings" && _id == "settings"][0]{    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,    shippingDays, madeToOrderDays,    email, postalAddress, phone, instagram, facebook  }
 export type SETTINGS_QUERY_RESULT = {
   vacationMode: {
     enabled?: boolean;
@@ -634,6 +631,8 @@ export type SETTINGS_QUERY_RESULT = {
   colissimoPrice: number | null;
   freeShippingThreshold: number | null;
   pickupEnabled: boolean | null;
+  shippingDays: number | null;
+  madeToOrderDays: number | null;
   email: string | null;
   postalAddress: string | null;
   phone: string | null;
@@ -643,15 +642,13 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: src/lib/sanity/queries.ts
 // Variable: CART_PRODUCTS_QUERY
-// Query: *[_type == "product" && _id in $ids]{    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,    "image": images[0]  }
+// Query: *[_type == "product" && defined(slug.current) && count(images) > 0 && _id in $ids]{    _id, title, "slug": slug.current, price, "stock": coalesce(stock, 0), "image": images[0]  }
 export type CART_PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
-  reservedUntil: string | null;
-  reservationToken: string | null;
+  stock: number;
   image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -666,16 +663,16 @@ export type CART_PRODUCTS_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && status != "sold"]\n    | order(featured desc, publishedAt desc)[0...8]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for\n  // /api/checkout: the page must not keep showing \xAB R\xE9serv\xE9 \xBB.\n  "status": select(status == "reserved" && reservedUntil < now() => "available", status),\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': LATEST_PRODUCTS_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for\n  // /api/checkout: the page must not keep showing \xAB R\xE9serv\xE9 \xBB.\n  "status": select(status == "reserved" && reservedUntil < now() => "available", status),\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': PRODUCTS_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for\n  // /api/checkout: the page must not keep showing \xAB R\xE9serv\xE9 \xBB.\n  "status": select(status == "reserved" && reservedUntil < now() => "available", status),\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n,\n    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },\n    description,\n    care,\n    dimensions,\n    weight,\n    seo,\n    collection->{ _id, title, "slug": slug.current }\n  }\n': PRODUCT_QUERY_RESULT;
-    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id && status != "sold"\n    && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]\n    | order(publishedAt desc)[0...4]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for\n  // /api/checkout: the page must not keep showing \xAB R\xE9serv\xE9 \xBB.\n  "status": select(status == "reserved" && reservedUntil < now() => "available", status),\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': RELATED_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0]\n    | order(featured desc, publishedAt desc)[0...8]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // Pieces ready to ship; at 0 the piece is still for sale, made to order.\n  "stock": coalesce(stock, 0),\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': LATEST_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0] | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // Pieces ready to ship; at 0 the piece is still for sale, made to order.\n  "stock": coalesce(stock, 0),\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && slug.current == $slug][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // Pieces ready to ship; at 0 the piece is still for sale, made to order.\n  "stock": coalesce(stock, 0),\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n,\n    "images": images[]{ ..., "lqip": asset->metadata.lqip, "dimensions": asset->metadata.dimensions },\n    description,\n    care,\n    dimensions,\n    weight,\n    seo,\n    collection->{ _id, title, "slug": slug.current }\n  }\n': PRODUCT_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && _id != $id\n    && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]\n    | order(publishedAt desc)[0...4]{ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // Pieces ready to ship; at 0 the piece is still for sale, made to order.\n  "stock": coalesce(stock, 0),\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n': RELATED_PRODUCTS_QUERY_RESULT;
     '\n  *[_type == "collection" && defined(slug.current)] | order(order asc, title asc){\n    _id, title, "slug": slug.current, cover, description, _updatedAt\n  }\n': COLLECTIONS_QUERY_RESULT;
-    '\n  *[_type == "collection" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, cover, description,\n    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]\n      | order(select(status == "sold" => 1, 0) asc, publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for\n  // /api/checkout: the page must not keep showing \xAB R\xE9serv\xE9 \xBB.\n  "status": select(status == "reserved" && reservedUntil < now() => "available", status),\n  stock,\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n  }\n': COLLECTION_QUERY_RESULT;
+    '\n  *[_type == "collection" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, cover, description,\n    "products": *[_type == "product" && defined(slug.current) && count(images) > 0 && collection._ref == ^._id]\n      | order(publishedAt desc){ \n  _id,\n  title,\n  "slug": slug.current,\n  price,\n  // Pieces ready to ship; at 0 the piece is still for sale, made to order.\n  "stock": coalesce(stock, 0),\n  category,\n  leatherColor,\n  publishedAt,\n  "image": images[0]{ ..., "lqip": asset->metadata.lqip },\n  // Second photo, shown on hover in the catalog.\n  "hoverImage": images[1]{ ... }\n }\n  }\n': COLLECTION_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{ _id, title, body, seo }\n': PAGE_QUERY_RESULT;
     '{\n  "products": *[_type == "product" && defined(slug.current) && count(images) > 0]{ "slug": slug.current, _updatedAt },\n  "collections": *[_type == "collection" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT;
-    '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    email, postalAddress, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;
-    '\n  *[_type == "product" && _id in $ids]{\n    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,\n    "image": images[0]\n  }\n': CART_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "settings" && _id == "settings"][0]{\n    vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,\n    shippingDays, madeToOrderDays,\n    email, postalAddress, phone, instagram, facebook\n  }\n': SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "product" && defined(slug.current) && count(images) > 0 && _id in $ids]{\n    _id, title, "slug": slug.current, price, "stock": coalesce(stock, 0), "image": images[0]\n  }\n': CART_PRODUCTS_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

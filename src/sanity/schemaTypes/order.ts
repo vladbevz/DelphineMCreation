@@ -52,23 +52,39 @@ export const order = defineType({
               title: 'Bijou',
               type: 'reference',
               to: [{ type: 'product' }],
-              // Weak: a sold product can still be deleted; title/price are snapshotted below.
+              // Weak: the product can still be deleted; title/price are snapshotted below.
               weak: true,
             }),
             defineField({ name: 'title', title: 'Nom', type: 'string' }),
-            moneyField({ name: 'price', title: 'Prix' }),
+            defineField({ name: 'quantity', title: 'Quantité', type: 'number' }),
+            moneyField({ name: 'price', title: 'Prix (total de la ligne)' }),
+            defineField({
+              name: 'fromStock',
+              title: 'Pris dans les pièces prêtes',
+              type: 'number',
+            }),
+            defineField({ name: 'toMake', title: 'À fabriquer', type: 'number' }),
           ],
           preview: {
-            select: { title: 'title', price: 'price', media: 'product.images.0' },
-            prepare({ title, price, media }) {
+            select: {
+              title: 'title',
+              price: 'price',
+              quantity: 'quantity',
+              toMake: 'toMake',
+              media: 'product.images.0',
+            },
+            prepare({ title, price, quantity, toMake, media }) {
+              const euros =
+                typeof price === 'number'
+                  ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
+                      price / 100,
+                    )
+                  : undefined;
               return {
-                title,
-                subtitle:
-                  typeof price === 'number'
-                    ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
-                        price / 100,
-                      )
-                    : undefined,
+                title: `${quantity ?? 1} × ${title}`,
+                subtitle: [euros, toMake ? `à fabriquer : ${toMake}` : 'prêt']
+                  .filter(Boolean)
+                  .join(' · '),
                 media,
               };
             },

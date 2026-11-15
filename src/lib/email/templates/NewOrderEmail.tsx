@@ -20,7 +20,12 @@ export function NewOrderEmail({ order, studioUrl }: { order: EmailOrder; studioU
           </>
         )}
       </Text>
-      <OrderSummary order={order} />
+      {order.items.some((i) => i.toMake > 0) && (
+        <Text style={{ ...text, fontWeight: 500 }}>
+          Des bijoux sont à fabriquer pour cette commande (détail ci-dessous).
+        </Text>
+      )}
+      <OrderSummary order={order} audience="delphine" />
       <Text style={label}>
         {order.shippingMethod === 'retrait' ? 'Retrait dans la Vaunage' : 'Colissimo'}
       </Text>

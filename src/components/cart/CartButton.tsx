@@ -5,8 +5,7 @@ import { useState } from 'react';
 import { useCart } from './CartProvider';
 
 export function CartButton() {
-  const { ids, open } = useCart();
-  const count = ids.length;
+  const { count, open } = useCart();
   // Bounce the counter when it grows, not on first render or when items are removed.
   const [previous, setPrevious] = useState(count);
   const [bumps, setBumps] = useState(0);

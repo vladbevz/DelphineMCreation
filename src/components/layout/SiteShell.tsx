@@ -22,7 +22,13 @@ export async function SiteShell({ children }: { children: ReactNode }) {
           <ViewTransition>{children}</ViewTransition>
         </main>
         <Footer />
-        <CartDrawer freeShippingThreshold={settings?.freeShippingThreshold ?? null} />
+        <CartDrawer
+          freeShippingThreshold={settings?.freeShippingThreshold ?? null}
+          delays={{
+            shippingDays: settings?.shippingDays ?? null,
+            madeToOrderDays: settings?.madeToOrderDays ?? null,
+          }}
+        />
         <CookieBanner />
         <ConsentScripts />
       </CartProvider>

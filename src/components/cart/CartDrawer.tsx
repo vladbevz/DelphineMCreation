@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { getCartItems, type CartItem } from '@/app/actions/cart';
 import { Button } from '@/components/ui/Button';
+import { lineAvailabilityNote, MAX_QUANTITY, type Delays } from '@/lib/delivery';
 import { formatPrice } from '@/lib/format';
 import { fadeUp, staggerChildren } from '@/lib/motion';
 import { trackEvent } from '@/lib/tracking';
-import { cartStore } from './cartStore';
 import { useCart } from './CartProvider';
 
 type CheckoutError =
@@ -17,8 +17,14 @@ type CheckoutError =
   | { error: 'vacation'; message: string }
   | { error: string };
 
-export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: number | null }) {
-  const { ids, pendingSessionId, isOpen, close, remove } = useCart();
+export function CartDrawer({
+  freeShippingThreshold,
+  delays,
+}: {
+  freeShippingThreshold: number | null;
+  delays: Delays;
+}) {
+  const { lines, isOpen, close, remove, setQty } = useCart();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [items, setItems] = useState<CartItem[] | null>(null);
   const [notices, setNotices] = useState<string[]>([]);
@@ -34,30 +40,35 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
     if (!isOpen && dialog.open) dialog.close();
   }, [isOpen]);
 
-  // Every time the drawer opens or the cart changes: fetch fresh status from the server.
-  const idsKey = ids.join(',');
+  // Each time the drawer opens or pieces are added/removed: fresh prices and ready stock
+  // (quantity changes reuse them). A piece taken offline by Delphine leaves the cart.
+  const idsKey = lines.map((l) => l.id).join(',');
   useEffect(() => {
     if (!isOpen) return;
     startLoading(async () => {
-      const fresh = await getCartItems(idsKey ? idsKey.split(',') : [], pendingSessionId);
+      const ids = idsKey ? idsKey.split(',') : [];
+      const fresh = await getCartItems(ids);
       const freshIds = new Set(fresh.map((i) => i._id));
-      const sold = fresh.filter((i) => i.availability === 'sold');
-      const gone = idsKey.split(',').filter((id) => id && !freshIds.has(id));
-      if (sold.length || gone.length) {
-        remove([...sold.map((i) => i._id), ...gone]);
+      const gone = ids.filter((id) => !freshIds.has(id));
+      if (gone.length) {
+        remove(gone);
         setNotices((n) => [
           ...n,
-          ...sold.map(
-            (i) => `« ${i.title} » vient de trouver preneur et a été retiré de votre panier.`,
-          ),
+          gone.length > 1
+            ? 'Des créations ne sont plus en vente et ont été retirées de votre panier.'
+            : 'Une création n’est plus en vente et a été retirée de votre panier.',
         ]);
       }
-      setItems(fresh.filter((i) => i.availability !== 'sold'));
+      setItems(fresh);
     });
-  }, [isOpen, idsKey, pendingSessionId, remove]);
+  }, [isOpen, idsKey, remove]);
 
-  const buyable = (items ?? []).filter((i) => i.availability === 'available');
-  const subtotal = buyable.reduce((sum, i) => sum + i.price, 0);
+  const qtyOf = (id: string) => lines.find((l) => l.id === id)?.qty ?? 0;
+  const buyable = (items ?? [])
+    .filter((i) => qtyOf(i._id) > 0)
+    .map((i) => ({ ...i, qty: qtyOf(i._id) }));
+  const subtotal = buyable.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const count = buyable.reduce((sum, i) => sum + i.qty, 0);
 
   const checkout = () => {
     setError(null);
@@ -66,19 +77,17 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productIds: buyable.map((i) => i._id),
-          previousSessionId: pendingSessionId ?? undefined,
+          items: buyable.map((i) => ({ productId: i._id, quantity: i.qty })),
         }),
       }).catch(() => null);
 
       if (response?.ok) {
-        const { url, sessionId } = (await response.json()) as { url: string; sessionId: string };
-        cartStore.setPending(sessionId);
+        const { url } = (await response.json()) as { url: string };
         trackEvent('InitiateCheckout', {
           content_ids: buyable.map((i) => i._id),
           value: subtotal / 100,
           currency: 'EUR',
-          num_items: buyable.length,
+          num_items: count,
         });
         window.location.assign(url);
         return;
@@ -86,12 +95,8 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
 
       const body = (await response?.json().catch(() => null)) as CheckoutError | null;
       if (body?.error === 'unavailable' && 'unavailable' in body) {
-        setError(
-          'Une ou plusieurs pièces viennent d’être réservées ou vendues. Votre panier a été mis à jour.',
-        );
-        const fresh = await getCartItems(ids, pendingSessionId);
-        setItems(fresh.filter((i) => i.availability !== 'sold'));
-        remove(fresh.filter((i) => i.availability === 'sold').map((i) => i._id));
+        setError('Une création n’est plus en vente. Votre panier a été mis à jour.');
+        remove(body.unavailable);
       } else if (body?.error === 'vacation' && 'message' in body) {
         setError(body.message);
       } else if (response?.status === 503) {
@@ -158,7 +163,7 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
             </div>
           )}
 
-          {ids.length === 0 ? (
+          {lines.length === 0 ? (
             <div className="py-16 text-center">
               <p className="heading text-2xl">Votre panier est vide</p>
               <Link
@@ -178,7 +183,7 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
               initial="hidden"
               animate="visible"
             >
-              {items.map((item) => (
+              {buyable.map((item) => (
                 <m.li key={item._id} className="flex gap-4" variants={fadeUp}>
                   <Link
                     href={`/boutique/${item.slug}`}
@@ -203,20 +208,29 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
                     >
                       {item.title}
                     </Link>
-                    <p className="price text-sm text-cognac">{formatPrice(item.price)}</p>
-                    {item.availability === 'reserved' && (
-                      <p className="mt-1 text-xs text-muted">
-                        Réservée par une autre personne en cours de paiement. Elle sera peut-être de
-                        nouveau disponible d’ici 30 minutes.
-                      </p>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => remove([item._id])}
-                      className="mt-auto self-start py-1 text-xs text-muted underline underline-offset-4 hover:text-espresso"
-                    >
-                      Retirer
-                    </button>
+                    <p className="price text-sm text-cognac">
+                      {formatPrice(item.price * item.qty)}
+                      {item.qty > 1 && (
+                        <span className="text-muted"> · {formatPrice(item.price)} l’unité</span>
+                      )}
+                    </p>
+                    <p className="mt-1 text-xs text-muted">
+                      {lineAvailabilityNote(item.qty, item.stock, delays)}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between gap-3 pt-2">
+                      <QuantityStepper
+                        title={item.title}
+                        qty={item.qty}
+                        onChange={(qty) => setQty(item._id, qty)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => remove([item._id])}
+                        className="py-1 text-xs text-muted underline underline-offset-4 hover:text-espresso"
+                      >
+                        Retirer
+                      </button>
+                    </div>
                   </div>
                 </m.li>
               ))}
@@ -251,6 +265,49 @@ export function CartDrawer({ freeShippingThreshold }: { freeShippingThreshold: n
         )}
       </m.div>
     </dialog>
+  );
+}
+
+/** − 2 + : 44px touch targets, the value announced to screen readers. */
+function QuantityStepper({
+  title,
+  qty,
+  onChange,
+}: {
+  title: string;
+  qty: number;
+  onChange: (qty: number) => void;
+}) {
+  const button =
+    'inline-flex size-11 items-center justify-center text-lg disabled:cursor-not-allowed disabled:opacity-30 hover:text-cognac';
+  return (
+    <div
+      role="group"
+      aria-label={`Quantité : ${title}`}
+      className="inline-flex items-center border border-sand-border"
+    >
+      <button
+        type="button"
+        className={button}
+        onClick={() => onChange(qty - 1)}
+        disabled={qty <= 1}
+        aria-label="Retirer un exemplaire"
+      >
+        −
+      </button>
+      <span className="w-6 text-center price text-sm" aria-live="polite">
+        {qty}
+      </span>
+      <button
+        type="button"
+        className={button}
+        onClick={() => onChange(qty + 1)}
+        disabled={qty >= MAX_QUANTITY}
+        aria-label="Ajouter un exemplaire"
+      >
+        +
+      </button>
+    </div>
   );
 }
 

@@ -3,12 +3,6 @@ import { PriceInput } from '../components/PriceInput';
 
 export { categories } from '../../lib/catalog';
 
-export const productStatuses = [
-  { title: 'Disponible', value: 'available' },
-  { title: 'Réservé (paiement en cours)', value: 'reserved' },
-  { title: 'Vendu', value: 'sold' },
-];
-
 export const orderStatuses = [
   { title: 'Payée — à expédier', value: 'paid' },
   { title: 'Expédiée', value: 'shipped' },

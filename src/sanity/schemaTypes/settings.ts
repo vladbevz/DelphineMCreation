@@ -58,6 +58,23 @@ export const settings = defineType({
       group: 'shipping',
     }),
     defineField({
+      name: 'shippingDays',
+      title: 'Délai d’expédition — bijou prêt',
+      description: 'En jours ouvrés, pour un bijou déjà fabriqué (ex. 3).',
+      type: 'number',
+      group: 'shipping',
+      validation: (rule) => rule.integer().min(1).max(30),
+    }),
+    defineField({
+      name: 'madeToOrderDays',
+      title: 'Délai d’expédition — bijou à fabriquer',
+      description:
+        'En jours ouvrés, quand le bijou est fabriqué à la commande (ex. 10). Affiché sur le site, au paiement et dans les e-mails.',
+      type: 'number',
+      group: 'shipping',
+      validation: (rule) => rule.integer().min(1).max(60),
+    }),
+    defineField({
       name: 'pickupEnabled',
       title: 'Proposer le retrait dans la Vaunage',
       type: 'boolean',

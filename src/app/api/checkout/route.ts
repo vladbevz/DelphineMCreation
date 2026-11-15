@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const { status, ...body } = result;
     return NextResponse.json(body, { status });
   } catch (error) {
-    Sentry.captureException(error, { extra: { productIds: parsed.data.productIds } });
+    Sentry.captureException(error, { extra: { items: parsed.data.items } });
     return NextResponse.json({ error: 'server-error' }, { status: 500 });
   }
 }

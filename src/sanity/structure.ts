@@ -56,9 +56,8 @@ export const structure: StructureResolver = (S) => {
             .title('Produits')
             .items([
               S.documentTypeListItem('product').title('Tous les bijoux'),
-              products('Disponibles', 'status == "available"'),
-              products('Réservés (paiement en cours)', 'status == "reserved"'),
-              products('Vendus', 'status == "sold"'),
+              products('Prêts à expédier', 'stock > 0'),
+              products('Sur commande (à fabriquer)', '!(stock > 0)'),
               S.divider(),
               S.documentTypeListItem('collection').title('Collections'),
             ]),

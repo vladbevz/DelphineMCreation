@@ -16,7 +16,6 @@ const serverSchema = z.object({
   EMAIL_FROM: optional,
   EMAIL_DELPHINE: optionalEmail,
   TURNSTILE_SECRET_KEY: optional,
-  CRON_SECRET: optional,
   SENTRY_DSN: optionalUrl,
 });
 
@@ -71,7 +70,6 @@ const REQUIRED_IN_PRODUCTION = [
   'EMAIL_FROM',
   'EMAIL_DELPHINE',
   'TURNSTILE_SECRET_KEY',
-  'CRON_SECRET',
   'SENTRY_DSN',
 ] as const;
 

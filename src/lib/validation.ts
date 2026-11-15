@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { MAX_CART_LINES, MAX_QUANTITY } from './delivery';
 
 const sanityId = z
   .string()
@@ -9,16 +10,18 @@ const sanityId = z
   .refine((id) => !id.startsWith('drafts.'), 'Invalid id');
 
 export const checkoutSchema = z.object({
-  productIds: z
-    .array(sanityId)
+  items: z
+    .array(
+      z.object({
+        productId: sanityId,
+        quantity: z.number().int().min(1).max(MAX_QUANTITY),
+      }),
+    )
     .min(1)
-    .max(10)
-    .transform((ids) => [...new Set(ids)]),
-  /** Session the same browser opened before (back button / retry): released first. */
-  previousSessionId: z
-    .string()
-    .regex(/^cs_(test|live)_[a-zA-Z0-9]+$/)
-    .optional(),
+    .max(MAX_CART_LINES)
+    .refine((items) => new Set(items.map((i) => i.productId)).size === items.length, {
+      message: 'Duplicate product',
+    }),
 });
 
 export type CheckoutInput = z.infer<typeof checkoutSchema>;

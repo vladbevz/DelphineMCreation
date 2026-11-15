@@ -1,34 +1,19 @@
-import Link from 'next/link';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { Button } from '@/components/ui/Button';
+import { productAvailabilityNote, type Delays } from '@/lib/delivery';
 
 type Props = {
   productId: string;
   title: string;
   price: number;
-  status: 'available' | 'reserved' | 'sold' | null;
+  /** Pieces ready to ship; at 0 the piece is made to order. */
+  stock: number;
+  delays: Delays;
   vacationMessage: string | null;
 };
 
-/** Purchase area: add to cart, or why the piece cannot be bought right now. */
-export function ProductActions({ productId, title, price, status, vacationMessage }: Props) {
-  if (status === 'sold') {
-    return (
-      <div>
-        <Button disabled className="w-full sm:w-auto sm:min-w-64">
-          Vendu
-        </Button>
-        <p className="mt-3 text-sm text-muted">
-          Cette pièce unique a déjà trouvé preneur. Une création similaire vous plairait ? Pensez au{' '}
-          <Link href="/sur-mesure" className="text-cognac underline underline-offset-4">
-            sur-mesure
-          </Link>
-          .
-        </p>
-      </div>
-    );
-  }
-
+/** Purchase area: add to cart and the shipping delay, or why the shop is paused. */
+export function ProductActions({ productId, title, price, stock, delays, vacationMessage }: Props) {
   if (vacationMessage) {
     return (
       <div>
@@ -40,19 +25,11 @@ export function ProductActions({ productId, title, price, status, vacationMessag
     );
   }
 
-  if (status === 'reserved') {
-    return (
-      <div>
-        <Button disabled className="w-full sm:w-auto sm:min-w-64">
-          Réservé
-        </Button>
-        <p className="mt-3 text-sm text-muted">
-          Un paiement est en cours pour cette pièce. S’il n’aboutit pas, elle sera de nouveau
-          disponible d’ici 30 minutes.
-        </p>
-      </div>
-    );
-  }
-
-  return <AddToCartButton productId={productId} title={title} price={price} />;
+  return (
+    <div>
+      <AddToCartButton productId={productId} title={title} price={price} />
+      {/* The delay is shown before purchase (L216-1), as in the cart and on Stripe. */}
+      <p className="mt-3 text-sm text-muted">{productAvailabilityNote(stock, delays)}</p>
+    </div>
+  );
 }

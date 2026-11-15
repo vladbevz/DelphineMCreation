@@ -90,8 +90,8 @@ export const fixtureProducts: Product[] = Array.from({ length: 8 }, (_, i) => {
     slug: `bijou-test-${n}`,
     // Test prices only (cents).
     price: 3500 + i * 500,
-    status: i === 7 ? 'sold' : 'available',
-    stock: i === 7 ? 0 : 1,
+    // Some ready to ship, some made to order.
+    stock: i % 3 === 0 ? 0 : 1 + (i % 2),
     category: categories[i % categories.length]!,
     leatherColor: color,
     publishedAt: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
@@ -117,6 +117,8 @@ export const fixtureSettings: SETTINGS_QUERY_RESULT = {
   colissimoPrice: null,
   freeShippingThreshold: null,
   pickupEnabled: false,
+  shippingDays: null,
+  madeToOrderDays: null,
   email: owner.email,
   postalAddress: owner.address,
   phone: owner.phone,

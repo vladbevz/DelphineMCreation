@@ -98,9 +98,7 @@ async function main() {
           children: [{ _key: 's1', _type: 'span', text: '[TEXTE À FOURNIR]', marks: [] }],
         },
       ],
-      stock: i === 7 ? 0 : 1,
-      // The last one is sold, to test the "Vendu" state.
-      status: i === 7 ? 'sold' : 'available',
+      stock: i % 3 === 0 ? 0 : 1 + (i % 2),
       featured: i < 2,
       publishedAt: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
     });

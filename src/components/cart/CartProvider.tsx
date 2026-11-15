@@ -4,10 +4,13 @@ import { createContext, use, useMemo, useState, useSyncExternalStore, type React
 import { cartStore, type CartState } from './cartStore';
 
 type CartContextValue = CartState & {
+  /** Total number of pieces (sum of quantities). */
+  count: number;
   isOpen: boolean;
   open: () => void;
   close: () => void;
-  add: (id: string) => void;
+  add: (id: string) => boolean;
+  setQty: (id: string, qty: number) => void;
   remove: (ids: string[]) => void;
 };
 
@@ -24,10 +27,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const value = useMemo<CartContextValue>(
     () => ({
       ...state,
+      count: state.lines.reduce((sum, l) => sum + l.qty, 0),
       isOpen,
       open: () => setOpen(true),
       close: () => setOpen(false),
       add: cartStore.add,
+      setQty: cartStore.setQty,
       remove: cartStore.remove,
     }),
     [state, isOpen],

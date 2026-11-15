@@ -8,10 +8,8 @@ const PRODUCT_CARD_FIELDS = /* groq */ `
   title,
   "slug": slug.current,
   price,
-  // An expired reservation (webhook lost, daily cron not run yet) is on sale again, as for
-  // /api/checkout: the page must not keep showing « Réservé ».
-  "status": select(status == "reserved" && reservedUntil < now() => "available", status),
-  stock,
+  // Pieces ready to ship; at 0 the piece is still for sale, made to order.
+  "stock": coalesce(stock, 0),
   category,
   leatherColor,
   publishedAt,
@@ -20,9 +18,9 @@ const PRODUCT_CARD_FIELDS = /* groq */ `
   "hoverImage": images[1]{ ... }
 `;
 
-/** Home page "Nouvelle collection": featured first, then newest; sold pieces excluded. */
+/** Home page "Nouvelle collection": featured first, then newest. */
 export const LATEST_PRODUCTS_QUERY = defineQuery(`
-  *[${PUBLIC_PRODUCT_FILTER} && status != "sold"]
+  *[${PUBLIC_PRODUCT_FILTER}]
     | order(featured desc, publishedAt desc)[0...8]{ ${PRODUCT_CARD_FIELDS} }
 `);
 
@@ -44,9 +42,9 @@ export const PRODUCT_QUERY = defineQuery(`
   }
 `);
 
-/** "Vous aimerez aussi": same collection or category, still available. */
+/** "Vous aimerez aussi": same collection or category. */
 export const RELATED_PRODUCTS_QUERY = defineQuery(`
-  *[${PUBLIC_PRODUCT_FILTER} && _id != $id && status != "sold"
+  *[${PUBLIC_PRODUCT_FILTER} && _id != $id
     && ((defined($collectionId) && collection._ref == $collectionId) || category == $category)]
     | order(publishedAt desc)[0...4]{ ${PRODUCT_CARD_FIELDS} }
 `);
@@ -61,7 +59,7 @@ export const COLLECTION_QUERY = defineQuery(`
   *[_type == "collection" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, cover, description,
     "products": *[${PUBLIC_PRODUCT_FILTER} && collection._ref == ^._id]
-      | order(select(status == "sold" => 1, 0) asc, publishedAt desc){ ${PRODUCT_CARD_FIELDS} }
+      | order(publishedAt desc){ ${PRODUCT_CARD_FIELDS} }
   }
 `);
 
@@ -78,14 +76,14 @@ export const SITEMAP_QUERY = defineQuery(`{
 export const SETTINGS_QUERY = defineQuery(`
   *[_type == "settings" && _id == "settings"][0]{
     vacationMode, announcementBar, colissimoPrice, freeShippingThreshold, pickupEnabled,
+    shippingDays, madeToOrderDays,
     email, postalAddress, phone, instagram, facebook
   }
 `);
 
-/** Cart drawer: fresh status of the pieces in the cart. */
+/** Cart drawer: current price and ready stock of the pieces in the cart (published only). */
 export const CART_PRODUCTS_QUERY = defineQuery(`
-  *[_type == "product" && _id in $ids]{
-    _id, title, "slug": slug.current, price, status, reservedUntil, reservationToken,
-    "image": images[0]
+  *[${PUBLIC_PRODUCT_FILTER} && _id in $ids]{
+    _id, title, "slug": slug.current, price, "stock": coalesce(stock, 0), "image": images[0]
   }
 `);

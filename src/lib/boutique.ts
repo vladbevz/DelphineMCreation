@@ -41,13 +41,12 @@ export function boutiqueHref(filters: BoutiqueFilters) {
 
 type Filterable = {
   price: number;
-  status: string | null;
   category: string;
   leatherColor: string | null;
   publishedAt: string | null;
 };
 
-/** Filters and sorts the catalog. Sold pieces always come last. */
+/** Filters and sorts the catalog. */
 export function applyFilters<T extends Filterable>(products: T[], filters: BoutiqueFilters) {
   const filtered = products.filter(
     (p) =>
@@ -62,10 +61,7 @@ export function applyFilters<T extends Filterable>(products: T[], filters: Bouti
     'prix-decroissant': (a, b) => b.price - a.price,
   };
 
-  return filtered.sort((a, b) => {
-    const soldDiff = Number(a.status === 'sold') - Number(b.status === 'sold');
-    return soldDiff || compare[filters.sort](a, b);
-  });
+  return filtered.sort(compare[filters.sort]);
 }
 
 /** Distinct leather colors present in the catalog, for the color filter. */

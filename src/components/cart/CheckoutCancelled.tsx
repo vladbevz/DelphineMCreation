@@ -1,21 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { abandonCheckout } from '@/app/actions/cart';
-import { cartStore } from './cartStore';
 import { useCart } from './CartProvider';
 
-/** Back from Stripe via "cancel": release the reservation now and reopen the cart. */
+/** Back from Stripe via "cancel": nothing was reserved, the cart is simply still there. */
 export function CheckoutCancelled() {
   const { open } = useCart();
-  useEffect(() => {
-    const { pendingSessionId } = cartStore.getSnapshot();
-    if (pendingSessionId) {
-      cartStore.setPending(null);
-      void abandonCheckout(pendingSessionId);
-    }
-  }, []);
-
   return (
     <div
       role="status"

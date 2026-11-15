@@ -4,7 +4,16 @@ import { colors, display, sans, text } from './EmailLayout';
 
 export type EmailOrder = {
   number: string;
-  items: { title: string; price: number; imageUrl?: string | null }[];
+  items: {
+    title: string;
+    quantity: number;
+    /** Line total (unit price × quantity). */
+    price: number;
+    /** Taken from pieces already made / to be made for this order. */
+    fromStock: number;
+    toMake: number;
+    imageUrl?: string | null;
+  }[];
   amounts: { subtotal: number; shipping: number; total: number };
   shippingMethod: 'colissimo' | 'retrait';
   shippingAddress?: {
@@ -19,7 +28,14 @@ export type EmailOrder = {
 
 const cell = { ...text, margin: 0 };
 
-export function OrderSummary({ order }: { order: EmailOrder }) {
+/** `delphine`: shows how many pieces she has to make; `customer`: a softer note. */
+export function OrderSummary({
+  order,
+  audience = 'customer',
+}: {
+  order: EmailOrder;
+  audience?: 'customer' | 'delphine';
+}) {
   return (
     <Section style={{ margin: '8px 0 20px' }}>
       {order.items.map((item) => (
@@ -45,8 +61,18 @@ export function OrderSummary({ order }: { order: EmailOrder }) {
                 letterSpacing: '-0.01em',
               }}
             >
+              {item.quantity > 1 ? `${item.quantity} × ` : ''}
               {item.title}
             </Text>
+            {item.toMake > 0 && (
+              <Text style={{ ...cell, fontSize: '13px', color: colors.muted }}>
+                {audience === 'delphine'
+                  ? `À fabriquer : ${item.toMake}${item.fromStock ? ` · prêt : ${item.fromStock}` : ''}`
+                  : item.fromStock
+                    ? `${item.fromStock} prêt${item.fromStock > 1 ? 's' : ''}, ${item.toMake} fabriqué${item.toMake > 1 ? 's' : ''} à la main pour vous`
+                    : 'Fabriqué à la main pour vous'}
+              </Text>
+            )}
           </Column>
           <Column align="right" style={{ padding: '12px 0', whiteSpace: 'nowrap' }}>
             <Text style={cell}>{formatPrice(item.price)}</Text>

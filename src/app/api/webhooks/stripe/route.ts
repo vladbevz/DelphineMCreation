@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { serverEnv } from '@/lib/env.server';
-import { handleCheckoutCompleted, handleCheckoutReleased } from '@/lib/orders';
+import { handleCheckoutCompleted } from '@/lib/orders';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
 
 export async function POST(request: Request) {
@@ -28,10 +28,7 @@ export async function POST(request: Request) {
       case 'checkout.session.async_payment_succeeded':
         await handleCheckoutCompleted(session.id);
         break;
-      case 'checkout.session.expired':
-      case 'checkout.session.async_payment_failed':
-        await handleCheckoutReleased(session);
-        break;
+      // expired / async_payment_failed: nothing was reserved, nothing to undo.
       default:
         // Other events are not subscribed to; acknowledge them anyway.
         break;

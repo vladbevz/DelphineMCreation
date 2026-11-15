@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ViewTransition } from 'react';
 import { EarringMotif } from '@/components/brand/EarringMotif';
-import { Badge } from '@/components/ui/Badge';
 import { categoryColor, categoryLabel } from '@/lib/catalog';
 import { formatPrice } from '@/lib/format';
 import { urlFor } from '@/lib/sanity/image';
@@ -51,7 +50,6 @@ export function ProductCard({
   priority?: boolean;
 }) {
   const { image, hoverImage } = product;
-  const sold = product.status === 'sold';
   const category = categoryLabel(product.category);
   const details = [product.leatherColor && `Cuir ${product.leatherColor.toLowerCase()}`, category]
     .filter(Boolean)
@@ -84,14 +82,6 @@ export function ProductCard({
             </div>
           )}
 
-          <div className="absolute top-3 left-3 flex gap-2">
-            {sold ? (
-              <Badge tone="espresso">Vendu</Badge>
-            ) : (
-              product.stock <= 1 && <Badge>Pièce unique</Badge>
-            )}
-          </div>
-
           {/* Hover details: a visual duplicate of the link, hidden from screen readers. */}
           <div
             aria-hidden
@@ -99,7 +89,7 @@ export function ProductCard({
           >
             {details && <p className="truncate text-[0.7rem] text-muted">{details}</p>}
             <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-label text-espresso uppercase">
-              {sold ? 'Voir la pièce' : 'Voir la création'}
+              Voir la création
               <svg
                 viewBox="0 0 24 24"
                 fill="none"

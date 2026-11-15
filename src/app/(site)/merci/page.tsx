@@ -6,9 +6,11 @@ import { TrackPurchase } from '@/components/cart/TrackPurchase';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { shippingDaysFor } from '@/lib/delivery';
 import { formatPrice } from '@/lib/format';
 import { orderIdFor } from '@/lib/orders';
 import { client } from '@/lib/sanity/client';
+import { getSettings } from '@/lib/sanity/data';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
 import { stripeSessionIdSchema } from '@/lib/validation';
 
@@ -34,15 +36,25 @@ export default async function MerciPage({ searchParams }: Props) {
   }
   if (session.status !== 'complete') redirect('/');
 
-  // The order number exists once the webhook has run (usually before the customer lands here).
-  const orderNumber = await client
-    .withConfig({ useCdn: false })
-    .fetch<string | null>(
-      `*[_id == $id][0].number`,
-      { id: orderIdFor(session.id) },
-      { cache: 'no-store' },
-    )
-    .catch(() => null);
+  // The order exists once the webhook has run (usually before the customer lands here).
+  const [order, settings] = await Promise.all([
+    client
+      .withConfig({ useCdn: false })
+      .fetch<{ number: string | null; needsMaking: boolean } | null>(
+        `*[_id == $id][0]{ number, "needsMaking": count(items[toMake > 0]) > 0 }`,
+        { id: orderIdFor(session.id) },
+        { cache: 'no-store' },
+      )
+      .catch(() => null),
+    getSettings(),
+  ]);
+  const orderNumber = order?.number ?? null;
+  const shippingDays = order
+    ? shippingDaysFor(order.needsMaking, {
+        shippingDays: settings?.shippingDays,
+        madeToOrderDays: settings?.madeToOrderDays,
+      })
+    : null;
 
   const paid = session.payment_status === 'paid';
   const pickup =
@@ -50,7 +62,11 @@ export default async function MerciPage({ searchParams }: Props) {
       ? session.shipping_cost.shipping_rate.metadata?.method === 'retrait'
       : false;
   const items = session.line_items?.data ?? [];
-  const productIds = session.metadata?.productIds?.split(',') ?? [];
+  // metadata.items = "id:qty,id:qty" (set by /api/checkout).
+  const productIds = (session.metadata?.items ?? '')
+    .split(',')
+    .map((entry) => entry.split(':')[0])
+    .filter((id): id is string => Boolean(id));
 
   return (
     <Container size="narrow" className="py-12 sm:py-16">
@@ -82,7 +98,10 @@ export default async function MerciPage({ searchParams }: Props) {
         <ul className="divide-y divide-sand-border">
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">
-              <span>{item.description}</span>
+              <span>
+                {item.quantity && item.quantity > 1 ? `${item.quantity} × ` : ''}
+                {item.description}
+              </span>
               <span className="shrink-0 price">{formatPrice(item.amount_total)}</span>
             </li>
           ))}
@@ -99,12 +118,21 @@ export default async function MerciPage({ searchParams }: Props) {
 
       <div className="mt-8 space-y-3 text-muted">
         <h2 className="text-2xl text-espresso">Et maintenant ?</h2>
+        {order?.needsMaking && (
+          <p>
+            Une partie de votre commande est fabriquée à la main, rien que pour vous, dans mon
+            atelier de Clarensac.
+          </p>
+        )}
         <p>
           {pickup
             ? 'Je vous contacte très vite pour convenir du retrait dans la Vaunage.'
-            : 'Je prépare votre colis avec soin. Vous recevrez un e-mail avec le numéro de suivi dès son envoi.'}
+            : `Je prépare votre colis avec soin${
+                shippingDays
+                  ? `, il part sous ${shippingDays} jour${shippingDays > 1 ? 's' : ''} ouvré${shippingDays > 1 ? 's' : ''}`
+                  : ''
+              }. Vous recevrez un e-mail avec le numéro de suivi dès son envoi.`}
         </p>
-        <p>[TEXTE À FOURNIR : délais de préparation]</p>
       </div>
 
       <ButtonLink href="/boutique" variant="secondary" className="mt-8">
