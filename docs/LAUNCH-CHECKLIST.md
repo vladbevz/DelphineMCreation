@@ -37,7 +37,8 @@
 
 - [ ] Акаунт на Delphine, профіль бізнесу, IBAN
 - [ ] Settings → Public details → **Terms of service URL** = `https://<домен>/cgv`
-- [ ] Branding: колір `#B8285F` (fuchsia-deep), лого
+- [ ] Branding: колір `#C2077A` (rose-texte чартери; `#ED0A90` не проходить контраст для кнопки), лого — `public/brand/logo-email.png`
+- [ ] Попросити в Delphine оригінальний векторний файл лого (SVG/AI/PDF): зараз лого векторизоване з JPG (`src/components/brand/BrandLogo.tsx`)
 - [ ] Ключ `sk_test_…` → `STRIPE_SECRET_KEY`
 - [ ] Локально: `stripe listen --forward-to localhost:3000/api/webhooks/stripe` → `STRIPE_WEBHOOK_SECRET`
 - [ ] Пройти сценарії 1–9 з [README](../README.md#тест-сценарії-claudemd-13)

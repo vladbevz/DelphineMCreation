@@ -43,59 +43,48 @@
 
 ---
 
-## 3. Дизайн-система (з напрямку Instagram)
+## 3. Дизайн-система — charte graphique «Delphine M» (листопад 2026)
+
+Джерело — чартера клієнтки (`Charte graphique Delphine M.pdf`): лого D + рукописна M, «Delphine M», «Créations en cuir»; темно-сірий `#252626` + рожевий «flash» `#ED0A90` на білому. Бренд: радість, динаміка, сучасність; багато клієнток люблять колір. Попередні напрями (Joie colorée, Concept 2) — відкинуті; Concept 2 збережено в локальній гілці `design/concept-2`.
+
+**Лого** — `src/components/brand/BrandLogo.tsx`: векторизовано (potrace) з її мастер-файлу, частини на тих самих позиціях, що в оригіналі. Варіанти: `full` (монограма + назва + baseline: футер), `name` (назва + «Créations en cuir»: шапка, як зворот візитки), `mark` (монограма D/M: favicon `src/app/icon.svg`, 404, плейсхолдери фото — `mono` + `text-graphite/15`). `mono` = усі літери одним кольором (`currentColor`) — **лише на темному фоні** (футер — білим). Для листів — `public/brand/logo-email.png` (поштовики блокують SVG).
+- Заборони чартери: не деформувати, не міняти шрифти лого, **не класти лого на фото**. Якщо Delphine дасть оригінальний SVG/AI — замінити контури в `BrandLogo.tsx`.
 
 **Кольори** — токени в `@theme` у `src/app/globals.css` (Tailwind v4, без `tailwind.config`):
 
 | Токен | Hex | Використання |
 | --- | --- | --- |
-| `linen` | `#FBF7F1` | основний фон |
-| `cream` | `#F4EDE3` | альтернативний фон секцій |
-| `sand` | `#E3D3BE` | плашки, фон фото, бордери `#D9C8B2` |
-| `cognac` | `#9C5A33` | акцент, кнопки (білий текст), ціни; hover `#7A4424` |
-| `olive` | `#5F6A4B` | другий акцент, бейджі |
-| `espresso` | `#2B1D14` | основний текст, темні секції |
-| `muted` | `#6B5646` | другорядний текст (перевір контраст 4.5:1 на фоні) |
-| `fuchsia` | `#E0457B` | декор, великі заголовки, смужки (текст на ньому — ні: espresso 4.12) |
-| `fuchsia-deep` | `#B8285F` | кнопки `primary` (текст `linen`, 5.61), дрібний рожевий текст, бейдж «Nouveau» |
-| `mandarine` | `#F28C38` | категорія bracelet, іконки; текст на ньому — `espresso` |
-| `soleil` | `#F5C542` | смужка оголошень, trust strip, shimmer; текст — `espresso` |
-| `turquoise` | `#2BB3B1` | категорія collier; текст — `espresso` |
-| `lavande` | `#B79CE8` | категорія bague; текст — `espresso` |
-| `blush` | `#FBE3EA` | фон секції категорій; `espresso` і `muted` проходять |
+| `blanc` | `#FFFFFF` | фон сторінки |
+| `graphite` | `#252626` | колір чартери: текст, футер |
+| `gris` | `#5E5F5F` | другорядний текст |
+| `rose` | `#ED0A90` | рожевий чартери: лого, декор, лінія під карткою при hover, великий текст (≥ 24px) |
+| `rose-texte` | `#C2077A` | кнопки `primary`, посилання, дрібний рожевий текст, смужка оголошень (hover `rose-hover` `#A30667`) |
+| `rose-pale` | `#FDEEF6` | альтернативні секції, trust strip |
+| `nuage` | `#F5F3F4` | фон фото й плейсхолдерів |
+| `trait` | `#E8E2E5` | бордери, поля форм |
 
-Правило контрасту: текст на кольорових плашках — завжди `espresso`; `linen` — лише на `fuchsia-deep` і темних фото.
+Контраст (перевірено): graphite/blanc 15.2, gris/blanc 6.4, gris/rose-pale 5.7, gris/nuage 5.8, rose-texte/blanc 5.8, blanc/rose-texte 5.8, graphite/rose-pale 13.5. Рожевий чартери `#ED0A90` на білому — 4.2: **не для дрібного тексту і кнопок** — для них `rose-texte`. Інших кольорів (категорій, золота) немає.
 
-**Кольори категорій** — `categoryColors` / `categoryColor()` у `src/lib/catalog.ts`: boucles-d-oreilles → fuchsia, collier → turquoise, bracelet → mandarine, bague → lavande, autre → soleil. Використовуються в плитках категорій (`Blob`), смужці під карткою товару при hover, крапках фільтрів.
+**Шрифти** (`next/font/google`, `src/app/layout.tsx`): **Quicksand** (variable 300–700) скрізь — найближчий веб-шрифт до Existence з лого. Змінна next/font `--font-quicksand`; токени `font-display` = `font-body` = `font-sans`. Шрифти лого (Adelle, Existence, Beauty Heart, Adelia) на сайті не використовуємо — лише в самому лого.
+- Заголовки (`h1–h4` у base, утиліта `heading` для інших елементів): Quicksand 600, звичайний регістр, `line-height: 1.15`, `-0.01em`, `text-wrap: balance`, `overflow-wrap: anywhere` + `hyphens: auto`. Розміри в `SectionHeading`: h1 `text-3xl sm:text-[2.6rem]`, h2 `text-2xl sm:text-[2.1rem]`.
+- Текст: Quicksand **500** (400 занадто тонкий на телефоні), 16px, `leading-relaxed`, рядок ≤ 65 символів (`measure`).
+- Назви товарів: `product-title` (600). Ціни: `price` (600, `tabular-nums`).
+- Кнопки, меню, лейбли форм, accordion, бейджі: Quicksand 600 капсом, трекінг 0.14em — `label-caps` / `display-caps` / `tracking-label uppercase`. Ніколи над заголовками.
+- Акцентів у заголовках немає: `<em>` (утиліта `word-accent`) успадковує стиль. Рукописні шрифти — лише в лого.
+- Листи: `EmailLayout.tsx` — Quicksand → Helvetica/Arial, лого PNG, рожева лінія 2px під лого, кнопка `rose-texte`.
 
-**Шрифти** (через `next/font/google` у `src/app/layout.tsx`; рішення клієнтки, листопад 2026):
-- Змінні next/font — `--font-bricolage`, `--font-dm-sans`, `--font-cormorant`; токени Tailwind у `@theme inline` — `font-display`, `font-body` (= `font-sans`), `font-logo`. Не називай змінну next/font так само, як токен (`--font-display: var(--font-display)` посилається сам на себе).
-- Заголовки (`h1–h4` у base): **Bricolage Grotesque** (variable, opsz 12–96, wght 200–800) — 700, `letter-spacing: -0.02em`, звичайний регістр (не капс), `text-wrap: balance`, `overflow-wrap: anywhere` + `hyphens: auto` (довгі слова в H1 на мобільному). Для не-h елементів (порожні стани, цитати, рухомий рядок) — утиліта `heading`.
-- Акцент: у Bricolage немає курсиву — `<em>` у `SectionHeading` = утиліта `word-accent` (font-style normal, 800, колір `var(--word-accent, fuchsia)`; можна підставити колір категорії через `--word-accent`). Fuchsia на linen ≈ 3.7:1 — лише для великого тексту (≥ 24px або ≥ 18.7px bold). Курсив і рукописні шрифти не використовуємо.
-- Назви товарів: утиліта `product-title` (Bricolage 600, -0.01em). Ціни: утиліта `price` (DM Sans 500, `tabular-nums`).
-- Текст: **DM Sans** 400/500, 16px (інтро секцій 17px), рядок ≤ 65 символів (утиліта `measure`).
-- Лейбли, кнопки, меню, accordion, бейджі: DM Sans 500, капс, трекінг 0.14em — `label-caps` (text-xs), `display-caps` (без розміру) або `tracking-label uppercase`. `display-caps` — тільки для дрібних лейблів, не для заголовків.
-- **Лого** — єдиний виняток: лишається **Cormorant Garamond** (утиліта `logo-caps`, ваги 300/500), «DELPHINE **M.**» капсом, поки Delphine не дасть свій SVG. Той самий напис у футері й листах. Ніде більше Cormorant не використовуємо.
-- Листи: ті самі шрифти зі стеком fallback (`display`, `sans` у `EmailLayout.tsx`) — поштові клієнти зазвичай показують Helvetica/Arial.
-
-**Мотив:** контур краплеподібної сережки з пунктирним «швом» усередині (inline SVG, `stroke="currentColor"`). Використовуй як декоративний елемент і плейсхолдер замість фото.
-
-**Леопард** (`LeopardPattern`, inline SVG, `currentColor`) — дуже світлий, лише в секції переваг на головній і тонким краєм смужки оголошень. Не додавай більше місць.
-
-**Без шаблонних «ШІ»-прийомів** (листопад 2026): без надписів-«eyebrow» над заголовками, без плаваючих декоративних мотивів, без shimmer/градієнтного тексту, без іконок-тріад «переваги», без нумерованих кружечків. Кроки — просто «1. Назва» з тонкою лінією зверху. Мотив сережки — лише як плейсхолдер фото і на 404. П'ять кольорів смужкою — лише край футера й листів. Акцент `<em>` у заголовках — тільки на головній і в бутіку.
+**Без шаблонних «ШІ»-прийомів**: без надписів-«eyebrow» над заголовками, без акцентного слова в заголовку, без плаваючих мотивів, без shimmer/градієнтів, без іконок-тріад, без нумерованих кружечків. Кроки — «1. Назва». Прибрано: рухомий рядок, Blobs, леопард, кольорові смужки, мотив сережки, шов.
 
 **Анімації** — `motion` (LazyMotion + `m`), спільні easing/тривалості/варіанти в `src/lib/motion.ts`, компоненти в `src/components/motion/`. Лише transform / opacity, один раз при появі: слова hero, поступова поява сіток, кошик. Заголовки й фото секцій — без анімацій. Ніколи на LCP-елементі (hero-фото, перше фото галереї, h1). Анімовані елементи мають `data-reveal` — CSS при `prefers-reduced-motion` показує їх одразу. View Transitions (React `ViewTransition`) — фото картки → галерея.
 
-**Стиль (з жовтня 2026, натхнення — maigojoyas.com):**
+**Стиль:**
 - **Гострі кути** у фото, картках, секціях, полях форм. Заокруглення лише в кнопок і бейджів (пігулки, `rounded-full`).
-- Фото товарів **квадратні** на фоні `sand`. Hero — фото на всю ширину з білим заголовком Bricolage.
-- Кнопки (`Button` / `ButtonLink`): тонкі пігулки капсом — `primary` (fuchsia-deep, текст linen), `secondary` (контур), `light` (на фото), `ghost` (підкреслене посилання). `cognac` — лише дрібні акценти.
-- Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого по центру, Entretien du cuir / Contact + кошик (іконка + «PANIER (N)») праворуч; на мобільному — бургер, лого, кошик. Футер — `fuchsia-deep` (текст linen, hover — підкреслення), смужка оголошень — `soleil` з леопардовим краєм.
-- Без тіней, без градієнтів, без емодзі. Рухомий рядок (`Marquee`) і анімації поважають `prefers-reduced-motion`.
+- Фото товарів **квадратні** на фоні `nuage`. Hero — фото на всю ширину з білим заголовком (без лого на фото — заборона чартери).
+- Кнопки (`Button` / `ButtonLink`): пігулки капсом — `primary` (`rose-texte`, білий текст), `secondary` (контур `rose-texte`), `light` (на фото), `ghost` (підкреслене посилання).
+- Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого «Delphine M / Créations en cuir» по центру, Entretien du cuir / Contact + кошик праворуч; на мобільному — бургер, лого, кошик. Футер — `graphite` (текст білий, hover — підкреслення, лого `full` білим). Смужка оголошень — `rose-texte`, білий текст.
+- Без тіней, без градієнтів, без емодзі. Анімації поважають `prefers-reduced-motion`.
 - Mobile-first: більшість трафіку прийде з Instagram на телефоні.
-- Доступність: справжні `<button>`, `<a>`, `<label>`; `alt` у кожного фото; видимий focus.
-
----
+- Доступність: справжні `<button>`, `<a>`, `<label>`; `alt` у кожного фото; видимий focus (`rose-texte`, на graphite — білий).
 
 ## 4. Структура проєкту
 
@@ -224,7 +213,7 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 
 | Сторінка | Зміст |
 | --- | --- |
-| **Accueil** | Hero з фото та заголовком Bricolage, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (fait main, ultra léger, cuir de Colombie), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
+| **Accueil** | Hero з фото та заголовком, «Nouvelle collection» (4–8 товарів), блок «Fait main dans la Vaunage» з посиланням на Atelier, 3 переваги (fait main, ultra léger, cuir de Colombie), блок Instagram (статичні фото з посиланням на профіль), newsletter — у фазі 2 |
 | **Boutique** | Сітка 2 кол. (mobile) / 3–4 (desktop), фільтр за категорією й кольором шкіри (query params), сортування «Nouveautés / Prix». Усі товари завжди в продажу (без «Vendu») |
 | **Fiche produit** | Галерея зі свайпом і зумом, назва, ціна, колір шкіри, розміри, кнопка «Ajouter au panier» + термін («Prêt à partir» / «Fabriqué à la main pour vous»), опис, догляд (accordion), доставка й повернення (accordion), «Vous aimerez aussi». JSON-LD `Product` з `availability` `InStock` або `MadeToOrder` |
 | **L'atelier** | Історія Delphine, 4 кроки процесу (фото рук, інструментів), матеріали, «Fabriqué pour vous» (на замовлення + sur-mesure) |
@@ -234,7 +223,7 @@ Studio: окремі розділи «Produits», «Commandes» (сортува�
 | **Юридичні** | CGV, Mentions légales, Livraison et retours, Confidentialité — з Sanity `page`, тексти дає клієнт |
 | **404** | У стилі бренду, посилання в бутік |
 
-Header: лого-напис «Delphine M.» + «CRÉATIONS», меню, іконка кошика з лічильником. Footer: навігація, юридичні посилання, Instagram, «Site réalisé par AtelierCode».
+Header: лого клієнтки «Delphine M / Créations en cuir», меню, іконка кошика з лічильником. Footer: навігація, юридичні посилання, Instagram, «Site réalisé par AtelierCode».
 
 ---
 

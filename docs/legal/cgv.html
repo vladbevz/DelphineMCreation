@@ -5,7 +5,7 @@
     <title>Conditions générales de vente — Delphine M. Créations</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Cormorant+Garamond:wght@300;500&family=DM+Sans:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -15,18 +15,19 @@
         margin: 18mm 18mm 20mm;
       }
       :root {
-        --espresso: #2b1d14;
-        --muted: #6b5646;
-        --border: #d9c8b2;
-        --blush: #fbe3ea;
-        --fuchsia-deep: #b8285f;
+        --espresso: #252626;
+        --muted: #5e5f5f;
+        --border: #e8e2e5;
+        --blush: #fdeef6;
+        --fuchsia-deep: #c2077a;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        font-family: 'DM Sans', Arial, sans-serif;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-weight: 500;
         font-size: 9.6pt;
         line-height: 1.55;
         color: var(--espresso);
@@ -34,10 +35,12 @@
       }
       .logo {
         text-align: center;
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-weight: 300;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-variant-numeric: lining-nums;
+        font-weight: 500;
         font-size: 20pt;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.08em;
+        color: var(--fuchsia-deep);
         text-transform: uppercase;
         margin: 0;
       }
@@ -52,34 +55,18 @@
         color: var(--muted);
         margin: 2pt 0 10pt;
       }
+      /* Thin charte pink rule under the logo. */
       .bar {
-        display: flex;
-        height: 3pt;
+        border-top: 1.5pt solid #ed0a90;
+        opacity: 0.6;
         margin-bottom: 14pt;
       }
-      .bar span {
-        flex: 1;
-      }
-      .bar span:nth-child(1) {
-        background: #e0457b;
-      }
-      .bar span:nth-child(2) {
-        background: #f28c38;
-      }
-      .bar span:nth-child(3) {
-        background: #f5c542;
-      }
-      .bar span:nth-child(4) {
-        background: #2bb3b1;
-      }
-      .bar span:nth-child(5) {
-        background: #b79ce8;
-      }
       h1 {
-        font-family: 'Bricolage Grotesque', Arial, sans-serif;
-        font-weight: 700;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-variant-numeric: lining-nums;
+        font-weight: 600;
         font-size: 19pt;
-        letter-spacing: -0.02em;
+        letter-spacing: 0;
         margin: 0 0 4pt;
       }
       .version {
@@ -88,10 +75,11 @@
         margin: 0 0 12pt;
       }
       h2 {
-        font-family: 'Bricolage Grotesque', Arial, sans-serif;
-        font-weight: 700;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-variant-numeric: lining-nums;
+        font-weight: 600;
         font-size: 12.5pt;
-        letter-spacing: -0.01em;
+        letter-spacing: 0;
         margin: 14pt 0 4pt;
         break-after: avoid;
       }
@@ -133,9 +121,8 @@
     </style>
   </head>
   <body>
-    <p class="logo">Delphine <b>M.</b></p>
-    <p class="sub">Créations</p>
-    <div class="bar"><span></span><span></span><span></span><span></span><span></span></div>
+    <p class="logo"><img src="../../public/brand/logo-email.png" alt="Delphine M, créations en cuir" style="height: 26mm" /></p>
+    <div class="bar"></div>
 
     <!-- Remove this block once every [À COMPLÉTER] is filled and the text is validated. -->
     <div class="draft">
