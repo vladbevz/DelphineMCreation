@@ -26,13 +26,13 @@ export default async function ContactPage() {
           </p>
         }
       />
-      <Container size="medium" className="grid gap-10 lg:grid-cols-[1fr_2fr]">
-        <dl className="space-y-6 self-start bg-blush p-6 sm:p-8">
+      <Container size="medium" className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr]">
+        <dl className="space-y-6 self-start bg-rose-pale p-6 sm:p-8">
           <div>
-            <dt className="label-caps text-muted">E-mail</dt>
-            <dd className="mt-2 text-lg">
+            <dt className="label-caps text-gris">E-mail</dt>
+            <dd className="mt-2 text-lg [overflow-wrap:anywhere]">
               {settings?.email ? (
-                <a href={`mailto:${settings.email}`} className="hover:text-fuchsia-deep">
+                <a href={`mailto:${settings.email}`} className="hover:text-rose-texte">
                   {settings.email}
                 </a>
               ) : (
@@ -41,14 +41,14 @@ export default async function ContactPage() {
             </dd>
           </div>
           <div>
-            <dt className="label-caps text-muted">Instagram</dt>
+            <dt className="label-caps text-gris">Instagram</dt>
             <dd className="mt-2 text-lg">
               {settings?.instagram ? (
                 <a
                   href={settings.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:text-fuchsia-deep"
+                  className="inline-flex items-center gap-2 hover:text-rose-texte"
                 >
                   <InstagramIcon />
                   @delphinemcreations

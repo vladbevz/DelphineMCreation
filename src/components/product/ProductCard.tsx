@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ViewTransition } from 'react';
-import { EarringMotif } from '@/components/brand/EarringMotif';
-import { categoryColor, categoryLabel } from '@/lib/catalog';
+import { BrandLogo } from '@/components/brand/BrandLogo';
+import { categoryLabel } from '@/lib/catalog';
 import { formatPrice } from '@/lib/format';
 import { urlFor } from '@/lib/sanity/image';
 import type { LATEST_PRODUCTS_QUERY_RESULT } from '@/sanity/types';
@@ -59,7 +59,7 @@ export function ProductCard({
     <Link href={`/boutique/${product.slug}`} className="group block focus-visible:outline-none">
       {/* Shared name with the first gallery photo: the image flies into the product page. */}
       <ViewTransition name={`product-image-${product._id}`}>
-        <div className="relative aspect-square overflow-hidden bg-sand group-focus-visible:ring-2 group-focus-visible:ring-cognac group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-linen">
+        <div className="relative aspect-square overflow-hidden bg-nuage group-focus-visible:ring-2 group-focus-visible:ring-rose-texte group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-blanc">
           {image?.asset ? (
             <>
               <CardPhoto
@@ -78,17 +78,21 @@ export function ProductCard({
             </>
           ) : (
             <div className="flex h-full items-center justify-center">
-              <EarringMotif className="h-2/5 w-auto text-cognac/50 transition-transform duration-1000 group-hover:scale-[1.04]" />
+              <BrandLogo
+                variant="mark"
+                mono
+                className="h-2/5 w-auto text-graphite/15 transition-transform duration-1000 group-hover:scale-[1.04]"
+              />
             </div>
           )}
 
           {/* Hover details: a visual duplicate of the link, hidden from screen readers. */}
           <div
             aria-hidden
-            className="absolute inset-x-0 bottom-0 translate-y-full bg-linen/95 px-4 py-3 transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0"
+            className="absolute inset-x-0 bottom-0 translate-y-full bg-blanc/95 px-4 py-3 transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0"
           >
-            {details && <p className="truncate text-[0.7rem] text-muted">{details}</p>}
-            <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-label text-espresso uppercase">
+            {details && <p className="truncate text-[0.7rem] text-gris">{details}</p>}
+            <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-label text-graphite uppercase">
               Voir la création
               <svg
                 viewBox="0 0 24 24"
@@ -105,15 +109,15 @@ export function ProductCard({
           </div>
         </div>
       </ViewTransition>
-      {/* Category colour line drawing in under the photo on hover (pointer devices only). */}
+      {/* A thin pink line draws in under the photo on hover (pointer devices only). */}
       <span
         aria-hidden
-        className={`block h-1 origin-left scale-x-0 transition-transform duration-500 ease-premium group-hover:scale-x-100 group-focus-visible:scale-x-100 ${categoryColor(product.category).bg}`}
+        className="block h-0.5 origin-left scale-x-0 bg-rose transition-transform duration-500 ease-premium group-hover:scale-x-100 group-focus-visible:scale-x-100"
       />
 
       <p className="mt-3 product-title text-base sm:text-lg">{product.title}</p>
-      <p className="mt-0.5 text-[0.8rem] text-espresso/80">
-        {category && <span className="text-muted">{category} · </span>}
+      <p className="mt-0.5 text-[0.8rem] text-graphite/80">
+        {category && <span className="text-gris">{category} · </span>}
         <span className="price">{formatPrice(product.price)}</span>
       </p>
     </Link>

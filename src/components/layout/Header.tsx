@@ -36,10 +36,10 @@ function NavLinks({
 
 export function Header({ instagram }: { instagram: string | null }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-espresso/80 bg-linen">
+    <header className="sticky top-0 z-50 border-b border-trait bg-blanc">
       <a
         href="#contenu"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-full focus:bg-espresso focus:px-4 focus:py-2 focus:text-linen"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-full focus:bg-graphite focus:px-4 focus:py-2 focus:text-blanc"
       >
         Aller au contenu
       </a>
@@ -60,7 +60,7 @@ export function Header({ instagram }: { instagram: string | null }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram (nouvel onglet)"
-              className="-mx-2 hidden p-2 transition-colors hover:text-fuchsia-deep lg:block"
+              className="-mx-2 hidden p-2 transition-colors hover:text-rose-texte lg:block"
             >
               <InstagramIcon />
             </a>

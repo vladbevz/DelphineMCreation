@@ -94,8 +94,8 @@ export default async function MerciPage({ searchParams }: Props) {
         }
       />
 
-      <div className="mt-8 bg-blush p-6 sm:p-8">
-        <ul className="divide-y divide-sand-border">
+      <div className="mt-8 bg-rose-pale p-6 sm:p-8">
+        <ul className="divide-y divide-trait">
           {items.map((item) => (
             <li key={item.id} className="flex justify-between gap-4 py-3">
               <span>
@@ -105,19 +105,19 @@ export default async function MerciPage({ searchParams }: Props) {
               <span className="shrink-0 price">{formatPrice(item.amount_total)}</span>
             </li>
           ))}
-          <li className="flex justify-between gap-4 py-3 text-muted">
+          <li className="flex justify-between gap-4 py-3 text-gris">
             <span>Livraison</span>
             <span className="price">{formatPrice(session.shipping_cost?.amount_total ?? 0)}</span>
           </li>
           <li className="flex justify-between gap-4 pt-4 text-lg">
             <span>Total</span>
-            <span className="price text-cognac">{formatPrice(session.amount_total ?? 0)}</span>
+            <span className="price text-rose-texte">{formatPrice(session.amount_total ?? 0)}</span>
           </li>
         </ul>
       </div>
 
-      <div className="mt-8 space-y-3 text-muted">
-        <h2 className="text-2xl text-espresso">Et maintenant ?</h2>
+      <div className="mt-8 space-y-3 text-gris">
+        <h2 className="text-2xl text-graphite">Et maintenant ?</h2>
         {order?.needsMaking && (
           <p>
             Une partie de votre commande est fabriquée à la main, rien que pour vous, dans mon

@@ -114,11 +114,11 @@ export default async function ProductPage({ params }: Props) {
       <Container size="medium" className="pt-6 sm:pt-12">
         <nav
           aria-label="Fil d’Ariane"
-          className="mb-3 text-[0.65rem] tracking-label text-muted uppercase"
+          className="mb-3 text-[0.65rem] tracking-label text-gris uppercase"
         >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
-              <Link href="/boutique" className="hover:text-cognac">
+              <Link href="/boutique" className="hover:text-rose-texte">
                 Boutique
               </Link>
             </li>
@@ -128,7 +128,7 @@ export default async function ProductPage({ params }: Props) {
                 <li>
                   <Link
                     href={`/collections/${product.collection.slug}`}
-                    className="hover:text-cognac"
+                    className="hover:text-rose-texte"
                   >
                     {product.collection.title}
                   </Link>
@@ -136,7 +136,7 @@ export default async function ProductPage({ params }: Props) {
               </>
             )}
             <li aria-hidden>/</li>
-            <li aria-current="page" className="text-espresso">
+            <li aria-current="page" className="text-graphite">
               {product.title}
             </li>
           </ol>
@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: Props) {
             <p className="mt-2 price text-lg">{formatPrice(product.price)}</p>
             {/* The two strongest selling points for earrings, right next to the button. */}
             {product.category === 'boucles-d-oreilles' && (
-              <p className="mt-2 text-[0.7rem] font-medium tracking-label text-cognac uppercase">
+              <p className="mt-2 text-[0.7rem] font-medium tracking-label text-rose-texte uppercase">
                 Ultra léger · Apprêts en acier inoxydable hypoallergénique
               </p>
             )}
@@ -166,7 +166,7 @@ export default async function ProductPage({ params }: Props) {
               <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
                 {details.map((d) => (
                   <div key={d.label} className="contents">
-                    <dt className="self-center label-caps text-muted">{d.label}</dt>
+                    <dt className="self-center label-caps text-gris">{d.label}</dt>
                     <dd>{d.value}</dd>
                   </div>
                 ))}
@@ -189,14 +189,14 @@ export default async function ProductPage({ params }: Props) {
 
             <RichText value={product.description} className="mt-8 text-sm" />
 
-            <div className="mt-8 border-t border-espresso/30">
+            <div className="mt-8 border-t border-graphite/30">
               {product.care && product.care.length > 0 && (
                 <AccordionItem title="Entretien">
                   <RichText value={product.care} />
                   <p className="mt-4">
                     <Link
                       href="/entretien"
-                      className="underline underline-offset-4 hover:text-cognac"
+                      className="underline underline-offset-4 hover:text-rose-texte"
                     >
                       Tous nos conseils d’entretien du cuir
                     </Link>
@@ -223,7 +223,7 @@ export default async function ProductPage({ params }: Props) {
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
         <Container size="medium" className="grid md:grid-cols-2">
-          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-square">
+          <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-square">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -262,7 +262,7 @@ export default async function ProductPage({ params }: Props) {
               Faire une demande
             </ButtonLink>
           </div>
-          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-square">
+          <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-square">
             <Image
               src={photos.presentoir.src}
               alt={photos.presentoir.alt}
@@ -294,7 +294,10 @@ function DeliveryInfo({ settings }: { settings: Awaited<ReturnType<typeof getSet
         disposez de 14 jours pour changer d’avis, à condition que le bijou n’ait pas été porté.
       </p>
       <p>
-        <Link href="/livraison-retours" className="underline underline-offset-4 hover:text-cognac">
+        <Link
+          href="/livraison-retours"
+          className="underline underline-offset-4 hover:text-rose-texte"
+        >
           Livraison et retours en détail
         </Link>
       </p>

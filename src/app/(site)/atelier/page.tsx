@@ -61,7 +61,7 @@ export default function AtelierPage() {
             </>
           }
         />
-        <div className="relative aspect-[4/3] overflow-hidden bg-sand">
+        <div className="relative aspect-[4/3] overflow-hidden bg-nuage">
           <Image
             src={photos.finitions.src}
             alt={photos.finitions.alt}
@@ -73,10 +73,10 @@ export default function AtelierPage() {
         </div>
       </Container>
 
-      <section className="bg-blush py-14 lg:py-20">
+      <section className="bg-rose-pale py-14 lg:py-20">
         <Container size="medium" className="grid gap-6 md:grid-cols-[2fr_3fr] md:gap-12">
           <SectionHeading title="Delphine, créatrice" />
-          <div className="measure space-y-4 leading-relaxed text-muted md:pt-8 md:text-[1.0625rem]">
+          <div className="measure space-y-4 leading-relaxed text-gris md:pt-8 md:text-[1.0625rem]">
             <p>
               Tout a commencé à Toulouse, quand j’étais petite fille : j’allais acheter perles et
               rubans pour fabriquer mes propres colliers, puis mes boucles d’oreilles — mon bijou
@@ -121,12 +121,12 @@ export default function AtelierPage() {
                   label={step.title}
                   className="aspect-square sm:aspect-[4/3] [&>span]:hidden sm:[&>span]:block"
                 />
-                <div className="sm:mt-4 sm:border-t sm:border-espresso/20 sm:pt-4">
+                <div className="sm:mt-4 sm:border-t sm:border-graphite/20 sm:pt-4">
                   <h3 className="text-xl">
-                    <span className="mr-2 font-display text-muted">{i + 1}.</span>
+                    <span className="mr-2 font-display text-gris">{i + 1}.</span>
                     {step.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted">{step.text}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-gris">{step.text}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -134,7 +134,7 @@ export default function AtelierPage() {
         </Container>
       </section>
 
-      <section className="bg-cream py-14 lg:py-20">
+      <section className="bg-rose-pale py-14 lg:py-20">
         <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
           <div className="aspect-[3/2] overflow-hidden">
             <PhotoPlaceholder label="Photo des cuirs" className="h-full" />
@@ -158,7 +158,7 @@ export default function AtelierPage() {
                     Pour qu’ils restent beaux longtemps, suivez mes{' '}
                     <Link
                       href="/entretien"
-                      className="text-cognac underline underline-offset-4 hover:text-cognac-hover"
+                      className="text-rose-texte underline underline-offset-4 hover:text-rose-texte"
                     >
                       conseils d’entretien du cuir
                     </Link>
@@ -174,7 +174,7 @@ export default function AtelierPage() {
       <section className="py-14 lg:py-20">
         <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
           <div className="md:order-last">
-            <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-[4/5]">
+            <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-[4/5]">
               <Image
                 src={photos.atelierMains.src}
                 alt={photos.atelierMains.alt}

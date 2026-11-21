@@ -9,7 +9,7 @@ export type SellerInfo = {
   postalAddress?: string | null;
 };
 
-const small = { ...text, fontSize: '13px', lineHeight: '20px', color: colors.muted };
+const small = { ...text, fontSize: '13px', lineHeight: '20px', color: colors.gris };
 
 /**
  * Durable-medium confirmation (Code de la consommation L221-13): CGV and the right of withdrawal,
@@ -30,14 +30,14 @@ export function WithdrawalInfo({
   ];
   return (
     <Section style={{ marginTop: '12px' }}>
-      <Hr style={{ borderColor: colors.border, margin: '8px 0 20px' }} />
+      <Hr style={{ borderColor: colors.trait, margin: '8px 0 20px' }} />
       <Text style={label}>Conditions générales de vente</Text>
       <Text style={small}>
         {seller.cgvAttached
           ? 'Nos conditions générales de vente, acceptées lors de votre commande, sont jointes à cet e-mail. '
           : ''}
         Vous pouvez aussi les consulter sur{' '}
-        <Link href={seller.cgvUrl} style={{ color: colors.fuchsiaDeep }}>
+        <Link href={seller.cgvUrl} style={{ color: colors.roseTexte }}>
           notre site
         </Link>
         .
@@ -52,15 +52,17 @@ export function WithdrawalInfo({
         remboursement sont précisées dans nos CGV.
       </Text>
 
-      <Section style={{ backgroundColor: colors.blush, padding: '16px 18px', margin: '4px 0 0' }}>
-        <Text style={{ ...small, color: colors.espresso, fontWeight: 500, margin: '0 0 6px' }}>
+      <Section
+        style={{ backgroundColor: colors.rosePale, padding: '16px 18px', margin: '4px 0 0' }}
+      >
+        <Text style={{ ...small, color: colors.graphite, fontWeight: 500, margin: '0 0 6px' }}>
           Formulaire de rétractation
         </Text>
-        <Text style={{ ...small, color: colors.espresso, margin: '0 0 8px' }}>
+        <Text style={{ ...small, color: colors.graphite, margin: '0 0 8px' }}>
           (Veuillez compléter et renvoyer le présent formulaire uniquement si vous souhaitez vous
           rétracter du contrat.)
         </Text>
-        <Text style={{ ...small, color: colors.espresso, margin: '0 0 8px' }}>
+        <Text style={{ ...small, color: colors.graphite, margin: '0 0 8px' }}>
           À l’attention de :
           {sellerLines.map((line, i) => (
             <span key={i}>
@@ -69,7 +71,7 @@ export function WithdrawalInfo({
             </span>
           ))}
         </Text>
-        <Text style={{ ...small, color: colors.espresso, margin: '0 0 8px' }}>
+        <Text style={{ ...small, color: colors.graphite, margin: '0 0 8px' }}>
           Je/Nous (*) vous notifie/notifions (*) par la présente ma/notre (*) rétractation du
           contrat portant sur la vente du bien ci-dessous :
           <br />
@@ -86,7 +88,7 @@ export function WithdrawalInfo({
           <br />
           Date :
         </Text>
-        <Text style={{ ...small, color: colors.espresso, margin: 0 }}>
+        <Text style={{ ...small, color: colors.graphite, margin: 0 }}>
           (*) Rayez la mention inutile.
         </Text>
       </Section>

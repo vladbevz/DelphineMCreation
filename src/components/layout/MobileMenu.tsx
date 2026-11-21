@@ -34,7 +34,7 @@ export function MobileMenu({ instagram }: { instagram: string | null }) {
         aria-controls={panelId}
         aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
         onClick={() => setOpenedOn(open ? null : pathname)}
-        className="-ml-2 inline-flex size-11 items-center justify-center rounded-full hover:bg-cream"
+        className="-ml-2 inline-flex size-11 items-center justify-center rounded-full hover:bg-rose-pale"
       >
         <svg
           viewBox="0 0 24 24"
@@ -53,7 +53,7 @@ export function MobileMenu({ instagram }: { instagram: string | null }) {
         id={panelId}
         aria-label="Menu principal"
         hidden={!open}
-        className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-sand-border bg-linen px-5 pt-6 pb-12"
+        className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-trait bg-blanc px-5 pt-6 pb-12"
       >
         <ul>
           {mainNav.map((item) => (
@@ -61,7 +61,7 @@ export function MobileMenu({ instagram }: { instagram: string | null }) {
               <Link
                 href={item.href}
                 aria-current={pathname === item.href ? 'page' : undefined}
-                className="block border-b border-sand-border py-4 display-caps text-base aria-[current=page]:text-cognac"
+                className="block border-b border-trait py-4 display-caps text-base aria-[current=page]:text-rose-texte"
               >
                 {item.label}
               </Link>

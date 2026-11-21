@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { cn } from './cn';
 
 const control =
-  'w-full border border-sand-border bg-white px-4 py-2.5 text-base text-espresso transition-colors placeholder:text-muted/70 focus:border-espresso focus:outline-none aria-[invalid=true]:border-cognac';
+  'w-full border border-trait bg-white px-4 py-2.5 text-base text-graphite transition-colors placeholder:text-gris/70 focus:border-graphite focus:outline-none aria-[invalid=true]:border-rose-texte';
 
 type FieldShellProps = {
   name: string;
@@ -25,7 +25,7 @@ export function FieldShell({ name, label, error, hint, optional, children }: Fie
     <div>
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
         {label}
-        {optional && <span className="font-normal text-muted"> (facultatif)</span>}
+        {optional && <span className="font-normal text-gris"> (facultatif)</span>}
       </label>
       {children({
         id,
@@ -33,12 +33,12 @@ export function FieldShell({ name, label, error, hint, optional, children }: Fie
         'aria-describedby': describedBy || undefined,
       })}
       {hint && (
-        <p id={`${id}-hint`} className="mt-2 text-xs text-muted">
+        <p id={`${id}-hint`} className="mt-2 text-xs text-gris">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="mt-2 text-sm text-cognac">
+        <p id={`${id}-error`} className="mt-2 text-sm text-rose-texte">
           {error}
         </p>
       )}

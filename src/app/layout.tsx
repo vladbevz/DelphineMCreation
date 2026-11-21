@@ -1,33 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { Bricolage_Grotesque, Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Quicksand } from 'next/font/google';
 import { isDemoMode, publicEnv } from '@/lib/env';
 import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
 import './globals.css';
 
-// Headings. Variable font: weights 200-800 plus the optical-size axis (12-96), so small titles
-// get sturdier shapes and large ones tighter ones automatically.
-const bricolage = Bricolage_Grotesque({
+// Charte graphique: Quicksand, the closest web font to Existence (the logo's typeface).
+// Variable font: one file covers 300-700.
+const quicksand = Quicksand({
   subsets: ['latin'],
-  axes: ['opsz'],
   display: 'swap',
-  variable: '--font-bricolage',
-});
-
-// Body text, menus, buttons, prices.
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  display: 'swap',
-  variable: '--font-dm-sans',
-});
-
-// Logo only, until Delphine provides her SVG.
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '500'],
-  display: 'swap',
-  variable: '--font-cormorant',
+  variable: '--font-quicksand',
 });
 
 export const metadata: Metadata = {
@@ -50,12 +33,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#fbf7f1',
+  themeColor: '#ffffff',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${bricolage.variable} ${dmSans.variable} ${cormorant.variable}`}>
+    <html lang="fr" className={quicksand.variable}>
       <body>{children}</body>
     </html>
   );

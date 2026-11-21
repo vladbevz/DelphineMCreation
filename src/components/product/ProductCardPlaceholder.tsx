@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import { EarringMotif } from '@/components/brand/EarringMotif';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 
 // Stand-in for ProductCard until products come from Sanity (stage 2).
 export function ProductCardPlaceholder() {
   return (
     <Link href="/boutique" className="group block">
-      <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-sand">
-        <EarringMotif className="h-2/5 w-auto text-cognac/50" />
+      <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-nuage">
+        <BrandLogo variant="mark" mono className="h-2/5 w-auto text-graphite/15" />
       </div>
       <p className="mt-3 product-title text-base sm:text-lg">[NOM DU BIJOU]</p>
-      <p className="mt-0.5 text-[0.8rem] text-espresso/80">[PRIX]</p>
+      <p className="mt-0.5 text-[0.8rem] text-graphite/80">[PRIX]</p>
     </Link>
   );
 }

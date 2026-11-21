@@ -39,7 +39,7 @@ export function OrderSummary({
   return (
     <Section style={{ margin: '8px 0 20px' }}>
       {order.items.map((item) => (
-        <Row key={item.title} style={{ borderBottom: `1px solid ${colors.border}` }}>
+        <Row key={item.title} style={{ borderBottom: `1px solid ${colors.trait}` }}>
           {item.imageUrl && (
             <Column style={{ width: '72px', padding: '12px 12px 12px 0' }}>
               <Img
@@ -47,7 +47,7 @@ export function OrderSummary({
                 alt=""
                 width="60"
                 height="75"
-                style={{ backgroundColor: colors.sand }}
+                style={{ backgroundColor: colors.nuage }}
               />
             </Column>
           )}
@@ -65,7 +65,7 @@ export function OrderSummary({
               {item.title}
             </Text>
             {item.toMake > 0 && (
-              <Text style={{ ...cell, fontSize: '13px', color: colors.muted }}>
+              <Text style={{ ...cell, fontSize: '13px', color: colors.gris }}>
                 {audience === 'delphine'
                   ? `À fabriquer : ${item.toMake}${item.fromStock ? ` · prêt : ${item.fromStock}` : ''}`
                   : item.fromStock
@@ -81,12 +81,10 @@ export function OrderSummary({
       ))}
       <Row>
         <Column style={{ paddingTop: '12px' }}>
-          <Text style={{ ...cell, color: colors.muted }}>Livraison</Text>
+          <Text style={{ ...cell, color: colors.gris }}>Livraison</Text>
         </Column>
         <Column align="right" style={{ paddingTop: '12px' }}>
-          <Text style={{ ...cell, color: colors.muted }}>
-            {formatPrice(order.amounts.shipping)}
-          </Text>
+          <Text style={{ ...cell, color: colors.gris }}>{formatPrice(order.amounts.shipping)}</Text>
         </Column>
       </Row>
       <Row>
@@ -94,7 +92,7 @@ export function OrderSummary({
           <Text style={{ ...cell, fontFamily: sans, fontSize: '17px' }}>Total</Text>
         </Column>
         <Column align="right" style={{ paddingTop: '6px' }}>
-          <Text style={{ ...cell, fontSize: '17px', color: colors.cognac }}>
+          <Text style={{ ...cell, fontSize: '17px', color: colors.roseTexte }}>
             {formatPrice(order.amounts.total)}
           </Text>
         </Column>

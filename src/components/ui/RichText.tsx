@@ -16,7 +16,7 @@ const components: PortableTextComponents = {
   marks: {
     link: ({ value, children }) => {
       const href: string = value?.href ?? '#';
-      const className = 'text-cognac underline underline-offset-4 hover:text-cognac-hover';
+      const className = 'text-rose-texte underline underline-offset-4 hover:text-rose-texte';
       if (href.startsWith('/')) {
         return (
           <Link href={href} className={className}>

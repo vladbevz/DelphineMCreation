@@ -1,15 +1,15 @@
 import Link from 'next/link';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 
-/** Text logo (Cormorant capitals, kept as is until Delphine provides her SVG). */
+/** « Delphine M » + « Créations en cuir », from the client's logo (never re-drawn or re-coloured). */
 export function Logo() {
   return (
-    <Link href="/" className="flex flex-col items-center leading-none" title="Accueil">
-      <span className="logo-caps text-[1.35rem] leading-none sm:text-[1.6rem]">
-        Delphine <span className="font-medium">M.</span>
-      </span>
-      <span className="mt-1 text-[0.55rem] font-medium tracking-[0.5em] text-espresso/80 uppercase">
-        Créations
-      </span>
+    <Link href="/" className="block" title="Accueil">
+      <BrandLogo
+        variant="name"
+        title="Delphine M, créations en cuir"
+        className="h-11 w-auto sm:h-12"
+      />
     </Link>
   );
 }

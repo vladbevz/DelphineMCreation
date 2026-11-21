@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
-import { EarringMotif } from '@/components/brand/EarringMotif';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 
 export function FormSuccess({ message, action }: { message?: string; action?: ReactNode }) {
   return (
-    <div role="status" className="bg-cream px-6 py-12 text-center">
-      <EarringMotif className="mx-auto h-16 w-auto text-cognac" />
+    <div role="status" className="bg-rose-pale px-6 py-12 text-center">
+      <BrandLogo variant="mark" className="mx-auto h-16 w-auto" />
       <p className="mt-6 heading text-3xl">Message envoyé</p>
-      {message && <p className="mx-auto mt-3 max-w-md text-muted">{message}</p>}
+      {message && <p className="mx-auto mt-3 max-w-md text-gris">{message}</p>}
       {action && <div className="mt-6">{action}</div>}
     </div>
   );
@@ -15,7 +15,7 @@ export function FormSuccess({ message, action }: { message?: string; action?: Re
 export function FormError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p role="alert" className="bg-cream p-4 text-sm">
+    <p role="alert" className="bg-rose-pale p-4 text-sm">
       {message}
     </p>
   );

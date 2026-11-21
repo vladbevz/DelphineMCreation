@@ -20,7 +20,7 @@ export function ProductActions({ productId, title, price, stock, delays, vacatio
         <Button disabled className="w-full sm:w-auto sm:min-w-64">
           Boutique en pause
         </Button>
-        <p className="mt-3 text-sm text-muted">{vacationMessage}</p>
+        <p className="mt-3 text-sm text-gris">{vacationMessage}</p>
       </div>
     );
   }
@@ -29,7 +29,7 @@ export function ProductActions({ productId, title, price, stock, delays, vacatio
     <div>
       <AddToCartButton productId={productId} title={title} price={price} />
       {/* The delay is shown before purchase (L216-1), as in the cart and on Stripe. */}
-      <p className="mt-3 text-sm text-muted">{productAvailabilityNote(stock, delays)}</p>
+      <p className="mt-3 text-sm text-gris">{productAvailabilityNote(stock, delays)}</p>
     </div>
   );
 }

@@ -1,34 +1,28 @@
 @import 'tailwindcss';
 
-/* next/font variables have their own names: a token named like its source would reference itself. */
+/* Client's charte graphique « Delphine M » (November 2026): dark grey #252626 + flash pink #ED0A90
+   on white; Quicksand everywhere (closest web font to Existence, the logo's typeface).
+   next/font variables have their own names: a token named like its source would reference itself. */
 @theme inline {
-  --font-display: var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
-  --font-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
-  /* Logo only, until Delphine provides her SVG. */
-  --font-logo: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-display: var(--font-quicksand), 'Quicksand', system-ui, sans-serif;
+  --font-body: var(--font-quicksand), 'Quicksand', system-ui, sans-serif;
+  --font-sans: var(--font-quicksand), 'Quicksand', system-ui, sans-serif;
 }
 
 @theme {
-  --color-linen: #fbf7f1;
-  --color-cream: #f4ede3;
-  --color-sand: #e3d3be;
-  --color-sand-border: #d9c8b2;
-  --color-cognac: #9c5a33;
-  --color-cognac-hover: #7a4424;
-  --color-olive: #5f6a4b;
-  --color-espresso: #2b1d14;
-  --color-muted: #6b5646;
-
-  /* « Joie colorée »: colour blocks on top of the warm base. Text on them is always espresso
-     (linen and muted fail 4.5:1). fuchsia-deep carries text and the primary button. */
-  --color-fuchsia: #e0457b;
-  --color-fuchsia-deep: #b8285f;
-  --color-mandarine: #f28c38;
-  --color-soleil: #f5c542;
-  --color-turquoise: #2bb3b1;
-  --color-lavande: #b79ce8;
-  --color-blush: #fbe3ea;
+  /* Contrast (checked): graphite/blanc 15.2, gris/blanc 6.4, gris/rose-pale 5.7, gris/nuage 5.8,
+     rose-texte/blanc 5.8, blanc/rose-texte 5.8, graphite/rose-pale 13.5.
+     rose (#ED0A90, the charte pink) on white is 4.2: logo, decoration, large text (>= 24px)
+     only; small pink text and buttons use rose-texte. */
+  --color-blanc: #ffffff; /* page */
+  --color-graphite: #252626; /* charte dark grey: text, footer */
+  --color-gris: #5e5f5f; /* secondary text */
+  --color-rose: #ed0a90; /* charte flash pink: logo, decoration, large text */
+  --color-rose-texte: #c2077a; /* buttons, links, small pink text, announcement bar */
+  --color-rose-hover: #a30667;
+  --color-rose-pale: #fdeef6; /* alternate sections */
+  --color-nuage: #f5f3f4; /* photo and placeholder backgrounds */
+  --color-trait: #e8e2e5; /* borders, form fields */
 
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -41,17 +35,18 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Quicksand 500 for text: its regular weight is too thin for small sizes on phones. */
   body {
-    @apply bg-linen font-body text-base text-espresso antialiased;
+    @apply bg-blanc font-body text-base leading-relaxed font-medium text-graphite antialiased;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-display font-bold text-balance;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    @apply font-display font-semibold text-balance;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     /* A long French word in a large H1 must not push the page sideways on a phone. */
     /* "anywhere" (not "break-word") also shrinks the min-content width of grid/flex items. */
     overflow-wrap: anywhere;
@@ -59,11 +54,11 @@
   }
 
   ::selection {
-    @apply bg-sand text-espresso;
+    @apply bg-rose-pale text-graphite;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-cognac);
+    outline: 2px solid var(--color-rose-texte);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -80,70 +75,45 @@
   }
 }
 
-/* Small capitals: labels, buttons, menus. Never for headings. */
+/* Small spaced capitals: buttons, menus, form labels. Never above a heading. */
 @utility display-caps {
-  @apply font-body font-medium uppercase;
+  @apply font-body font-semibold uppercase;
   letter-spacing: var(--tracking-label);
 }
 
 @utility label-caps {
-  @apply font-body text-xs font-medium uppercase;
+  @apply font-body text-[0.7rem] font-semibold uppercase;
   letter-spacing: var(--tracking-label);
 }
 
-/* Heading look for elements that are not h1-h4 (empty states, large quotes, marquee). */
+/* Heading look for elements that are not h1-h4 (empty states, large quotes). */
 @utility heading {
-  @apply font-display font-bold text-balance;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  @apply font-display font-semibold text-balance;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
 
-/* Accent word in a heading (<em> in SectionHeading). Bricolage has no italic: heavier weight
-   and colour instead. Fuchsia passes 3:1 only for large text (>= 24px, or 18.7px bold).
-   Override the colour with --word-accent (e.g. a category colour). */
+/* <em> inside a heading: no accent, it reads as the rest of the title. */
 @utility word-accent {
-  @apply font-extrabold not-italic;
-  color: var(--word-accent, var(--color-fuchsia));
+  font-style: normal;
+  font-weight: inherit;
+  color: inherit;
 }
 
 @utility product-title {
   @apply font-display font-semibold;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  line-height: 1.3;
   overflow-wrap: anywhere;
 }
 
 @utility price {
-  @apply font-body font-medium tabular-nums;
+  @apply font-body font-semibold tabular-nums;
 }
 
 /* Comfortable reading line. */
 @utility measure {
   max-width: 65ch;
-}
-
-/* The current text logo, kept in Cormorant capitals until the SVG arrives. */
-@utility logo-caps {
-  @apply font-logo font-light uppercase;
-  letter-spacing: 0.06em;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@utility animate-marquee {
-  animation: marquee 40s linear infinite;
-  /* Slows down under the pointer instead of stopping abruptly. */
-  &:hover {
-    animation-duration: 90s;
-  }
 }
 
 /* Slow zoom on the hero photo (starts once the image is painted, see Hero). */
@@ -161,7 +131,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
   .animate-ken-burns {
     animation: none !important;
   }

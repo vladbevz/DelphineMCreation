@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Blob } from '@/components/brand/Blob';
-import { EarringMotif } from '@/components/brand/EarringMotif';
-import { LeopardPattern } from '@/components/brand/LeopardPattern';
 import { InstagramIcon } from '@/components/brand/InstagramIcon';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 import { HeroMedia } from '@/components/home/HeroMedia';
 import { TrustStrip } from '@/components/home/TrustStrip';
 import { RevealWords, Stagger, StaggerItem } from '@/components/motion/Reveal';
@@ -12,9 +10,8 @@ import { ProductCardPlaceholder } from '@/components/product/ProductCardPlacehol
 import { JsonLd } from '@/components/seo/JsonLd';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
-import { Marquee } from '@/components/ui/Marquee';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { categories, categoryColor, categoryFilterLabels } from '@/lib/catalog';
+import { categories, categoryFilterLabels } from '@/lib/catalog';
 import { photos } from '@/lib/photos';
 import { getLatestProducts, getProducts, getSettings } from '@/lib/sanity/data';
 import { urlFor } from '@/lib/sanity/image';
@@ -82,11 +79,11 @@ export default async function HomePage() {
       />
 
       {/* Hero: full-bleed photo (LCP, rendered as-is), title words sliding up from a mask. */}
-      <section className="relative flex h-[min(80svh,40rem)] min-h-[28rem] items-center justify-center overflow-hidden bg-espresso sm:h-[calc(100svh-4.5rem)] sm:max-h-[52rem]">
+      <section className="relative flex h-[min(80svh,40rem)] min-h-[28rem] items-center justify-center overflow-hidden bg-graphite sm:h-[calc(100svh-4.5rem)] sm:max-h-[52rem]">
         <HeroMedia src={photos.bouclesLiege.src} alt={photos.bouclesLiege.alt} />
-        <div className="absolute inset-0 bg-espresso/35" aria-hidden />
-        <div className="relative px-5 text-center text-linen">
-          <h1 className="mx-auto max-w-4xl text-4xl sm:text-6xl">
+        <div className="absolute inset-0 bg-graphite/35" aria-hidden />
+        <div className="relative px-5 text-center text-blanc">
+          <h1 className="mx-auto max-w-4xl text-4xl leading-[1.1] sm:text-6xl">
             <RevealWords text="Des bijoux en cuir, façonnés de mes mains" delay={0.15} />
           </h1>
           <ButtonLink href="/boutique" variant="light" className="mt-8">
@@ -99,10 +96,8 @@ export default async function HomePage() {
 
       {/* New pieces */}
       <section className="pt-10 pb-14 lg:pb-20">
-        <Marquee className="heading text-3xl sm:text-5xl">
-          Nouvelle <span className="word-accent">collection</span>
-        </Marquee>
-        <Container className="mt-8 lg:mt-10">
+        <Container>
+          <SectionHeading align="center" title="Nouvelle collection" className="mb-8 lg:mb-10" />
           <Stagger as="ul" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
             {shown.length > 0
               ? shown.map((product, i) => (
@@ -128,18 +123,11 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Categories: one colour each, a morphing patch behind the photo. */}
+      {/* Categories: one photo each. */}
       {categoryTiles.length > 0 && (
-        <section className="overflow-hidden bg-blush py-14 lg:py-20">
+        <section className="overflow-hidden bg-rose-pale py-14 lg:py-20">
           <Container size="medium">
-            <SectionHeading
-              align="center"
-              title={
-                <>
-                  <em>Découvrez</em> nos créations
-                </>
-              }
-            />
+            <SectionHeading align="center" title="Découvrez nos créations" />
             <Stagger
               as="ul"
               className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 lg:grid-cols-4"
@@ -148,10 +136,7 @@ export default async function HomePage() {
                 <StaggerItem as="li" key={value}>
                   <Link href={`/boutique?categorie=${value}`} className="group block text-center">
                     <div className="relative">
-                      <Blob
-                        className={`-right-[30%] -bottom-[30%] h-[140%] w-[140%] ${categoryColor(value).fill}`}
-                      />
-                      <div className="relative aspect-square overflow-hidden bg-sand transition-transform duration-500 ease-premium group-hover:-translate-y-1.5">
+                      <div className="relative aspect-square overflow-hidden bg-nuage transition-transform duration-500 ease-premium group-hover:-translate-y-1.5">
                         {product?.image?.asset ? (
                           <Image
                             src={urlFor(product.image).width(600).height(600).url()}
@@ -162,12 +147,16 @@ export default async function HomePage() {
                           />
                         ) : (
                           <div className="flex h-full items-center justify-center">
-                            <EarringMotif className="h-2/5 w-auto text-cognac/50" />
+                            <BrandLogo
+                              variant="mark"
+                              mono
+                              className="h-2/5 w-auto text-graphite/15"
+                            />
                           </div>
                         )}
                       </div>
                     </div>
-                    <p className="mt-5 product-title text-lg decoration-1 underline-offset-4 group-hover:underline">
+                    <p className="mt-4 product-title text-lg decoration-1 underline-offset-4 group-hover:underline">
                       {categoryFilterLabels[value]}
                     </p>
                   </Link>
@@ -181,7 +170,7 @@ export default async function HomePage() {
       {/* Atelier: photo + text. */}
       <section className="py-14 lg:py-20">
         <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-14">
-          <div className="relative aspect-[4/3] overflow-hidden bg-sand md:aspect-[4/5]">
+          <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-[4/5]">
             <Image
               src={photos.atelierMains.src}
               alt={photos.atelierMains.alt}
@@ -208,15 +197,14 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Promises: the one leopard-print section, very light. */}
-      <section className="relative overflow-hidden border-y border-sand-border bg-cream py-12 lg:py-16">
-        <LeopardPattern className="text-sand-border opacity-60" />
-        <Container size="medium" className="relative">
+      {/* Promises on pale pink. */}
+      <section className="bg-rose-pale py-12 lg:py-16">
+        <Container size="medium">
           <ul className="grid gap-6 sm:grid-cols-3 sm:gap-10">
             {promises.map((p) => (
-              <li key={p.title} className="border-t border-espresso/20 pt-4">
-                <h3 className="text-lg sm:text-xl">{p.title}</h3>
-                <p className="mt-2 max-w-xs text-sm text-espresso/80">{p.text}</p>
+              <li key={p.title}>
+                <h3 className="text-xl">{p.title}</h3>
+                <p className="mt-1.5 max-w-xs text-sm text-gris">{p.text}</p>
               </li>
             ))}
           </ul>
@@ -224,7 +212,7 @@ export default async function HomePage() {
       </section>
 
       {/* Full-bleed photo with large text */}
-      <section className="relative flex min-h-[26rem] items-end overflow-hidden bg-espresso sm:min-h-[34rem]">
+      <section className="relative flex min-h-[26rem] items-end overflow-hidden bg-graphite sm:min-h-[34rem]">
         <Image
           src={photos.finitions.src}
           alt={photos.finitions.alt}
@@ -232,12 +220,12 @@ export default async function HomePage() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-espresso/40" aria-hidden />
-        <Container className="relative pb-12 text-linen sm:pb-16">
-          <p className="max-w-xl heading text-5xl leading-[1.02] sm:text-7xl">
+        <div className="absolute inset-0 bg-graphite/40" aria-hidden />
+        <Container className="relative pb-12 text-blanc sm:pb-16">
+          <p className="max-w-xl heading text-5xl leading-[1.05] sm:text-7xl">
             Votre idée,
             <br />
-            <span className="font-extrabold">mes mains</span>
+            mes mains
           </p>
           <ButtonLink href="/sur-mesure" variant="light" className="mt-8">
             Imaginer un sur-mesure
@@ -245,13 +233,11 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Instagram: large outlined word above a row of photos. */}
+      {/* Instagram: title and link above a row of photos. */}
       <section className="overflow-hidden pt-14 lg:pt-20">
         <Container>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-            <h2 className="text-[3.2rem] leading-[0.9] text-transparent [-webkit-text-stroke:1px_var(--color-muted)] sm:text-[5rem] lg:text-[6.5rem]">
-              Instagram
-            </h2>
+            <h2 className="text-2xl sm:text-[2.1rem]">Suivez l’atelier sur Instagram</h2>
             {settings?.instagram ? (
               <ButtonLink
                 href={settings.instagram}
@@ -264,7 +250,7 @@ export default async function HomePage() {
                 @delphinemcreations
               </ButtonLink>
             ) : (
-              <p className="order-first text-xs text-muted sm:order-none sm:mb-3">
+              <p className="order-first text-xs text-gris sm:order-none sm:mb-3">
                 [LIEN À FOURNIR]
               </p>
             )}
@@ -275,7 +261,7 @@ export default async function HomePage() {
               <StaggerItem
                 as="li"
                 key={p.src}
-                className="relative aspect-square overflow-hidden bg-cream"
+                className="relative aspect-square overflow-hidden bg-rose-pale"
               >
                 <Image src={p.src} alt={p.alt} fill sizes="25vw" className="object-cover" />
               </StaggerItem>

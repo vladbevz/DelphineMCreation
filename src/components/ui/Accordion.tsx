@@ -11,7 +11,7 @@ export function AccordionItem({
   defaultOpen?: boolean;
 }) {
   return (
-    <details className="group border-b border-espresso/30" open={defaultOpen}>
+    <details className="group border-b border-graphite/30" open={defaultOpen}>
       <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-[0.7rem] font-medium tracking-label uppercase [&::-webkit-details-marker]:hidden">
         {title}
         <svg
@@ -27,7 +27,7 @@ export function AccordionItem({
           <path d="m9 6 6 6-6 6" />
         </svg>
       </summary>
-      <div className="pb-5 text-sm text-muted">{children}</div>
+      <div className="pb-5 text-sm text-gris">{children}</div>
     </details>
   );
 }

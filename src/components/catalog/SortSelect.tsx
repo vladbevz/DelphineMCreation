@@ -13,14 +13,14 @@ export function SortSelect({
   const router = useRouter();
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className="text-muted">Trier par</span>
+      <span className="text-gris">Trier par</span>
       <select
         value={current}
         onChange={(e) => {
           const option = options.find((o) => o.value === e.currentTarget.value);
           if (option) router.push(option.href, { scroll: false });
         }}
-        className="border border-sand-border bg-white py-2 pr-8 pl-3 text-sm text-espresso focus:border-espresso focus:outline-none"
+        className="border border-trait bg-white py-2 pr-8 pl-3 text-sm text-graphite focus:border-graphite focus:outline-none"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

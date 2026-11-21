@@ -164,7 +164,7 @@ function Form({ onReset }: { onReset: () => void }) {
                       type="button"
                       onClick={() => removePhoto(i)}
                       aria-label={`Retirer la photo ${i + 1}`}
-                      className="absolute -top-2 -right-2 inline-flex size-7 items-center justify-center rounded-full bg-espresso text-linen"
+                      className="absolute -top-2 -right-2 inline-flex size-7 items-center justify-center rounded-full bg-graphite text-blanc"
                     >
                       <svg
                         viewBox="0 0 24 24"
@@ -190,7 +190,7 @@ function Form({ onReset }: { onReset: () => void }) {
                 accept={ALLOWED_IMAGE_TYPES.join(',')}
                 multiple
                 onChange={(event) => void addFiles(event.currentTarget.files)}
-                className="block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-sand file:px-5 file:py-2.5 file:text-sm file:text-espresso hover:file:bg-sand-border"
+                className="block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-nuage file:px-5 file:py-2.5 file:text-sm file:text-graphite hover:file:bg-trait"
                 {...a11y}
               />
             )}
@@ -204,7 +204,7 @@ function Form({ onReset }: { onReset: () => void }) {
       <Button type="submit" disabled={pending || processing}>
         {pending ? 'Envoi…' : processing ? 'Préparation des photos…' : 'Envoyer ma demande'}
       </Button>
-      <p className="text-xs text-muted">
+      <p className="text-xs text-gris">
         Vos informations et photos servent uniquement à étudier votre demande.
       </p>
     </form>

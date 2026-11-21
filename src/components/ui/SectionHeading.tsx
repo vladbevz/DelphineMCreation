@@ -4,8 +4,7 @@ import { cn } from './cn';
 type SectionHeadingProps = {
   label?: string;
   /**
-   * Bricolage bold, normal case. An <em> inside becomes the accent word (extra bold, fuchsia),
-   * e.g. <>Les dernières <em>créations</em></>. Home and boutique only (CLAUDE.md §3).
+   * Quicksand semibold, normal case. No accent word: an <em> reads as the rest of the title.
    */
   title: ReactNode;
   intro?: ReactNode;
@@ -24,17 +23,17 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn('max-w-2xl', align === 'center' && 'mx-auto text-center', className)}>
-      {label && <p className="mb-3 label-caps text-muted">{label}</p>}
+      {label && <p className="mb-3 label-caps text-gris">{label}</p>}
       <Tag
         className={cn(
           '[&_em]:word-accent',
-          Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2rem]',
+          Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2.1rem]',
         )}
       >
         {title}
       </Tag>
       {intro && (
-        <div className="mt-4 measure leading-relaxed text-muted sm:text-[1.0625rem]">{intro}</div>
+        <div className="mt-4 measure leading-relaxed text-gris sm:text-[1.0625rem]">{intro}</div>
       )}
     </div>
   );

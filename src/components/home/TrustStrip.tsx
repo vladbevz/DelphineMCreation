@@ -44,7 +44,7 @@ const icons: Record<string, ReactNode> = {
   ),
 };
 
-/** Reassurance band under the hero (as on the reference shops). Text is espresso on soleil. */
+/** Reassurance band under the hero: dark grey on pale pink. */
 export function TrustStrip({ freeShippingThreshold }: { freeShippingThreshold: number | null }) {
   const items = [
     { icon: 'hand', label: 'Fait main à Clarensac' },
@@ -56,7 +56,7 @@ export function TrustStrip({ freeShippingThreshold }: { freeShippingThreshold: n
   ];
 
   return (
-    <section aria-label="Nos engagements" className="bg-soleil text-espresso">
+    <section aria-label="Nos engagements" className="bg-rose-pale text-graphite">
       <Container>
         <ul className="grid grid-cols-2 gap-x-4 gap-y-3 py-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-10">
           {items.map((item) => (

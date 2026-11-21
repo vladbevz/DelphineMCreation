@@ -18,9 +18,9 @@ export function ContentPage({
       <PageHeader size="narrow" label={label} title={title} />
       <Container size="narrow">
         {body?.length ? (
-          <RichText value={body} className="[&_p]:text-espresso/90" />
+          <RichText value={body} className="[&_p]:text-graphite/90" />
         ) : (
-          <p className="text-muted">[TEXTE À FOURNIR]</p>
+          <p className="text-gris">[TEXTE À FOURNIR]</p>
         )}
       </Container>
     </>

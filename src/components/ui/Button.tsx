@@ -11,13 +11,13 @@ const base =
   'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-label uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
-  /** fuchsia-deep: the pink that passes 4.5:1 with linen text. */
-  primary: `${pill} border border-fuchsia-deep bg-fuchsia-deep text-linen hover:bg-transparent hover:text-fuchsia-deep`,
-  secondary: `${pill} border border-espresso text-espresso hover:bg-espresso hover:text-linen`,
+  /** Bordeaux, as the seal: ivoire text 12:1. */
+  primary: `${pill} border border-rose-texte bg-rose-texte text-blanc hover:border-rose-hover hover:bg-rose-hover`,
+  secondary: `${pill} border border-rose-texte text-rose-texte hover:bg-rose-texte hover:text-blanc`,
   /** On dark photos or dark sections. */
-  light: `${pill} border border-linen text-linen hover:bg-linen hover:text-espresso`,
+  light: `${pill} border border-blanc text-blanc hover:bg-blanc hover:text-graphite`,
   ghost:
-    'pb-1 text-espresso underline decoration-espresso/40 underline-offset-[6px] hover:decoration-espresso',
+    'pb-1 text-rose-texte underline decoration-rose-texte/40 underline-offset-[6px] hover:decoration-rose-texte',
 };
 
 type ButtonProps = ComponentProps<'button'> & { variant?: Variant };

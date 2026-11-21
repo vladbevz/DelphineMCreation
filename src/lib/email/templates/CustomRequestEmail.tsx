@@ -40,7 +40,7 @@ export function CustomRequestEmail({
         ))}
       <Text style={{ ...text, whiteSpace: 'pre-line' }}>{request.message}</Text>
       {request.imageCount > 0 && (
-        <Text style={{ ...text, color: colors.muted }}>
+        <Text style={{ ...text, color: colors.gris }}>
           {request.imageCount} photo(s) d’inspiration en pièce jointe (conservées uniquement dans
           cet e-mail).
         </Text>

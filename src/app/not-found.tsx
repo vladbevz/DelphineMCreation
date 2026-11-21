@@ -1,4 +1,4 @@
-import { EarringMotif } from '@/components/brand/EarringMotif';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 import { SiteShell } from '@/components/layout/SiteShell';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
@@ -9,7 +9,7 @@ export default function NotFound() {
     <SiteShell>
       <section className="relative overflow-hidden">
         <Container className="relative flex flex-col items-center py-16 text-center sm:py-24">
-          <EarringMotif className="mb-8 h-20 w-auto -rotate-12 text-fuchsia-deep" />
+          <BrandLogo variant="mark" className="mb-8 h-28 w-auto" />
           <SectionHeading
             as="h1"
             align="center"

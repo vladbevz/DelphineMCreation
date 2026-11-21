@@ -15,7 +15,7 @@ import {
   sortOptions,
   type BoutiqueFilters,
 } from '@/lib/boutique';
-import { categories, categoryColor, categoryFilterLabels, colorKey } from '@/lib/catalog';
+import { categories, categoryFilterLabels, colorKey } from '@/lib/catalog';
 import { getProducts } from '@/lib/sanity/data';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -45,7 +45,7 @@ function Filters({
   return (
     <div className={className}>
       <nav aria-label="Filtrer par catégorie">
-        <h2 className="mb-3 label-caps text-espresso">Catégories</h2>
+        <h2 className="mb-3 label-caps text-graphite">Catégories</h2>
         <ul>
           <li>
             <FilterOption
@@ -62,7 +62,6 @@ function Filters({
                 href={boutiqueHref({ ...filters, category: c.value })}
                 active={filters.category === c.value}
                 count={count((p) => p.category === c.value)}
-                dot={categoryColor(c.value).bg}
               >
                 {categoryFilterLabels[c.value]}
               </FilterOption>
@@ -73,7 +72,7 @@ function Filters({
 
       {colors.length > 1 && (
         <nav aria-label="Filtrer par couleur de cuir">
-          <h2 className="mb-3 label-caps text-espresso">Couleur du cuir</h2>
+          <h2 className="mb-3 label-caps text-graphite">Couleur du cuir</h2>
           <ul>
             {colors.map((c) => (
               <li key={c.key}>
@@ -128,18 +127,18 @@ export default async function BoutiquePage({ searchParams }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-10">
         {/* Desktop: sidebar. Mobile: collapsible panel. Both work without JavaScript. */}
-        <aside className="hidden border-r border-sand-border pr-8 lg:block">
+        <aside className="hidden border-r border-trait pr-8 lg:block">
           <div className="sticky top-24">
             <Filters all={all} filters={filters} className="space-y-8" />
           </div>
         </aside>
 
         <div>
-          <details className="group mb-4 border border-sand-border bg-white/50 lg:hidden">
+          <details className="group mb-4 border border-trait bg-white/50 lg:hidden">
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
               <span>
                 Filtrer
-                {activeCount > 0 && <span className="ml-2 text-cognac">({activeCount})</span>}
+                {activeCount > 0 && <span className="ml-2 text-rose-texte">({activeCount})</span>}
               </span>
               <svg
                 viewBox="0 0 24 24"
@@ -158,8 +157,8 @@ export default async function BoutiquePage({ searchParams }: Props) {
             </div>
           </details>
 
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-sand-border pb-4">
-            <p className="text-sm text-muted" aria-live="polite">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-trait pb-4">
+            <p className="text-sm text-gris" aria-live="polite">
               {products.length} création{products.length > 1 ? 's' : ''}
               {activeCount > 0 && (
                 <>
@@ -167,7 +166,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
                   <Link
                     href="/boutique"
                     scroll={false}
-                    className="text-cognac underline underline-offset-4"
+                    className="text-rose-texte underline underline-offset-4"
                   >
                     Effacer les filtres
                   </Link>
@@ -180,9 +179,9 @@ export default async function BoutiquePage({ searchParams }: Props) {
           {products.length > 0 ? (
             <ProductGrid products={products} variant="sidebar" />
           ) : (
-            <div className="bg-blush px-6 py-14 text-center">
+            <div className="bg-rose-pale px-6 py-14 text-center">
               <p className="heading text-2xl">Aucune création ne correspond</p>
-              <p className="mt-2 text-sm text-muted">Essayez une autre catégorie ou couleur.</p>
+              <p className="mt-2 text-sm text-gris">Essayez une autre catégorie ou couleur.</p>
               <ButtonLink href="/boutique" variant="secondary" className="mt-6">
                 Voir toute la boutique
               </ButtonLink>

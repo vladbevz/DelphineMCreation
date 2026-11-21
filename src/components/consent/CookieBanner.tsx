@@ -46,15 +46,15 @@ export function CookieBanner() {
     <section
       role="dialog"
       aria-labelledby={titleId}
-      className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl border border-sand-border bg-linen p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
+      className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-xl border border-trait bg-blanc p-5 sm:inset-x-6 sm:bottom-6 sm:p-6"
     >
       <h2 id={titleId} className="text-xl">
         Un petit mot sur les cookies
       </h2>
       {/* Kept short: shown on first visit, it must not become the page's largest paint (LCP). */}
-      <p className="mt-2 text-xs leading-relaxed text-muted">
+      <p className="mt-2 text-xs leading-relaxed text-gris">
         Avec votre accord : mesure d’audience et pixel Meta. Le panier n’en a pas besoin.{' '}
-        <Link href="/confidentialite" className="text-cognac underline underline-offset-4">
+        <Link href="/confidentialite" className="text-rose-texte underline underline-offset-4">
           En savoir plus
         </Link>
       </p>
@@ -63,7 +63,7 @@ export function CookieBanner() {
         <fieldset className="mt-4 space-y-3">
           <legend className="sr-only">Choisir les cookies</legend>
           <label className="flex items-start gap-3 text-sm">
-            <input type="checkbox" checked disabled className="mt-1 size-4 accent-espresso" />
+            <input type="checkbox" checked disabled className="mt-1 size-4 accent-graphite" />
             <span>
               <strong className="font-medium">Nécessaires</strong> — panier, sécurité des
               formulaires. Toujours actifs.
@@ -74,7 +74,7 @@ export function CookieBanner() {
               type="checkbox"
               checked={analytics}
               onChange={(e) => setAnalytics(e.currentTarget.checked)}
-              className="mt-1 size-4 accent-cognac"
+              className="mt-1 size-4 accent-rose-texte"
             />
             <span>
               <strong className="font-medium">Mesure d’audience</strong> — statistiques de visite
@@ -86,7 +86,7 @@ export function CookieBanner() {
               type="checkbox"
               checked={marketing}
               onChange={(e) => setMarketing(e.currentTarget.checked)}
-              className="mt-1 size-4 accent-cognac"
+              className="mt-1 size-4 accent-rose-texte"
             />
             <span>
               <strong className="font-medium">Publicité</strong> — pixel Meta (Instagram, Facebook).
@@ -120,7 +120,7 @@ export function CookieBanner() {
         <button
           type="button"
           onClick={() => setCustomizing(true)}
-          className="mt-3 min-h-11 w-full text-sm underline underline-offset-4 hover:text-cognac"
+          className="mt-3 min-h-11 w-full text-sm underline underline-offset-4 hover:text-rose-texte"
         >
           Personnaliser
         </button>

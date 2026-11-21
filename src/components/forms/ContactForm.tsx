@@ -56,7 +56,7 @@ function Form({ onReset }: { onReset: () => void }) {
       <Button type="submit" disabled={pending}>
         {pending ? 'Envoi…' : 'Envoyer'}
       </Button>
-      <p className="text-xs text-muted">Vos informations servent uniquement à vous répondre.</p>
+      <p className="text-xs text-gris">Vos informations servent uniquement à vous répondre.</p>
     </form>
   );
 }

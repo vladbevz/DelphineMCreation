@@ -21,15 +21,15 @@ export function FilterOption({
       href={href}
       scroll={false}
       aria-current={active ? 'true' : undefined}
-      className="group flex min-h-9 items-center gap-3 text-sm text-espresso/80 hover:text-espresso aria-[current=true]:text-espresso"
+      className="group flex min-h-9 items-center gap-3 text-sm text-graphite/80 hover:text-graphite aria-[current=true]:text-graphite"
     >
       <span
         aria-hidden
         className={cn(
           'flex size-4 shrink-0 items-center justify-center border transition-colors',
           active
-            ? 'border-espresso bg-espresso text-linen'
-            : 'border-sand-border bg-white group-hover:border-espresso',
+            ? 'border-graphite bg-graphite text-blanc'
+            : 'border-trait bg-white group-hover:border-graphite',
         )}
       >
         {active && (
@@ -48,7 +48,7 @@ export function FilterOption({
       </span>
       {dot && <span aria-hidden className={cn('size-2 shrink-0 rounded-full', dot)} />}
       <span className="flex-1">{children}</span>
-      {count !== undefined && <span className="text-xs text-muted">{count}</span>}
+      {count !== undefined && <span className="text-xs text-gris">{count}</span>}
     </Link>
   );
 }

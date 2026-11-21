@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react';
 import { cn } from './cn';
 
-type Tone = 'outline' | 'espresso' | 'olive' | 'nouveau';
+type Tone = 'outline' | 'nouveau';
 
 const tones: Record<Tone, string> = {
-  outline: 'border border-espresso/60 bg-linen/80 text-espresso',
-  espresso: 'border border-espresso bg-espresso text-linen',
-  olive: 'border border-olive bg-olive text-white',
-  nouveau: 'border border-fuchsia-deep bg-fuchsia-deep text-linen',
+  outline: 'border border-graphite/60 bg-blanc/80 text-graphite',
+  nouveau: 'border border-rose-texte bg-rose-texte text-blanc',
 };
 
 export function Badge({

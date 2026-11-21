@@ -10,7 +10,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react';
-import { EarringMotif } from '@/components/brand/EarringMotif';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 import { cn } from '@/components/ui/cn';
 
 export type GalleryImage = {
@@ -100,7 +100,7 @@ export function Gallery({
         {images.map((image, i) => (
           <SharedSlide key={image.key} name={i === 0 ? transitionName : undefined}>
             <div
-              className="relative aspect-square w-full shrink-0 snap-center bg-sand"
+              className="relative aspect-square w-full shrink-0 snap-center bg-nuage"
               role="group"
               aria-roledescription="photo"
               aria-label={`${i + 1} sur ${images.length}`}
@@ -125,7 +125,12 @@ export function Gallery({
                 </button>
               ) : (
                 <div className="flex h-full items-center justify-center">
-                  <EarringMotif className="h-1/2 w-auto text-cognac/60" title={image.alt} />
+                  <BrandLogo
+                    variant="mark"
+                    mono
+                    className="h-1/2 w-auto text-graphite/15"
+                    title={image.alt}
+                  />
                 </div>
               )}
             </div>
@@ -148,14 +153,14 @@ export function Gallery({
               <span
                 className={cn(
                   'block size-2.5 rounded-full sm:hidden',
-                  active === i ? 'bg-espresso' : 'bg-sand-border',
+                  active === i ? 'bg-graphite' : 'bg-trait',
                 )}
               />
               <span
                 className={cn(
-                  'relative hidden aspect-square w-14 overflow-hidden bg-sand transition-opacity sm:block',
+                  'relative hidden aspect-square w-14 overflow-hidden bg-nuage transition-opacity sm:block',
                   active === i
-                    ? 'outline outline-1 outline-offset-2 outline-espresso'
+                    ? 'outline outline-1 outline-offset-2 outline-graphite'
                     : 'opacity-60 group-hover:opacity-100',
                 )}
               >
@@ -172,7 +177,7 @@ export function Gallery({
         ref={dialogRef}
         onClose={() => setLightbox(null)}
         aria-label={`Photo agrandie de ${title}`}
-        className="m-0 h-dvh max-h-none w-screen max-w-none bg-espresso p-0 text-linen backdrop:bg-espresso"
+        className="m-0 h-dvh max-h-none w-screen max-w-none bg-graphite p-0 text-blanc backdrop:bg-graphite"
       >
         {current?.zoomSrc && (
           <div className="relative h-full w-full overflow-hidden">
@@ -201,7 +206,7 @@ export function Gallery({
               type="button"
               onClick={close}
               aria-label="Fermer"
-              className="absolute top-4 right-4 inline-flex size-12 items-center justify-center rounded-full bg-espresso/70 hover:bg-espresso"
+              className="absolute top-4 right-4 inline-flex size-12 items-center justify-center rounded-full bg-graphite/70 hover:bg-graphite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -222,7 +227,7 @@ export function Gallery({
                   type="button"
                   onClick={() => step(-1)}
                   aria-label="Photo précédente"
-                  className="absolute top-1/2 left-3 inline-flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-espresso/70 hover:bg-espresso"
+                  className="absolute top-1/2 left-3 inline-flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-graphite/70 hover:bg-graphite"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -241,7 +246,7 @@ export function Gallery({
                   type="button"
                   onClick={() => step(1)}
                   aria-label="Photo suivante"
-                  className="absolute top-1/2 right-3 inline-flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-espresso/70 hover:bg-espresso"
+                  className="absolute top-1/2 right-3 inline-flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-graphite/70 hover:bg-graphite"
                 >
                   <svg
                     viewBox="0 0 24 24"

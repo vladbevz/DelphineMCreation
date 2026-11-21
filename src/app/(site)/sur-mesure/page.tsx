@@ -47,17 +47,17 @@ export default function SurMesurePage() {
         }
       />
 
-      <section className="bg-blush py-12">
+      <section className="bg-rose-pale py-12">
         <Container size="medium">
           <SectionHeading title="Comment ça marche" className="mb-8" />
           <Stagger as="ol" className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
             {steps.map((step, i) => (
-              <StaggerItem as="li" key={step.title} className="border-t border-espresso/20 pt-4">
+              <StaggerItem as="li" key={step.title} className="border-t border-graphite/20 pt-4">
                 <h3 className="text-xl">
-                  <span className="mr-2 font-display text-muted">{i + 1}.</span>
+                  <span className="mr-2 font-display text-gris">{i + 1}.</span>
                   {step.title}
                 </h3>
-                <p className="mt-1 text-sm text-muted">{step.text}</p>
+                <p className="mt-1 text-sm text-gris">{step.text}</p>
               </StaggerItem>
             ))}
           </Stagger>

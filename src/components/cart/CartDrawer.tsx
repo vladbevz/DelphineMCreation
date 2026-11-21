@@ -113,17 +113,17 @@ export function CartDrawer({
       onClose={close}
       onClick={(e) => e.target === dialogRef.current && close()}
       aria-labelledby="cart-title"
-      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-transparent p-0 text-espresso backdrop:bg-espresso/40"
+      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-transparent p-0 text-graphite backdrop:bg-graphite/40"
     >
       {/* Panel slides in on a soft spring each time the drawer opens. */}
       <m.div
         key={isOpen ? 'open' : 'closed'}
-        className="flex h-full flex-col bg-linen"
+        className="flex h-full flex-col bg-blanc"
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         transition={{ type: 'spring', stiffness: 260, damping: 32, mass: 0.9 }}
       >
-        <div className="flex items-center justify-between border-b border-sand-border px-5 py-4">
+        <div className="flex items-center justify-between border-b border-trait px-5 py-4">
           <h2 id="cart-title" className="text-2xl">
             Votre panier
           </h2>
@@ -131,7 +131,7 @@ export function CartDrawer({
             type="button"
             onClick={close}
             aria-label="Fermer le panier"
-            className="inline-flex size-11 items-center justify-center rounded-full hover:bg-cream"
+            className="inline-flex size-11 items-center justify-center rounded-full hover:bg-rose-pale"
           >
             <svg
               viewBox="0 0 24 24"
@@ -149,14 +149,14 @@ export function CartDrawer({
 
         <div className="flex-1 overflow-y-auto px-5 py-6" aria-busy={isLoading}>
           {notices.length > 0 && (
-            <div role="status" className="mb-6 space-y-2 bg-cream p-4 text-sm">
+            <div role="status" className="mb-6 space-y-2 bg-rose-pale p-4 text-sm">
               {notices.map((n) => (
                 <p key={n}>{n}</p>
               ))}
               <button
                 type="button"
                 onClick={() => setNotices([])}
-                className="text-cognac underline underline-offset-4"
+                className="text-rose-texte underline underline-offset-4"
               >
                 J’ai compris
               </button>
@@ -169,13 +169,13 @@ export function CartDrawer({
               <Link
                 href="/boutique"
                 onClick={close}
-                className="mt-4 inline-block text-cognac underline underline-offset-4"
+                className="mt-4 inline-block text-rose-texte underline underline-offset-4"
               >
                 Découvrir les créations
               </Link>
             </div>
           ) : items === null ? (
-            <p className="py-16 text-center text-muted">Chargement…</p>
+            <p className="py-16 text-center text-gris">Chargement…</p>
           ) : (
             <m.ul
               className="space-y-5"
@@ -188,7 +188,7 @@ export function CartDrawer({
                   <Link
                     href={`/boutique/${item.slug}`}
                     onClick={close}
-                    className="relative aspect-square w-20 shrink-0 overflow-hidden bg-sand"
+                    className="relative aspect-square w-20 shrink-0 overflow-hidden bg-nuage"
                   >
                     {item.imageUrl && (
                       <Image
@@ -204,17 +204,17 @@ export function CartDrawer({
                     <Link
                       href={`/boutique/${item.slug}`}
                       onClick={close}
-                      className="product-title text-lg hover:text-cognac"
+                      className="product-title text-lg hover:text-rose-texte"
                     >
                       {item.title}
                     </Link>
-                    <p className="price text-sm text-cognac">
+                    <p className="price text-sm text-rose-texte">
                       {formatPrice(item.price * item.qty)}
                       {item.qty > 1 && (
-                        <span className="text-muted"> · {formatPrice(item.price)} l’unité</span>
+                        <span className="text-gris"> · {formatPrice(item.price)} l’unité</span>
                       )}
                     </p>
-                    <p className="mt-1 text-xs text-muted">
+                    <p className="mt-1 text-xs text-gris">
                       {lineAvailabilityNote(item.qty, item.stock, delays)}
                     </p>
                     <div className="mt-auto flex items-center justify-between gap-3 pt-2">
@@ -226,7 +226,7 @@ export function CartDrawer({
                       <button
                         type="button"
                         onClick={() => remove([item._id])}
-                        className="py-1 text-xs text-muted underline underline-offset-4 hover:text-espresso"
+                        className="py-1 text-xs text-gris underline underline-offset-4 hover:text-graphite"
                       >
                         Retirer
                       </button>
@@ -239,17 +239,17 @@ export function CartDrawer({
         </div>
 
         {buyable.length > 0 && (
-          <div className="border-t border-sand-border px-5 py-5">
+          <div className="border-t border-trait px-5 py-5">
             <div className="flex items-baseline justify-between">
               <span>Sous-total</span>
-              <span className="price text-xl text-cognac">{formatPrice(subtotal)}</span>
+              <span className="price text-xl text-rose-texte">{formatPrice(subtotal)}</span>
             </div>
-            <p className="mt-1 text-xs text-muted">Livraison calculée à l’étape suivante.</p>
+            <p className="mt-1 text-xs text-gris">Livraison calculée à l’étape suivante.</p>
             {freeShippingThreshold !== null && (
               <FreeShippingBar subtotal={subtotal} threshold={freeShippingThreshold} />
             )}
             {error && (
-              <p role="alert" className="mt-4 bg-cream p-3 text-sm">
+              <p role="alert" className="mt-4 bg-rose-pale p-3 text-sm">
                 {error}
               </p>
             )}
@@ -260,7 +260,7 @@ export function CartDrawer({
             >
               {isRedirecting ? 'Redirection vers le paiement…' : 'Passer commande'}
             </Button>
-            <p className="mt-3 text-center text-xs text-muted">Paiement sécurisé par Stripe</p>
+            <p className="mt-3 text-center text-xs text-gris">Paiement sécurisé par Stripe</p>
           </div>
         )}
       </m.div>
@@ -279,12 +279,12 @@ function QuantityStepper({
   onChange: (qty: number) => void;
 }) {
   const button =
-    'inline-flex size-11 items-center justify-center text-lg disabled:cursor-not-allowed disabled:opacity-30 hover:text-cognac';
+    'inline-flex size-11 items-center justify-center text-lg disabled:cursor-not-allowed disabled:opacity-30 hover:text-rose-texte';
   return (
     <div
       role="group"
       aria-label={`Quantité : ${title}`}
-      className="inline-flex items-center border border-sand-border"
+      className="inline-flex items-center border border-trait"
     >
       <button
         type="button"
@@ -333,10 +333,10 @@ function FreeShippingBar({ subtotal, threshold }: { subtotal: number; threshold:
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress * 100)}
-        className="mt-2 h-1.5 overflow-hidden rounded-full bg-sand"
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-nuage"
       >
         <m.div
-          className="h-full origin-left rounded-full bg-fuchsia"
+          className="h-full origin-left rounded-full bg-rose-texte"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: progress }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}

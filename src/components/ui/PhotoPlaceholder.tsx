@@ -1,16 +1,16 @@
-import { EarringMotif } from '@/components/brand/EarringMotif';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 import { cn } from './cn';
 
-/** Sand block with the earring motif, standing in for a photo still to be shot. */
+/** Light block with the D/M monogram, standing in for a photo still to be shot. */
 export function PhotoPlaceholder({ label, className }: { label: string; className?: string }) {
   return (
     <div
-      className={cn('flex flex-col items-center justify-center gap-4 bg-sand', className)}
+      className={cn('flex flex-col items-center justify-center gap-4 bg-nuage', className)}
       role="img"
       aria-label={label}
     >
-      <EarringMotif className="h-1/3 max-h-40 w-auto text-cognac/60" />
-      <span className="label-caps text-muted" aria-hidden>
+      <BrandLogo variant="mark" mono className="h-1/3 max-h-40 w-auto text-graphite/15" />
+      <span className="label-caps text-gris" aria-hidden>
         {label}
       </span>
     </div>
