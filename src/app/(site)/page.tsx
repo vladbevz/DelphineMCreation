@@ -1,19 +1,15 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BrandLogo } from '@/components/brand/BrandLogo';
 import { InstagramIcon } from '@/components/brand/InstagramIcon';
-import { TrustStrip } from '@/components/home/TrustStrip';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardPlaceholder } from '@/components/product/ProductCardPlaceholder';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { AccordionItem } from '@/components/ui/Accordion';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
-import { categories, categoryFilterLabels } from '@/lib/catalog';
 import { photos } from '@/lib/photos';
-import { getLatestProducts, getProducts, getSettings } from '@/lib/sanity/data';
-import { urlFor } from '@/lib/sanity/image';
+import { getLatestProducts, getSettings } from '@/lib/sanity/data';
 import { faq, seo } from '@/lib/seo';
 import { site } from '@/lib/site';
 import { absoluteUrl } from '@/lib/url';
@@ -49,11 +45,7 @@ const promises = [
 ];
 
 export default async function HomePage() {
-  const [products, all, settings] = await Promise.all([
-    getLatestProducts(),
-    getProducts(),
-    getSettings(),
-  ]);
+  const [products, settings] = await Promise.all([getLatestProducts(), getSettings()]);
   // Full rows only: 4 pieces, or 8 on desktop when there are enough (4 on mobile).
   const shown = products.slice(0, products.length >= 8 ? 8 : 4);
   const sameAs = [settings?.instagram, settings?.facebook].filter((u): u is string => Boolean(u));
@@ -61,14 +53,6 @@ export default async function HomePage() {
     shippingDays: settings?.shippingDays,
     madeToOrderDays: settings?.madeToOrderDays,
   });
-
-  // Every category with pieces, its count and newest piece (thumbnail).
-  const categoryRows = categories
-    .map((c) => {
-      const pieces = all.filter((p) => p.category === c.value);
-      return { ...c, count: pieces.length, product: pieces[0] };
-    })
-    .filter((c) => c.count > 0);
 
   return (
     <>
@@ -101,42 +85,52 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Hero, the one bold moment: a magazine cover in the charte's flash pink. White display
-          type is large text (4.2:1 passes 3:1); small text and the button sit on white. */}
-      <section className="overflow-hidden bg-rose text-blanc">
-        <Container className="grid items-end gap-8 pt-10 pb-12 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12 lg:pt-16 lg:pb-16 xl:grid-cols-[minmax(0,1fr)_26rem]">
+      {/* Hero, the one bold moment: light charte pink, the title in a handwritten script, a
+          presentation card slightly tilted. Fits the first screen under the header, no scroll. */}
+      <section className="overflow-hidden bg-rose-clair">
+        <Container className="grid h-[calc(100svh-4.5rem-1px)] max-h-[60rem] min-h-[34rem] grid-rows-[auto_minmax(0,1fr)] gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:grid-rows-1 lg:items-center lg:gap-14">
           <div>
-            <h1 className="text-[clamp(3.5rem,14vw,9.5rem)] leading-[0.95] tracking-[-0.02em]">
+            <h1 className="font-script text-[clamp(3.9rem,16vw,8.5rem)] leading-[0.95] tracking-normal sm:leading-[1.05]">
               Bijoux en cuir faits main, si légers qu’on les oublie
             </h1>
-            <ButtonLink href="/boutique" variant="inverse" className="mt-8 lg:mt-10">
+            <ButtonLink href="/boutique" className="mt-6 lg:mt-10">
               Découvrir la boutique
             </ButtonLink>
           </div>
-          {/* A presentation card, slightly tilted, as the earrings sit on their cards. */}
-          <div className="mx-auto w-[min(78%,20rem)] rotate-[2.5deg] bg-blanc p-2.5 pb-10 sm:p-3 sm:pb-12 lg:w-full">
-            <div className="relative aspect-[4/5] overflow-hidden bg-nuage">
-              <Image
-                src={photos.bouclesLiege.src}
-                alt={photos.bouclesLiege.alt}
-                fill
-                priority
-                sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 22rem, 78vw"
-                className="object-cover"
-              />
+          {/* A presentation card, as the earrings sit on their cards; its height follows the
+              space left on screen. */}
+          <div className="flex min-h-0 justify-center lg:h-[78%]">
+            <div className="aspect-[4/5] h-full max-w-[82%] rotate-[2.5deg] bg-blanc p-2.5 pb-9 sm:max-w-full sm:p-3 sm:pb-11">
+              <div className="relative h-full w-full overflow-hidden bg-nuage">
+                <Image
+                  src={photos.bouclesLiege.src}
+                  alt={photos.bouclesLiege.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 30rem, 80vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* What it is, in plain words: the paragraph search engines and new visitors read first. */}
-      <section className="border-b border-trait">
-        <Container className="grid gap-6 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-16 lg:py-12">
-          <p className="measure font-display text-[1.7rem] leading-[1.15] sm:text-[2.1rem]">
+      {/* What it is, centred, then the three things that make these jewels different. */}
+      <section className="border-b border-trait py-14 lg:py-20">
+        <Container size="medium">
+          <p className="mx-auto max-w-3xl text-center font-display text-[1.9rem] leading-[1.15] text-balance sm:text-[2.6rem]">
             Boucles d’oreilles, colliers et bracelets en cuir, découpés et assemblés à la main dans
             mon atelier de Clarensac, près de Nîmes.
           </p>
-          <TrustStrip freeShippingThreshold={settings?.freeShippingThreshold ?? null} />
+          <ul className="mt-12 grid gap-10 text-center sm:grid-cols-3 sm:gap-8 lg:mt-16">
+            {promises.map((p) => (
+              <li key={p.title}>
+                <h2 className="text-3xl">{p.title}</h2>
+                <p className="mx-auto mt-2 max-w-[18rem] text-gris">{p.text}</p>
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
 
@@ -171,49 +165,6 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Categories as large words: easy to tap, and plain links for search engines. */}
-      {categoryRows.length > 0 && (
-        <section className="bg-rose-pale py-14 lg:py-20">
-          <Container>
-            <h2 className="mb-6 text-2xl sm:text-3xl">Par envie</h2>
-            <ul className="border-t border-graphite/20">
-              {categoryRows.map(({ value, count, product }) => (
-                <li key={value} className="border-b border-graphite/20">
-                  <Link
-                    href={`/boutique?categorie=${value}`}
-                    className="group flex items-center gap-4 py-4 sm:gap-6 sm:py-5"
-                  >
-                    <span className="min-w-0 flex-1 font-display text-[2.6rem] leading-none transition-colors group-hover:text-rose-texte sm:text-7xl">
-                      {categoryFilterLabels[value]}
-                    </span>
-                    <span className="shrink-0 text-sm text-gris">
-                      {count} création{count > 1 ? 's' : ''}
-                    </span>
-                    <span className="relative hidden size-16 shrink-0 overflow-hidden bg-nuage sm:block lg:size-20">
-                      {product?.image?.asset ? (
-                        <Image
-                          src={urlFor(product.image).width(160).height(160).url()}
-                          alt=""
-                          fill
-                          sizes="80px"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <BrandLogo
-                          variant="mark"
-                          mono
-                          className="absolute inset-0 m-auto h-3/5 w-auto text-graphite/15"
-                        />
-                      )}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </section>
-      )}
-
       {/* Atelier: her own words, set large. */}
       <section className="py-16 lg:py-24">
         <Container className="grid items-center gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
@@ -240,19 +191,6 @@ export default async function HomePage() {
               Découvrir l’atelier
             </ButtonLink>
           </div>
-        </Container>
-      </section>
-
-      <section className="border-y border-trait py-12 lg:py-14">
-        <Container>
-          <ul className="grid gap-8 sm:grid-cols-3 sm:gap-10">
-            {promises.map((p) => (
-              <li key={p.title}>
-                <h3 className="text-3xl">{p.title}</h3>
-                <p className="mt-2 max-w-xs text-gris">{p.text}</p>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 

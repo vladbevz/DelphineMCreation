@@ -33,7 +33,14 @@ export function SectionHeading({
         {title}
       </Tag>
       {intro && (
-        <div className="mt-4 measure leading-relaxed text-gris sm:text-[1.0625rem]">{intro}</div>
+        <div
+          className={cn(
+            'mt-4 measure leading-relaxed text-gris sm:text-[1.0625rem]',
+            align === 'center' && 'mx-auto',
+          )}
+        >
+          {intro}
+        </div>
       )}
     </div>
   );

@@ -27,11 +27,14 @@ export default async function ContactPage() {
           </p>
         }
       />
-      <Container size="medium" className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr]">
+      <Container
+        size="medium"
+        className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+      >
         <dl className="space-y-6 self-start bg-rose-pale p-6 sm:p-8">
           <div>
             <dt className="label-caps text-gris">E-mail</dt>
-            <dd className="mt-2 text-lg [overflow-wrap:anywhere]">
+            <dd className="mt-2 text-base whitespace-nowrap sm:text-lg">
               {settings?.email ? (
                 <a href={`mailto:${settings.email}`} className="hover:text-rose-texte">
                   {settings.email}

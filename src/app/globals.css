@@ -7,6 +7,8 @@
   --font-display: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
   --font-body: var(--font-instrument-sans), 'Instrument Sans', system-ui, sans-serif;
   --font-sans: var(--font-instrument-sans), 'Instrument Sans', system-ui, sans-serif;
+  /* Hero title only (script, like the logo's « Créations en cuir »). */
+  --font-script: var(--font-corinthia), 'Corinthia', cursive;
 }
 
 @theme {
@@ -21,6 +23,7 @@
   --color-rose-texte: #c2077a; /* buttons, links, small pink text, announcement bar */
   --color-rose-hover: #a30667;
   --color-rose-pale: #fdeef6; /* alternate sections */
+  --color-rose-clair: #fad3e8; /* home hero (graphite text 12:1) */
   --color-nuage: #f5f3f4; /* photo and placeholder backgrounds */
   --color-trait: #e8e2e5; /* borders, form fields */
 

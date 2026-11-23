@@ -128,6 +128,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
 
       <SectionHeading
         as="h1"
+        align="center"
         title={filters.category ? categorySeo[filters.category].h1 : seo.boutique.h1}
         intro={<p>{filters.category ? categorySeo[filters.category].intro : seo.boutique.intro}</p>}
         className="mb-8 lg:mb-12"

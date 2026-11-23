@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
+import { Corinthia, Instrument_Sans, Instrument_Serif } from 'next/font/google';
 import { isDemoMode, publicEnv } from '@/lib/env';
 import { photos } from '@/lib/photos';
 import { site } from '@/lib/site';
@@ -12,6 +12,14 @@ const serif = Instrument_Serif({
   weight: '400',
   display: 'swap',
   variable: '--font-instrument-serif',
+});
+
+// Hero title only: a thin slanted script, close to « Créations en cuir » in the logo (Adelia).
+const script = Corinthia({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-corinthia',
 });
 
 const sans = Instrument_Sans({
@@ -45,7 +53,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="fr" className={`${serif.variable} ${sans.variable} ${script.variable}`}>
       <body>{children}</body>
     </html>
   );
