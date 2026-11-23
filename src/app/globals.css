@@ -23,7 +23,6 @@
   --color-rose-texte: #c2077a; /* buttons, links, small pink text, announcement bar */
   --color-rose-hover: #a30667;
   --color-rose-pale: #fdeef6; /* alternate sections */
-  --color-rose-clair: #fad3e8; /* home hero (graphite text 12:1) */
   --color-nuage: #f5f3f4; /* photo and placeholder backgrounds */
   --color-trait: #e8e2e5; /* borders, form fields */
 
@@ -113,6 +112,31 @@
 /* Comfortable reading line. */
 @utility measure {
   max-width: 65ch;
+}
+
+/* Home hero: « légers » floats up once, like a feather, and settles slightly tilted.
+   Transform only (the word is visible from the first paint). Reduced motion: final state. */
+@keyframes hero-float {
+  from {
+    transform: translateY(0.35em) rotate(2deg);
+  }
+  60% {
+    transform: translateY(-0.12em) rotate(-5deg);
+  }
+  to {
+    transform: translateY(-0.06em) rotate(-4deg);
+  }
+}
+
+.hero-float {
+  transform: translateY(-0.06em) rotate(-4deg);
+  animation: hero-float 1.6s var(--ease-premium) 0.3s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-float {
+    animation: none;
+  }
 }
 
 /* Page and product-image view transitions: same easing as the reveals; off for reduced motion. */

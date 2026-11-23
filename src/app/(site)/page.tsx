@@ -85,15 +85,22 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Hero, the one bold moment: light charte pink, the title in a handwritten script, a
-          presentation card slightly tilted. Fits the first screen under the header, no scroll. */}
-      <section className="overflow-hidden bg-rose-clair">
+      {/* Hero, the one bold moment: the charte's flash pink, a white editorial title whose key
+          word « légers » is written by hand (the logo's script) and floats up once, like a
+          feather, settling slightly tilted. Transform only: the text is visible from the first
+          paint (LCP). White display type is large text (4.2:1 passes 3:1); the button is a white
+          pill. Fits the first screen under the header, no scroll. */}
+      <section className="overflow-hidden bg-rose text-blanc">
         <Container className="grid h-[calc(100svh-4.5rem-1px)] max-h-[60rem] min-h-[34rem] grid-rows-[auto_minmax(0,1fr)] gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:grid-rows-1 lg:items-center lg:gap-14">
           <div>
-            <h1 className="font-script text-[clamp(3.9rem,16vw,8.5rem)] leading-[0.95] tracking-normal sm:leading-[1.05]">
-              Bijoux en cuir faits main, si légers qu’on les oublie
+            <h1 className="text-[clamp(3.3rem,12.5vw,8rem)] leading-[0.98] tracking-[-0.02em]">
+              Bijoux en cuir faits main, si{' '}
+              <span className="hero-float inline-block font-script text-[1.45em] leading-[0.5] tracking-normal">
+                légers
+              </span>{' '}
+              qu’on les oublie
             </h1>
-            <ButtonLink href="/boutique" className="mt-6 lg:mt-10">
+            <ButtonLink href="/boutique" variant="inverse" className="mt-8 lg:mt-12">
               Découvrir la boutique
             </ButtonLink>
           </div>
