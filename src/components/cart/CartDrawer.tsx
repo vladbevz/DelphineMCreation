@@ -211,7 +211,7 @@ export function CartDrawer({
                     <p className="price text-sm text-rose-texte">
                       {formatPrice(item.price * item.qty)}
                       {item.qty > 1 && (
-                        <span className="text-gris"> · {formatPrice(item.price)} l’unité</span>
+                        <span className="text-gris"> ({formatPrice(item.price)} l’unité)</span>
                       )}
                     </p>
                     <p className="mt-1 text-xs text-gris">

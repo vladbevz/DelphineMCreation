@@ -4,11 +4,11 @@ import { Stagger, StaggerItem } from '@/components/motion/Reveal';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { seo } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Sur-mesure',
-  description:
-    'Un bijou en cuir imaginé pour vous : couleurs, forme, occasion. Demande de création sur-mesure.',
+  title: seo.surMesure.title,
+  description: seo.surMesure.description,
   alternates: { canonical: '/sur-mesure' },
 };
 

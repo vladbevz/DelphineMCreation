@@ -2,7 +2,7 @@
 export const site = {
   name: 'Delphine M. Créations',
   description:
-    'Delphine M — bijoux en cuir faits main dans le Gard : boucles d’oreilles, bracelets, colliers. Colorés et ultra légers.',
+    'Bijoux en cuir faits main à Clarensac (Gard), près de Nîmes : boucles d’oreilles, colliers et bracelets colorés et ultra légers. Sur-mesure possible.',
   locality: 'Clarensac',
   region: 'Gard',
 };

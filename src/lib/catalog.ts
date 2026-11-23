@@ -1,6 +1,6 @@
 // Shared by the Sanity schema and the storefront. No React / Sanity imports here.
 export const categories = [
-  { title: "Boucles d'oreilles", value: 'boucles-d-oreilles' },
+  { title: 'Boucles d’oreilles', value: 'boucles-d-oreilles' },
   { title: 'Collier', value: 'collier' },
   { title: 'Bracelet', value: 'bracelet' },
   { title: 'Bague', value: 'bague' },
@@ -11,7 +11,7 @@ export type Category = (typeof categories)[number]['value'];
 
 /** Plural labels for the boutique filter. */
 export const categoryFilterLabels: Record<Category, string> = {
-  'boucles-d-oreilles': "Boucles d'oreilles",
+  'boucles-d-oreilles': 'Boucles d’oreilles',
   collier: 'Colliers',
   bracelet: 'Bracelets',
   bague: 'Bagues',

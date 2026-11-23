@@ -37,8 +37,8 @@ function CardPhoto({
 }
 
 /**
- * Catalog card. On hover (pointer devices) or keyboard focus: the second photo fades in and
- * a panel with the details and "Voir la création" slides up. Touch devices skip the effect.
+ * Catalog card. On hover (pointer devices) or keyboard focus the second photo fades in and a
+ * thin pink line draws in under the photo. Name in the display serif, price below.
  */
 export function ProductCard({
   product,
@@ -51,9 +51,6 @@ export function ProductCard({
 }) {
   const { image, hoverImage } = product;
   const category = categoryLabel(product.category);
-  const details = [product.leatherColor && `Cuir ${product.leatherColor.toLowerCase()}`, category]
-    .filter(Boolean)
-    .join(' · ');
 
   return (
     <Link href={`/boutique/${product.slug}`} className="group block focus-visible:outline-none">
@@ -85,28 +82,6 @@ export function ProductCard({
               />
             </div>
           )}
-
-          {/* Hover details: a visual duplicate of the link, hidden from screen readers. */}
-          <div
-            aria-hidden
-            className="absolute inset-x-0 bottom-0 translate-y-full bg-blanc/95 px-4 py-3 transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0"
-          >
-            {details && <p className="truncate text-[0.7rem] text-gris">{details}</p>}
-            <p className="mt-0.5 flex items-center justify-between text-[0.65rem] font-medium tracking-label text-graphite uppercase">
-              Voir la création
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="size-4"
-              >
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </p>
-          </div>
         </div>
       </ViewTransition>
       {/* A thin pink line draws in under the photo on hover (pointer devices only). */}
@@ -115,10 +90,10 @@ export function ProductCard({
         className="block h-0.5 origin-left scale-x-0 bg-rose transition-transform duration-500 ease-premium group-hover:scale-x-100 group-focus-visible:scale-x-100"
       />
 
-      <p className="mt-3 product-title text-base sm:text-lg">{product.title}</p>
-      <p className="mt-0.5 text-[0.8rem] text-graphite/80">
-        {category && <span className="text-gris">{category} · </span>}
+      <p className="mt-3 product-title text-xl sm:text-2xl">{product.title}</p>
+      <p className="mt-1 flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
         <span className="price">{formatPrice(product.price)}</span>
+        {category && <span className="text-gris">{category}</span>}
       </p>
     </Link>
   );

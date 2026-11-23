@@ -16,16 +16,28 @@ import {
   type BoutiqueFilters,
 } from '@/lib/boutique';
 import { categories, categoryFilterLabels, colorKey } from '@/lib/catalog';
+import { categorySeo, seo } from '@/lib/seo';
 import { getProducts } from '@/lib/sanity/data';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
-export const metadata: Metadata = {
-  title: 'La boutique',
-  description:
-    'Tous les bijoux en cuir faits main de Delphine M. Créations : boucles d’oreilles, colliers, bracelets, bagues, broches et barrettes. Colorés et ultra légers.',
-  alternates: { canonical: '/boutique' },
-};
+/** Each category is an indexable landing page; colour and sort variations point to it. */
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { category } = parseFilters(await searchParams);
+  if (!category) {
+    return {
+      title: seo.boutique.title,
+      description: seo.boutique.description,
+      alternates: { canonical: '/boutique' },
+    };
+  }
+  const page = categorySeo[category];
+  return {
+    title: page.h1,
+    description: page.description,
+    alternates: { canonical: `/boutique?categorie=${category}` },
+  };
+}
 
 type Product = Awaited<ReturnType<typeof getProducts>>[number];
 
@@ -116,12 +128,8 @@ export default async function BoutiquePage({ searchParams }: Props) {
 
       <SectionHeading
         as="h1"
-        align="center"
-        title={
-          <>
-            Toutes les <em>créations</em>
-          </>
-        }
+        title={filters.category ? categorySeo[filters.category].h1 : seo.boutique.h1}
+        intro={<p>{filters.category ? categorySeo[filters.category].intro : seo.boutique.intro}</p>}
         className="mb-8 lg:mb-12"
       />
 

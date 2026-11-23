@@ -4,10 +4,11 @@ import { ContactForm } from '@/components/forms/ContactForm';
 import { Container } from '@/components/ui/Container';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { getSettings } from '@/lib/sanity/data';
+import { seo } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Une question sur un bijou, une commande ou une création sur-mesure ? Écrivez-moi.',
+  title: seo.contact.title,
+  description: seo.contact.description,
   alternates: { canonical: '/contact' },
 };
 

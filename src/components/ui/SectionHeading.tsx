@@ -4,7 +4,7 @@ import { cn } from './cn';
 type SectionHeadingProps = {
   label?: string;
   /**
-   * Quicksand semibold, normal case. No accent word: an <em> reads as the rest of the title.
+   * Instrument Serif, normal case. No accent word: an <em> reads as the rest of the title.
    */
   title: ReactNode;
   intro?: ReactNode;
@@ -27,7 +27,7 @@ export function SectionHeading({
       <Tag
         className={cn(
           '[&_em]:word-accent',
-          Tag === 'h1' ? 'text-3xl sm:text-[2.6rem]' : 'text-2xl sm:text-[2.1rem]',
+          Tag === 'h1' ? 'text-[2.8rem] sm:text-6xl' : 'text-[2.3rem] sm:text-5xl',
         )}
       >
         {title}

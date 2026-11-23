@@ -7,8 +7,7 @@ import { getSettings } from '@/lib/sanity/data';
 import { legalNav, mainNav, site } from '@/lib/site';
 
 // White on the charte dark grey: 15:1. Hover = underline.
-const linkClass =
-  'text-[0.7rem] font-medium tracking-label uppercase underline-offset-4 hover:underline';
+const linkClass = 'text-sm font-medium underline-offset-4 hover:underline';
 
 function ColumnTitle({ children }: { children: string }) {
   return <p className="mb-4 display-caps text-sm">{children}</p>;
@@ -30,7 +29,8 @@ export async function Footer() {
             className="h-36 w-auto text-blanc"
           />
           <p className="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-blanc">
-            Bijoux en cuir colorés et ultra légers, faits main à Clarensac, dans la Vaunage.
+            Bijoux en cuir colorés et ultra légers, faits main à Clarensac, dans la Vaunage, près de
+            Nîmes (Gard).
           </p>
         </div>
 

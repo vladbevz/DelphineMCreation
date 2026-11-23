@@ -2,7 +2,7 @@
 
 import * as m from 'motion/react-m';
 import type { ReactNode } from 'react';
-import { fadeUp, lineUp, staggerChildren, VIEWPORT } from '@/lib/motion';
+import { fadeUp, lineUp, VIEWPORT } from '@/lib/motion';
 
 /**
  * Scroll reveals. Rules (CLAUDE.md §3): transform / opacity only, once, and never on
@@ -25,7 +25,10 @@ export function Reveal({ children, className }: { children: ReactNode; className
   );
 }
 
-/** Children appear one after another (grids). Wrap each child in <StaggerItem>. */
+/**
+ * Grid wrappers, kept as plain markup: only the hero words animate (one orchestrated moment,
+ * CLAUDE.md §3). Same API so pages do not change.
+ */
 export function Stagger({
   children,
   className,
@@ -35,19 +38,8 @@ export function Stagger({
   className?: string;
   as?: 'div' | 'ul' | 'ol';
 }) {
-  const Tag = as === 'ul' ? m.ul : as === 'ol' ? m.ol : m.div;
-  return (
-    <Tag
-      data-reveal
-      className={className}
-      variants={staggerChildren()}
-      initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT}
-    >
-      {children}
-    </Tag>
-  );
+  const Tag = as;
+  return <Tag className={className}>{children}</Tag>;
 }
 
 export function StaggerItem({
@@ -59,12 +51,8 @@ export function StaggerItem({
   className?: string;
   as?: 'div' | 'li';
 }) {
-  const Tag = as === 'li' ? m.li : m.div;
-  return (
-    <Tag data-reveal className={className} variants={fadeUp}>
-      {children}
-    </Tag>
-  );
+  const Tag = as;
+  return <Tag className={className}>{children}</Tag>;
 }
 
 /**

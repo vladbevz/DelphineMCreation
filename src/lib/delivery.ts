@@ -33,8 +33,8 @@ export function shippingDaysFor(needsMaking: boolean, delays: Delays) {
 /** Product page, under the button (quantity 1). */
 export function productAvailabilityNote(stock: number | null | undefined, delays: Delays) {
   return (stock ?? 0) > 0
-    ? `Prêt à partir · expédié sous ${days(delays.shippingDays)}`
-    : `Fabriqué à la main pour vous · expédié sous ${days(delays.madeToOrderDays)}`;
+    ? `Prêt à partir, expédié sous ${days(delays.shippingDays)}`
+    : `Fabriqué à la main pour vous, expédié sous ${days(delays.madeToOrderDays)}`;
 }
 
 /** Cart line, for a given quantity. */
@@ -44,8 +44,8 @@ export function lineAvailabilityNote(
   delays: Delays,
 ) {
   const { fromStock, toMake } = splitQuantity(quantity, stock);
-  if (toMake === 0) return `Prêt à partir · expédié sous ${days(delays.shippingDays)}`;
+  if (toMake === 0) return `Prêt à partir, expédié sous ${days(delays.shippingDays)}`;
   const made = `expédié sous ${days(delays.madeToOrderDays)}`;
-  if (fromStock === 0) return `Fabriqué pour vous · ${made}`;
-  return `${fromStock} prêt${fromStock > 1 ? 's' : ''}, ${toMake} à fabriquer pour vous · ${made}`;
+  if (fromStock === 0) return `Fabriqué pour vous, ${made}`;
+  return `${fromStock} prêt${fromStock > 1 ? 's' : ''}, ${toMake} à fabriquer pour vous, ${made}`;
 }

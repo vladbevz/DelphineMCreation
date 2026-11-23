@@ -7,11 +7,11 @@ import { Container } from '@/components/ui/Container';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { photos } from '@/lib/photos';
+import { seo } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'L’atelier',
-  description:
-    'De Bogotá à la Vaunage : l’histoire de Delphine et de ses bijoux en cuir façonnés à la main, à Clarensac.',
+  title: seo.atelier.title,
+  description: seo.atelier.description,
   alternates: { canonical: '/atelier' },
 };
 

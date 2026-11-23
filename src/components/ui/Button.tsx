@@ -2,20 +2,22 @@ import Link from 'next/link';
 import type { ComponentProps } from 'react';
 import { cn } from './cn';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'light';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'light' | 'inverse';
 
-// Thin pill buttons with small spaced capitals. Size and shape live in the variants so the
-// ghost link does not fight them (no tailwind-merge here).
-const pill = 'min-h-11 rounded-full px-7';
+// Pill buttons, sentence case. Size and shape live in the variants so the ghost link does not
+// fight them (no tailwind-merge here).
+const pill = 'min-h-12 rounded-full px-7';
 const base =
-  'inline-flex items-center justify-center gap-2 text-[0.7rem] font-medium tracking-label uppercase transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex items-center justify-center gap-2 text-[0.9375rem] font-semibold transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variants: Record<Variant, string> = {
-  /** Bordeaux, as the seal: ivoire text 12:1. */
+  /** rose-texte: white text 5.8:1 (the charte pink #ED0A90 is 4.2, too low for button text). */
   primary: `${pill} border border-rose-texte bg-rose-texte text-blanc hover:border-rose-hover hover:bg-rose-hover`,
   secondary: `${pill} border border-rose-texte text-rose-texte hover:bg-rose-texte hover:text-blanc`,
   /** On dark photos or dark sections. */
   light: `${pill} border border-blanc text-blanc hover:bg-blanc hover:text-graphite`,
+  /** On the flash-pink hero: white pill, rose-texte text (5.8:1). */
+  inverse: `${pill} border border-blanc bg-blanc text-rose-texte hover:bg-graphite hover:border-graphite hover:text-blanc`,
   ghost:
     'pb-1 text-rose-texte underline decoration-rose-texte/40 underline-offset-[6px] hover:decoration-rose-texte',
 };
