@@ -65,22 +65,24 @@
 
 Контраст (перевірено): graphite/blanc 15.2, gris/blanc 6.4, gris/rose-pale 5.7, gris/nuage 5.8, rose-texte/blanc 5.8, blanc/rose-texte 5.8, graphite/rose-pale 13.5. Рожевий чартери `#ED0A90` на білому — 4.2: **не для дрібного тексту і кнопок** — для них `rose-texte`. Інших кольорів (категорій, золота) немає.
 
-**Шрифти** (`next/font/google`, `src/app/layout.tsx`): **Quicksand** (variable 300–700) скрізь — найближчий веб-шрифт до Existence з лого. Змінна next/font `--font-quicksand`; токени `font-display` = `font-body` = `font-sans`. Шрифти лого (Adelle, Existence, Beauty Heart, Adelia) на сайті не використовуємо — лише в самому лого.
-- Заголовки (`h1–h4` у base, утиліта `heading` для інших елементів): Quicksand 600, звичайний регістр, `line-height: 1.15`, `-0.01em`, `text-wrap: balance`, `overflow-wrap: anywhere` + `hyphens: auto`. Розміри в `SectionHeading`: h1 `text-3xl sm:text-[2.6rem]`, h2 `text-2xl sm:text-[2.1rem]`.
-- Текст: Quicksand **500** (400 занадто тонкий на телефоні), 16px, `leading-relaxed`, рядок ≤ 65 символів (`measure`).
-- Назви товарів: `product-title` (600). Ціни: `price` (600, `tabular-nums`).
-- Кнопки, меню, лейбли форм, accordion, бейджі: Quicksand 600 капсом, трекінг 0.14em — `label-caps` / `display-caps` / `tracking-label uppercase`. Ніколи над заголовками.
+**Шрифти** (`next/font/google`, `src/app/layout.tsx`; редакційна пара, листопад 2026): **Instrument Serif** (лише 400, display) для заголовків, назв товарів, великих цитат; **Instrument Sans** (variable 400–700) для тексту й інтерфейсу. Змінні next/font `--font-instrument-serif`, `--font-instrument-sans`; токени `font-display` (serif), `font-body` = `font-sans`. Шрифти лого (Adelle, Existence, Beauty Heart, Adelia) — лише в самому лого.
+- Заголовки (`h1–h4` у base, утиліта `heading` для інших елементів): Instrument Serif 400, звичайний регістр, `line-height: 1.02`, `-0.01em`, `text-wrap: balance`, `overflow-wrap: anywhere` + `hyphens: auto`. Шрифт вузький і дрібний — заголовки великі: `SectionHeading` h1 `text-[2.8rem] sm:text-6xl`, h2 `text-[2.3rem] sm:text-5xl`; H1 головної `clamp(3.5rem, 14vw, 9.5rem)`.
+- Текст: Instrument Sans 400, 16px, `leading-relaxed`, рядок ≤ 65 символів (`measure`).
+- Назви товарів: `product-title` (serif, `text-xl sm:text-2xl` у картці). Ціни: `price` (sans 600, `tabular-nums`).
+- **Без капсу**: меню, кнопки, лейбли форм, accordion, бейджі — звичайним регістром, sans 500–600 (`label-caps` / `display-caps` лишились як імена утиліт, але без uppercase). Розріджений капс читається як шаблон.
+- Без рядків-«метаданих» через « · » і без стрілок → у кнопках і посиланнях.
 - Акцентів у заголовках немає: `<em>` (утиліта `word-accent`) успадковує стиль. Рукописні шрифти — лише в лого.
-- Листи: `EmailLayout.tsx` — Quicksand → Helvetica/Arial, лого PNG, рожева лінія 2px під лого, кнопка `rose-texte`.
+- Листи: `EmailLayout.tsx` — Instrument Sans → Helvetica/Arial, лого PNG, рожева лінія 2px під лого, кнопка `rose-texte`.
 
 **Без шаблонних «ШІ»-прийомів**: без надписів-«eyebrow» над заголовками, без акцентного слова в заголовку, без плаваючих мотивів, без shimmer/градієнтів, без іконок-тріад, без нумерованих кружечків. Кроки — «1. Назва». Прибрано: рухомий рядок, Blobs, леопард, кольорові смужки, мотив сережки, шов.
 
-**Анімації** — `motion` (LazyMotion + `m`), спільні easing/тривалості/варіанти в `src/lib/motion.ts`, компоненти в `src/components/motion/`. Лише transform / opacity, один раз при появі: слова hero, поступова поява сіток, кошик. Заголовки й фото секцій — без анімацій. Ніколи на LCP-елементі (hero-фото, перше фото галереї, h1). Анімовані елементи мають `data-reveal` — CSS при `prefers-reduced-motion` показує їх одразу. View Transitions (React `ViewTransition`) — фото картки → галерея.
+**Анімації** — `motion` (LazyMotion + `m`), спільні easing/тривалості/варіанти в `src/lib/motion.ts`, компоненти в `src/components/motion/`. Лише transform / opacity. **Один момент на сторінку**: сітки й секції не «з'являються» при прокручуванні (`Stagger` / `StaggerItem` — звичайна розмітка); анімація лише у відповідь на дію (кошик, кнопка «Ajouté», view transition). Заголовки й фото секцій — без анімацій. Ніколи на LCP-елементі (hero-фото, перше фото галереї, h1). Анімовані елементи мають `data-reveal` — CSS при `prefers-reduced-motion` показує їх одразу. View Transitions (React `ViewTransition`) — фото картки → галерея.
 
 **Стиль:**
 - **Гострі кути** у фото, картках, секціях, полях форм. Заокруглення лише в кнопок і бейджів (пігулки, `rounded-full`).
-- Фото товарів **квадратні** на фоні `nuage`. Hero — фото на всю ширину з білим заголовком (без лого на фото — заборона чартери).
-- Кнопки (`Button` / `ButtonLink`): пігулки капсом — `primary` (`rose-texte`, білий текст), `secondary` (контур `rose-texte`), `light` (на фото), `ghost` (підкреслене посилання).
+- Фото товарів **квадратні** на фоні `nuage`.
+- **Головна — одне «вау»**: hero-обкладинка на рожевому чартери `#ED0A90` з величезним білим заголовком Instrument Serif (великий текст — 4.2:1 проходить 3:1) і фото у «картці» з білою рамкою, нахиленою на 2.5° (як прикраси на картках презентації). Дрібний текст на рожевому не ставимо. Далі сторінка тиха: «Nouvelle collection», категорії великими словами («Par envie», внутрішні SEO-посилання), цитата з атель'є, переваги, sur-mesure на фото, FAQ (+ FAQPage JSON-LD), Instagram.
+- Кнопки (`Button` / `ButtonLink`): пігулки, звичайний регістр, 600 — `primary` (`rose-texte`, білий текст), `secondary` (контур `rose-texte`), `light` (на фото), `inverse` (біла пігулка з `rose-texte` — на рожевому hero), `ghost` (підкреслене посилання).
 - Шапка: Boutique / L'atelier / Sur-mesure ліворуч, лого «Delphine M / Créations en cuir» по центру, Entretien du cuir / Contact + кошик праворуч; на мобільному — бургер, лого, кошик. Футер — `graphite` (текст білий, hover — підкреслення, лого `full` білим). Смужка оголошень — `rose-texte`, білий текст.
 - Без тіней, без градієнтів, без емодзі. Анімації поважають `prefers-reduced-motion`.
 - Mobile-first: більшість трафіку прийде з Instagram на телефоні.
@@ -229,7 +231,7 @@ Header: лого клієнтки «Delphine M / Créations en cuir», меню,
 
 ## 8. SEO, аналітика, RGPD
 
-- `generateMetadata` на кожній сторінці; Open Graph з фото товару.
+- `generateMetadata` на кожній сторінці; Open Graph з фото товару. Тексти для пошуку — в `src/lib/seo.ts` (title/description сторінок, H1 і вступ кожної категорії бутіка — `?categorie=` має власний canonical, FAQ). Тільки факти від Delphine; формулювання — чернетка на погодження.
 - `sitemap.ts` (товари, колекції, сторінки), `robots.ts` (закрити `/studio`, `/api`, `/merci`).
 - JSON-LD: `Product` на товарах, `Organization` + `LocalBusiness` на головній.
 - ISR: сторінки товарів і каталог — `revalidate` + on-demand revalidation з вебхука Sanity при публікації.
