@@ -92,8 +92,9 @@ export default async function HomePage() {
           pill. Fits the first screen under the header, no scroll. */}
       <section className="overflow-hidden bg-rose text-blanc">
         <Container className="grid h-[calc(100svh-4.5rem-1px)] max-h-[60rem] min-h-[34rem] grid-rows-[auto_minmax(0,1fr)] gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:grid-rows-1 lg:items-center lg:gap-14">
-          <div>
-            <h1 className="text-[clamp(3.3rem,12.5vw,8rem)] leading-[0.98] tracking-[-0.02em]">
+          {/* Centred on phones and tablets (title over the card), left-aligned beside it on desktop. */}
+          <div className="text-center lg:text-left">
+            <h1 className="text-[clamp(3.3rem,12.5vw,8rem)] leading-[0.98] tracking-[-0.02em] text-balance">
               Bijoux en cuir faits main, si{' '}
               <span className="hero-float inline-block font-script text-[1.45em] leading-[0.5] tracking-normal">
                 légers
