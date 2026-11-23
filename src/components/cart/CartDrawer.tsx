@@ -8,7 +8,6 @@ import { getCartItems, type CartItem } from '@/app/actions/cart';
 import { Button } from '@/components/ui/Button';
 import { lineAvailabilityNote, MAX_QUANTITY, type Delays } from '@/lib/delivery';
 import { formatPrice } from '@/lib/format';
-import { fadeUp, staggerChildren } from '@/lib/motion';
 import { trackEvent } from '@/lib/tracking';
 import { useCart } from './CartProvider';
 
@@ -113,16 +112,10 @@ export function CartDrawer({
       onClose={close}
       onClick={(e) => e.target === dialogRef.current && close()}
       aria-labelledby="cart-title"
-      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-transparent p-0 text-graphite backdrop:bg-graphite/40"
+      className="drawer fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md bg-transparent p-0 text-graphite backdrop:bg-graphite/40"
     >
-      {/* Panel slides in on a soft spring each time the drawer opens. */}
-      <m.div
-        key={isOpen ? 'open' : 'closed'}
-        className="flex h-full flex-col bg-blanc"
-        initial={{ x: '100%' }}
-        animate={{ x: 0 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 32, mass: 0.9 }}
-      >
+      {/* Slides in each time the drawer opens (CSS, globals.css .drawer). */}
+      <div className="drawer-panel flex h-full flex-col bg-blanc">
         <div className="flex items-center justify-between border-b border-trait px-5 py-4">
           <h2 id="cart-title" className="text-2xl">
             Votre panier
@@ -147,7 +140,7 @@ export function CartDrawer({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-6" aria-busy={isLoading}>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-6" aria-busy={isLoading}>
           {notices.length > 0 && (
             <div role="status" className="mb-6 space-y-2 bg-rose-pale p-4 text-sm">
               {notices.map((n) => (
@@ -177,14 +170,9 @@ export function CartDrawer({
           ) : items === null ? (
             <p className="py-16 text-center text-gris">Chargement…</p>
           ) : (
-            <m.ul
-              className="space-y-5"
-              variants={staggerChildren(0.06)}
-              initial="hidden"
-              animate="visible"
-            >
+            <ul className="space-y-5">
               {buyable.map((item) => (
-                <m.li key={item._id} className="flex gap-4" variants={fadeUp}>
+                <li key={item._id} className="flex gap-4">
                   <Link
                     href={`/boutique/${item.slug}`}
                     onClick={close}
@@ -232,9 +220,9 @@ export function CartDrawer({
                       </button>
                     </div>
                   </div>
-                </m.li>
+                </li>
               ))}
-            </m.ul>
+            </ul>
           )}
         </div>
 
@@ -263,7 +251,7 @@ export function CartDrawer({
             <p className="mt-3 text-center text-xs text-gris">Paiement sécurisé par Stripe</p>
           </div>
         )}
-      </m.div>
+      </div>
     </dialog>
   );
 }

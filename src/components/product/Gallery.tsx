@@ -93,7 +93,7 @@ export function Gallery({
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto sm:mx-0 [&::-webkit-scrollbar]:hidden"
+        className="-mx-5 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain sm:mx-0 [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carrousel"
         aria-label={`Photos de ${title}`}
       >
