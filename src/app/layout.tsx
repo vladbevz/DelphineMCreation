@@ -54,6 +54,18 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${serif.variable} ${sans.variable} ${script.variable}`}>
+      <head>
+        {/* Touch screens: no View Transitions at all. iOS Safari could leave a card-to-gallery
+            transition stuck (a grey full-screen snapshot) after a swipe or a back gesture.
+            Without document.startViewTransition React swaps pages directly (it catches the
+            missing API). Runs before hydration. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(matchMedia('(hover: none)').matches){Object.defineProperty(document,'startViewTransition',{value:undefined,configurable:true})}}catch(e){}",
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
