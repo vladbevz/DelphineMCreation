@@ -124,7 +124,7 @@ export default async function HomePage() {
       </section>
 
       {/* What it is, centred, then the three things that make these jewels different. */}
-      <section className="border-b border-trait py-14 lg:py-20">
+      <section className="bg-rose-pale py-14 lg:py-20">
         <Container size="medium">
           <p className="mx-auto max-w-3xl text-center font-display text-[1.9rem] leading-[1.15] text-balance sm:text-[2.6rem]">
             Boucles d’oreilles, colliers et bracelets en cuir, découpés et assemblés à la main dans
@@ -226,7 +226,7 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ: answers to what people ask before buying (also FAQPage structured data). */}
-      <section className="py-16 lg:py-24">
+      <section className="bg-rose-pale py-16 lg:py-24">
         <Container className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
           <h2 className="text-[2.6rem] sm:text-6xl">Vos questions</h2>
           <div className="border-t border-graphite/30">
@@ -248,7 +248,7 @@ export default async function HomePage() {
       </section>
 
       {/* Instagram: title and link above a row of photos. */}
-      <section className="overflow-hidden pb-4">
+      <section className="overflow-hidden pt-14 pb-4 lg:pt-20">
         <Container>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <h2 className="text-[2.6rem] sm:text-6xl">Suivez l’atelier</h2>
