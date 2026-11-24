@@ -85,30 +85,29 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Hero, the one bold moment: the charte's flash pink, a white editorial title whose key
-          word « légers » is written by hand (the logo's script) and floats up once, like a
-          feather, settling slightly tilted. Transform only: the text is visible from the first
-          paint (LCP). White display type is large text (4.2:1 passes 3:1); the button is a white
-          pill. Fits the first screen under the header, no scroll. */}
-      <section className="overflow-hidden bg-rose text-blanc">
-        <Container className="grid h-[calc(100svh-4.5rem-1px)] max-h-[60rem] min-h-[34rem] grid-rows-[auto_minmax(0,1fr)] gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:grid-rows-1 lg:items-center lg:gap-14">
+      {/* Hero: white, the title in black with one key word, « légers », handwritten in the charte's
+          pink (large text: 4.2:1 passes 3:1) that floats up once like a feather. A presentation
+          card holds the photo. Fits the first screen under the header: the title size follows
+          both the width and the height of the screen, so it never overflows. */}
+      <section className="overflow-hidden bg-blanc">
+        <Container className="grid h-[calc(100svh-4.5rem-1px)] max-h-[60rem] min-h-[32rem] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-6 py-6 sm:py-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:grid-rows-1 lg:items-center lg:gap-14">
           {/* Centred on phones and tablets (title over the card), left-aligned beside it on desktop. */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-[clamp(3.3rem,12.5vw,8rem)] leading-[0.98] tracking-[-0.02em] text-balance">
+          <div className="min-w-0 text-center lg:text-left">
+            <h1 className="text-[clamp(2.3rem,min(12.5vw,7.5svh),4.75rem)] leading-[1] tracking-[-0.02em] text-balance sm:text-[clamp(3rem,min(10vw,7svh),6rem)] lg:text-[clamp(3.25rem,min(7vw,12svh),8rem)]">
               Bijoux en cuir faits main, si{' '}
-              <span className="hero-float inline-block font-script text-[1.45em] leading-[0.5] tracking-normal">
+              <span className="hero-float inline-block font-script text-[1.4em] leading-[0.5] tracking-normal text-rose">
                 légers
               </span>{' '}
               qu’on les oublie
             </h1>
-            <ButtonLink href="/boutique" variant="inverse" className="mt-8 lg:mt-12">
+            <ButtonLink href="/boutique" className="mt-6 sm:mt-8 lg:mt-12">
               Découvrir la boutique
             </ButtonLink>
           </div>
-          {/* A presentation card, as the earrings sit on their cards; its height follows the
-              space left on screen. */}
-          <div className="flex min-h-0 justify-center lg:h-[78%]">
-            <div className="aspect-[4/5] h-full max-w-[82%] rotate-[2.5deg] bg-blanc p-2.5 pb-9 sm:max-w-full sm:p-3 sm:pb-11">
+          {/* A presentation card in pale pink, as the earrings sit on their cards; its height
+              follows the space left on screen. */}
+          <div className="flex min-h-0 min-w-0 justify-center lg:items-center">
+            <div className="aspect-[4/5] h-full max-w-[85%] rotate-[2.5deg] bg-rose-pale p-2.5 pb-9 sm:max-w-full sm:p-3 sm:pb-11 lg:h-auto lg:w-[min(100%,28rem,calc((100svh-12rem)*0.8))] lg:max-w-none">
               <div className="relative h-full w-full overflow-hidden bg-nuage">
                 <Image
                   src={photos.bouclesLiege.src}
@@ -131,7 +130,7 @@ export default async function HomePage() {
             Boucles d’oreilles, colliers et bracelets en cuir, découpés et assemblés à la main dans
             mon atelier de Clarensac, près de Nîmes.
           </p>
-          <ul className="mt-12 grid gap-10 text-center sm:grid-cols-3 sm:gap-8 lg:mt-16">
+          <ul className="mt-12 grid grid-cols-1 gap-10 text-center sm:grid-cols-3 sm:gap-8 lg:mt-16">
             {promises.map((p) => (
               <li key={p.title}>
                 <h2 className="text-3xl">{p.title}</h2>
@@ -175,7 +174,7 @@ export default async function HomePage() {
 
       {/* Atelier: her own words, set large. */}
       <section className="py-16 lg:py-24">
-        <Container className="grid items-center gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+        <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden bg-nuage">
             <Image
               src={photos.atelierMains.src}
@@ -228,7 +227,7 @@ export default async function HomePage() {
 
       {/* FAQ: answers to what people ask before buying (also FAQPage structured data). */}
       <section className="py-16 lg:py-24">
-        <Container className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
+        <Container className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
           <h2 className="text-[2.6rem] sm:text-6xl">Vos questions</h2>
           <div className="border-t border-graphite/30">
             {questions.map((q) => (

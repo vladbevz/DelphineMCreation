@@ -27,7 +27,7 @@ function Form({ onReset }: { onReset: () => void }) {
 
   return (
     <form action={action} className="relative space-y-6" noValidate>
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <TextField
           name="name"
           label="Nom"

@@ -134,7 +134,7 @@ export default async function BoutiquePage({ searchParams }: Props) {
         className="mb-8 lg:mb-12"
       />
 
-      <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-10">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-10">
         {/* Desktop: sidebar. Mobile: collapsible panel. Both work without JavaScript. */}
         <aside className="hidden border-r border-trait pr-8 lg:block">
           <div className="sticky top-24">

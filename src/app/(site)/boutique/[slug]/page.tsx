@@ -139,7 +139,7 @@ export default async function ProductPage({ params }: Props) {
           </ol>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-14">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-14">
           {/* Sized from the viewport height so photo + thumbnails fit on a laptop screen. */}
           <div className="lg:w-[clamp(20rem,calc(100svh-16rem),30rem)]">
             <Gallery
@@ -219,7 +219,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* Brand story: photo / text blocks, alternating. */}
       <section className="mt-16 lg:mt-24">
-        <Container size="medium" className="grid md:grid-cols-2">
+        <Container size="medium" className="grid grid-cols-1 md:grid-cols-2">
           <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-square">
             <Image
               src={photos.atelierMains.src}

@@ -42,7 +42,7 @@ export default function AtelierPage() {
     <>
       <Container
         size="medium"
-        className="grid items-center gap-8 pt-8 pb-14 sm:pt-12 md:grid-cols-2 lg:gap-12 lg:pb-20"
+        className="grid grid-cols-1 items-center gap-8 pt-8 pb-14 sm:pt-12 md:grid-cols-2 lg:gap-12 lg:pb-20"
       >
         <SectionHeading
           as="h1"
@@ -74,7 +74,10 @@ export default function AtelierPage() {
       </Container>
 
       <section className="bg-rose-pale py-14 lg:py-20">
-        <Container size="medium" className="grid gap-6 md:grid-cols-[2fr_3fr] md:gap-12">
+        <Container
+          size="medium"
+          className="grid grid-cols-1 gap-6 md:grid-cols-[2fr_3fr] md:gap-12"
+        >
           <SectionHeading title="Delphine, créatrice" />
           <div className="measure space-y-4 leading-relaxed text-gris md:pt-8 md:text-[1.0625rem]">
             <p>
@@ -109,7 +112,10 @@ export default function AtelierPage() {
             intro={<p>Quatre étapes, toutes faites à la main dans mon atelier.</p>}
             className="mb-8"
           />
-          <Stagger as="ol" className="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+          <Stagger
+            as="ol"
+            className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4"
+          >
             {steps.map((step, i) => (
               // Mobile: photo beside the text; from sm: photo on top.
               <StaggerItem
@@ -135,7 +141,10 @@ export default function AtelierPage() {
       </section>
 
       <section className="bg-rose-pale py-14 lg:py-20">
-        <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
+        <Container
+          size="medium"
+          className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 lg:gap-12"
+        >
           <div className="aspect-[3/2] overflow-hidden">
             <PhotoPlaceholder label="Photo des cuirs" className="h-full" />
           </div>
@@ -172,7 +181,10 @@ export default function AtelierPage() {
       </section>
 
       <section className="py-14 lg:py-20">
-        <Container size="medium" className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
+        <Container
+          size="medium"
+          className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 lg:gap-12"
+        >
           <div className="md:order-last">
             <div className="relative aspect-[4/3] overflow-hidden bg-nuage md:aspect-[4/5]">
               <Image

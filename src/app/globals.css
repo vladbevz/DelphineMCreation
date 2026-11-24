@@ -35,6 +35,14 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Safety net: nothing may make the page wider than the screen (iOS Safari then zooms the
+     whole page out and it "flies" under the finger). clip, not hidden: no scroll container,
+     so the sticky header keeps working. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-blanc font-body text-base leading-relaxed text-graphite antialiased;
   }
